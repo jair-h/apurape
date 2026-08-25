@@ -1,0 +1,1019 @@
+{
+  "checkout": {
+    "title": "Activa tu plan",
+    "subtitle": "Estás a un paso de activar tu membresía en MARKARU.",
+    "planLabel": "Plan seleccionado",
+    "annual": "/ año",
+    "cardNumber": "Número de tarjeta",
+    "expiry": "Vencimiento",
+    "cvv": "CVV",
+    "cardName": "Nombre en la tarjeta",
+    "cardNamePlaceholder": "Como aparece en la tarjeta",
+    "pay": "Pagar",
+    "secure": "Pago seguro procesado por Culqi",
+    "accepted": "Aceptamos",
+    "processing": "Procesando pago...",
+    "activatedTitle": "¡Pago recibido!",
+    "activated": "Tu plan está siendo activado. Te contactaremos pronto para confirmar.",
+    "goDashboard": "Ir a mi panel",
+    "successTitle": "¡Pago exitoso!",
+    "activeOneYear": "Tu plan {{plan}} está activo por 1 año.",
+    "orderNumber": "Número de orden",
+    "errorTitle": "No se pudo completar el pago",
+    "retry": "Reintentar",
+    "noPlanTitle": "Elige un plan",
+    "noPlan": "No seleccionaste un plan. Vuelve a la página de planes para elegir uno.",
+    "seePlans": "Ver planes"
+  },
+  "planesPage": {
+    "heroBadge": "Precios simples y transparentes",
+    "heroTitle": "Elige tu rol. Empieza gratis.",
+    "heroSubtitle": "Sin comisiones por tus ventas. Sin contratos. Cancela cuando quieras.",
+    "trust1": "Sin comisión por transacción",
+    "trust2": "Acceso a compradores internacionales",
+    "trust3": "Soporte en español",
+    "whyTitle": "¿Por qué MARKARU?",
+    "whySubtitle": "Compara lo que pagarías en otras plataformas frente a MARKARU.",
+    "compAlibabaName": "Alibaba",
+    "compAlibabaPrice": "USD 299/año + 3% de comisión",
+    "compAlibabaExample": "Para un exportador que vende USD 100,000/año: pagas USD 3,299 solo en comisiones.",
+    "compMarkaruPrice": "USD 120–360/año. Sin comisión por tus ventas.",
+    "compMarkaruExample": "Para el mismo exportador: pagas solo USD 360/año.",
+    "compMarkaruSaving": "Ahorras más de USD 3,000",
+    "compMarkaruBadge": "Recomendado",
+    "compOtherName": "Otros marketplaces",
+    "compOtherPrice": "USD 99/mes (USD 1,188/año) + comisiones",
+    "compOtherExample": "Con MARKARU pagas hasta 10× menos.",
+    "faqTitle": "Preguntas frecuentes",
+    "faq1q": "¿Puedo cancelar cuando quiera?",
+    "faq1a": "Sí, no hay contratos. Cancelas en cualquier momento desde tu cuenta.",
+    "faq2q": "¿Cobran comisión por mis ventas?",
+    "faq2a": "No. A diferencia de Alibaba y otros, MARKARU no cobra comisión por tus transacciones. Solo pagas tu membresía anual.",
+    "faq3q": "¿Puedo probar antes de pagar?",
+    "faq3a": "Sí. Productor tiene 30 días gratis. Exportador, Forwarder y Certificadora tienen 3 días de prueba.",
+    "faq4q": "¿Qué pasa cuando termina mi prueba?",
+    "faq4a": "Te avisamos antes de que venza. Si decides continuar, activas tu plan. Si no, tu cuenta queda en modo gratuito limitado.",
+    "faq5q": "¿Puedo cambiar de plan?",
+    "faq5a": "Sí, puedes cambiar de plan en cualquier momento desde tu panel de cuenta.",
+    "ctaTitle": "¿Listo para llevar tu negocio al mundo?",
+    "ctaSubtitle": "Únete a los primeros productores y exportadores de LATAM en MARKARU. Empieza gratis hoy.",
+    "ctaButton": "Crear cuenta gratis"
+  },
+  "reclamos": {
+    "title": "Libro de Reclamaciones Virtual",
+    "legalRef": "De acuerdo con el Código de Protección y Defensa del Consumidor (Ley N° 29571)",
+    "intro": "Tienes derecho a presentar tu reclamo o queja. Te responderemos en un plazo máximo de 15 días hábiles.",
+    "reclamoTitle": "Reclamo",
+    "reclamoDesc": "Disconformidad relacionada con el servicio recibido (afecta directamente al consumidor).",
+    "quejaTitle": "Queja",
+    "quejaDesc": "Malestar o descontento respecto a la atención recibida (no implica una afectación directa).",
+    "reclamoWord": "reclamo",
+    "quejaWord": "queja",
+    "fullName": "Nombre completo",
+    "dni": "DNI o documento de identidad",
+    "email": "Email",
+    "phone": "Teléfono (opcional)",
+    "type": "Tipo",
+    "description": "Descripción del problema",
+    "descriptionPlaceholder": "Describe lo ocurrido (mínimo 20 caracteres)...",
+    "request": "¿Qué solicitas?",
+    "requestPlaceholder": "¿Qué esperas como solución?",
+    "submit": "Enviar reclamación",
+    "sending": "Enviando…",
+    "successTitle": "¡Reclamación recibida!",
+    "successBody": "Recibimos tu {{tipo}} con el código {{code}}. Te responderemos al correo {{email}} en un plazo máximo de 15 días hábiles.",
+    "backHome": "Volver al inicio",
+    "footerLink": "Libro de Reclamaciones",
+    "error": "No se pudo enviar tu reclamación. Intenta de nuevo."
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "back": "Volver",
+    "search": "Buscar",
+    "filters": "Filtros",
+    "all": "Todos",
+    "yes": "Sí",
+    "no": "No",
+    "submit": "Enviar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Ver",
+    "close": "Cerrar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "comingSoon": "Próximo",
+    "verified": "Verificado",
+    "noResults": "Sin resultados",
+    "error": "Error",
+    "retry": "Reintentar",
+    "required": "Requerido",
+    "optional": "Opcional",
+    "or": "O",
+    "and": "y",
+    "of": "de",
+    "from": "De",
+    "to": "a",
+    "active": "Activo",
+    "pending": "Pendiente",
+    "completed": "Completado",
+    "cancelled": "Cancelado",
+    "rejected": "Rechazado",
+    "inProgress": "En progreso",
+    "confirmed": "Confirmado",
+    "new": "Nuevo",
+    "viewAll": "Ver todos",
+    "seeMore": "Ver más",
+    "contact": "Contactar",
+    "send": "Enviar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "confirm": "Confirmar",
+    "soonBadge": "Próximamente",
+    "days": "días",
+    "day": "día",
+    "month": "mes",
+    "year": "año",
+    "perYear": "/año",
+    "always": "siempre",
+    "free": "Gratis",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "country": "País",
+    "region": "Región",
+    "description": "Descripción",
+    "price": "Precio",
+    "quantity": "Cantidad",
+    "status": "Estado",
+    "date": "Fecha",
+    "actions": "Acciones",
+    "noData": "Sin datos",
+    "noItems": "No hay elementos"
+  },
+
+  "nav": {
+    "catalog": "Catálogo",
+    "directory": "Directorio",
+    "howItWorks": "Cómo funciona",
+    "plans": "Planes",
+    "signIn": "Iniciar sesión",
+    "register": "Registrarse",
+    "myPanel": "Mi panel",
+    "signOut": "Cerrar sesión",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "about": "Sobre nosotros",
+    "blog": "Blog"
+  },
+
+  "cookieBanner": {
+    "text": "Usamos cookies para mejorar tu experiencia en MARKARU.",
+    "learnMore": "Política de cookies",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
+
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "¿Tienes preguntas? Estamos aquí para ayudarte.",
+    "form": {
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
+      "send": "Enviar mensaje",
+      "success": "¡Mensaje recibido! Te contactaremos pronto.",
+      "sendAnother": "Enviar otro mensaje"
+    },
+    "info": {
+      "emailLabel": "Correo electrónico",
+      "email": "contacto@markaru.com",
+      "response": "Respondemos en 24–48 horas hábiles.",
+      "socialsLabel": "Redes sociales",
+      "comingSoon": "Próximamente en LinkedIn, Instagram y WhatsApp."
+    }
+  },
+
+  "legal": {
+    "updatedAt": "Última actualización: enero 2025",
+    "backToHome": "Volver al inicio",
+    "terms": {
+      "title": "Términos de uso",
+      "sectionTitles": [
+        "1. Aceptación de los términos",
+        "2. Descripción del servicio",
+        "3. Registro y cuenta de usuario",
+        "4. Uso aceptable",
+        "5. Propiedad intelectual",
+        "6. Limitación de responsabilidad",
+        "7. Modificaciones",
+        "8. Ley aplicable",
+        "9. Contacto"
+      ],
+      "sectionBodies": [
+        "Al acceder o usar la plataforma MARKARU, aceptas quedar vinculado por estos Términos de uso. Si no estás de acuerdo con alguna parte, no debes usar el servicio. [PENDIENTE — reemplazar con texto final]",
+        "MARKARU es una plataforma B2B de agroexportación que conecta productores agrícolas, exportadores, freight forwarders y compradores internacionales de América Latina. [PENDIENTE — reemplazar con texto final]",
+        "Para usar ciertas funciones debes crear una cuenta. Eres responsable de mantener la confidencialidad de tus credenciales y de toda la actividad que ocurra bajo tu cuenta. [PENDIENTE — reemplazar con texto final]",
+        "Te comprometes a usar MARKARU únicamente para fines lícitos y de acuerdo con estos términos. Está prohibido usar la plataforma para actividades fraudulentas, spam o cualquier actividad ilegal. [PENDIENTE — reemplazar con texto final]",
+        "Todo el contenido de la plataforma, incluyendo textos, gráficos, logotipos y software, es propiedad de MARKARU o sus licenciantes y está protegido por las leyes de propiedad intelectual aplicables. [PENDIENTE — reemplazar con texto final]",
+        "En la medida máxima permitida por la ley, MARKARU no será responsable por daños indirectos, incidentales, especiales o consecuentes derivados del uso o la imposibilidad de usar el servicio. [PENDIENTE — reemplazar con texto final]",
+        "Nos reservamos el derecho de modificar estos términos en cualquier momento. Notificaremos cambios importantes mediante aviso en la plataforma o por correo electrónico. [PENDIENTE — reemplazar con texto final]",
+        "Estos términos se rigen por las leyes de la República del Perú. Cualquier disputa será sometida a la jurisdicción de los tribunales de Lima. [PENDIENTE — reemplazar con texto final]",
+        "Si tienes preguntas sobre estos términos, contáctanos en contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+      ]
+    },
+    "privacy": {
+      "title": "Política de privacidad",
+      "sectionTitles": [
+        "1. Información que recopilamos",
+        "2. Cómo usamos tu información",
+        "3. Con quién compartimos tu información",
+        "4. Seguridad de los datos",
+        "5. Tus derechos",
+        "6. Cookies",
+        "7. Cambios a esta política",
+        "8. Contacto"
+      ],
+      "sectionBodies": [
+        "Recopilamos información que nos proporcionas directamente (nombre, correo, empresa), información de uso de la plataforma y datos técnicos como dirección IP y tipo de dispositivo. [PENDIENTE — reemplazar con texto final]",
+        "Usamos tu información para operar y mejorar la plataforma, personalizar tu experiencia, enviarte comunicaciones relevantes y cumplir con obligaciones legales. [PENDIENTE — reemplazar con texto final]",
+        "No vendemos tu información a terceros. Podemos compartirla con proveedores de servicios que nos ayudan a operar la plataforma, siempre bajo acuerdos de confidencialidad. [PENDIENTE — reemplazar con texto final]",
+        "Implementamos medidas técnicas y organizativas para proteger tu información contra accesos no autorizados, pérdida o divulgación. [PENDIENTE — reemplazar con texto final]",
+        "Tienes derecho a acceder, corregir o eliminar tu información personal. Para ejercer estos derechos, contáctanos en contacto@markaru.com. [PENDIENTE — reemplazar con texto final]",
+        "Usamos cookies y tecnologías similares. Consulta nuestra Política de cookies para más información. [PENDIENTE — reemplazar con texto final]",
+        "Podemos actualizar esta política periódicamente. Notificaremos cambios importantes por correo o mediante aviso en la plataforma. [PENDIENTE — reemplazar con texto final]",
+        "Para consultas sobre privacidad, escríbenos a contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+      ]
+    },
+    "cookies": {
+      "title": "Política de cookies",
+      "sectionTitles": [
+        "1. ¿Qué son las cookies?",
+        "2. Cookies que usamos",
+        "3. Cookies de terceros",
+        "4. Cómo gestionar las cookies",
+        "5. Contacto"
+      ],
+      "sectionBodies": [
+        "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Permiten que el sitio recuerde tus preferencias y mejore tu experiencia. [PENDIENTE — reemplazar con texto final]",
+        "Usamos cookies esenciales (necesarias para el funcionamiento), de preferencias (guardan tu idioma y moneda) y analíticas (nos ayudan a entender cómo se usa la plataforma). [PENDIENTE — reemplazar con texto final]",
+        "Algunos de nuestros servicios de terceros (como Supabase) también pueden establecer cookies. Consulta sus políticas para más información. [PENDIENTE — reemplazar con texto final]",
+        "Puedes controlar las cookies desde la configuración de tu navegador. Rechazar ciertas cookies puede afectar el funcionamiento de algunas partes de la plataforma. [PENDIENTE — reemplazar con texto final]",
+        "Si tienes preguntas sobre nuestro uso de cookies, escríbenos a contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+      ]
+    }
+  },
+
+  "lang": {
+    "es": "Español",
+    "en": "English",
+    "pt": "Português"
+  },
+
+  "sidebar": {
+    "home": "Inicio",
+    "myProfile": "Mi perfil",
+    "myCatalog": "Mi catálogo",
+    "myProducts": "Mis productos",
+    "searchProducers": "Buscar productores",
+    "searchSuppliers": "Buscar proveedores",
+    "purchaseRequests": "Solicitudes de compra",
+    "publishRequest": "Publicar solicitud",
+    "myRequests": "Mis solicitudes",
+    "availableRequests": "Solicitudes disponibles",
+    "freightQuote": "Cotizar flete",
+    "myFreight": "Mis fletes",
+    "myOperations": "Mis operaciones",
+    "messages": "Mensajes",
+    "certifications": "Certificaciones",
+    "courses": "Cursos",
+    "myPlan": "Mi plan",
+    "availableRFQs": "RFQs disponibles",
+    "myQuotes": "Mis cotizaciones",
+    "operations": "Operaciones",
+    "dashboard": "Dashboard",
+    "verification": "Verificación",
+    "users": "Usuarios",
+    "assistedManagement": "Gestión asistida",
+    "billing": "Cobros",
+    "reports": "Informes",
+    "producers": "Productores",
+    "exploreCatalog": "Explorar catálogo",
+    "signOut": "Cerrar sesión",
+    "comingSoon": "Próximo",
+    "blog": "Blog",
+    "banners": "Banners",
+    "complaints": "Reclamaciones",
+    "cooperatives": "Cooperativas",
+    "settings": "Configuración",
+    "backToHome": "Volver al inicio"
+  },
+
+  "roles": {
+    "productor": "Productor",
+    "exportador": "Exportador",
+    "forwarder": "Freight Forwarder",
+    "admin": "Administrador",
+    "comprador": "Comprador / Importador",
+    "certificadora": "Certificadora",
+    "banco": "Banco"
+  },
+
+  "auth": {
+    "login": {
+      "welcome": "Bienvenido de vuelta",
+      "subtitle": "Ingresa a tu cuenta para continuar.",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@email.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "signIn": "Iniciar sesión",
+      "signingIn": "Ingresando...",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes cuenta?",
+      "createAccount": "Crea una aquí",
+      "incorrectCredentials": "Correo o contraseña incorrectos. Por favor, inténtalo de nuevo."
+    },
+    "forgot": {
+      "title": "Recupera tu contraseña",
+      "subtitle": "Ingresa tu correo y te enviaremos un link para restablecerla.",
+      "email": "Correo electrónico",
+      "submit": "Enviar link de recuperación",
+      "sending": "Enviando...",
+      "sentTitle": "Revisa tu correo",
+      "sent": "Te enviamos un link a tu correo. Revisa tu bandeja de entrada.",
+      "backToLogin": "Volver a iniciar sesión"
+    },
+    "reset": {
+      "title": "Nueva contraseña",
+      "subtitle": "Escribe tu nueva contraseña.",
+      "password": "Nueva contraseña",
+      "confirm": "Confirmar contraseña",
+      "submit": "Guardar contraseña",
+      "saving": "Guardando...",
+      "successTitle": "¡Contraseña actualizada!",
+      "success": "Tu contraseña se cambió correctamente. Ya puedes iniciar sesión.",
+      "goToLogin": "Ir a iniciar sesión",
+      "mismatch": "Las contraseñas no coinciden.",
+      "tooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "invalidLink": "El link no es válido o expiró. Solicita uno nuevo.",
+      "error": "No se pudo actualizar la contraseña. Intenta de nuevo."
+    },
+    "google": {
+      "continue": "Continuar con Google",
+      "orLogin": "o continúa con",
+      "orRegister": "o regístrate con",
+      "chooseRoleTitle": "¿Cómo usarás MARKARU?",
+      "chooseRoleSubtitle": "Elige tu rol para completar tu registro."
+    },
+    "register": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Únete al marketplace B2B de agroexportación más grande de LATAM.",
+      "step1": "Paso 1 de 2 — Datos básicos",
+      "step2": "Paso 2 de 2 — Tu rol",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Tu nombre completo",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@email.com",
+      "password": "Contraseña (mín. 8 caracteres)",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "country": "País de origen",
+      "countryPlaceholder": "Escribe para buscar...",
+      "roleTitle": "¿Cuál es tu rol en la cadena agroexportadora?",
+      "next": "Continuar →",
+      "back": "← Atrás",
+      "createAccount": "Crear cuenta",
+      "creatingAccount": "Creando cuenta...",
+      "alreadyHaveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Inicia sesión",
+      "termsPrefix": "Al registrarte aceptas nuestros",
+      "terms": "Términos de uso",
+      "and": "y",
+      "privacy": "Política de privacidad",
+      "error": "Ocurrió un error al crear tu cuenta.",
+      "roles": {
+        "productor": { "label": "Productor", "description": "Cultivo y vendo productos agrícolas para exportación" },
+        "exportador": { "label": "Exportador", "description": "Compro productos y los exporto a mercados internacionales" },
+        "forwarder": { "label": "Freight Forwarder", "description": "Gestiono la logística y el transporte de carga agrícola" },
+        "comprador": { "label": "Comprador / Importador", "description": "Importo productos frescos desde LATAM para mi mercado" },
+        "certificadora": { "label": "Certificadora", "description": "Emito certificaciones de calidad para productos agrícolas de exportación" },
+        "banco": { "label": "Banco / Financiera", "description": "Ofrezco financiamiento y servicios financieros para operaciones de exportación" }
+      }
+    }
+  },
+
+  "landing": {
+    "slogan": "De nuestra tierra al mundo",
+    "hero": {
+      "badge": "El hub agroexportador digital de LATAM",
+      "title1": "Exporta tus productos",
+      "title2": "al mundo desde LATAM",
+      "subtitle": "Conectamos productores agrícolas, exportadores y freight forwarders en una sola plataforma. Más negocio, menos intermediarios.",
+      "ctaPrimary": "Crear cuenta gratis",
+      "ctaHelper": "Elige tu rol: productor, exportador, forwarder o comprador",
+      "ctaProducer": "Soy Productor",
+      "ctaExporter": "Soy Exportador"
+    },
+    "stats": {
+      "digital": "Digital",
+      "commission": "Comisión por venta",
+      "countries": "Países"
+    },
+    "roles": {
+      "title": "Una plataforma para toda la cadena",
+      "subtitle": "Cada actor tiene su espacio en MARKARU",
+      "productor": {
+        "title": "Productor Agrícola",
+        "description": "Publica tu catálogo, recibe RFQs de exportadores verificados y accede a logística integrada."
+      },
+      "exportador": {
+        "title": "Exportador",
+        "description": "Encuentra proveedores verificados, gestiona operaciones y conecta con compradores internacionales."
+      },
+      "forwarder": {
+        "title": "Freight Forwarder",
+        "description": "Recibe RFQs logísticos del sector agro y gestiona tus operaciones desde un solo panel."
+      },
+      "comprador": {
+        "title": "Comprador Internacional",
+        "description": "Accede al catálogo de exportadores latinoamericanos verificados con certificaciones internacionales."
+      },
+      "certificadora": {
+        "title": "Certificadora",
+        "description": "Emite y gestiona certificaciones para productores dentro de la plataforma."
+      },
+      "banco": {
+        "title": "Banco / Financiera",
+        "description": "Ofrece financiamiento y servicios financieros integrados al flujo de operaciones agro."
+      }
+    },
+    "soy": {
+      "title": "¿Quién eres en el ecosistema?",
+      "subtitle": "MARKARU tiene una solución específica para cada actor de la cadena agroexportadora.",
+      "start": "Empezar",
+      "iAm": "Soy",
+      "cards": {
+        "productor": { "title": "Productor", "description": "Vende tus cosechas directamente a exportadores certificados. Sin intermediarios, mayor margen." },
+        "exportador": { "title": "Exportador", "description": "Encuentra proveedores confiables, gestiona RFQs y cierra operaciones desde una sola plataforma." },
+        "forwarder": { "title": "Freight Forwarder", "description": "Cotiza fletes, gestiona documentación y conecta con exportadores que necesitan logística confiable." },
+        "comprador": { "title": "Comprador", "description": "Accede a productos frescos directamente desde origen. Trazabilidad completa y certificaciones incluidas." }
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "subtitle": "De la finca al mercado internacional en 4 pasos simples.",
+      "stepLabel": "Paso",
+      "steps": {
+        "01": { "title": "Regístrate según tu rol", "description": "Crea tu perfil como productor, exportador, freight forwarder o comprador en menos de 5 minutos." },
+        "02": { "title": "Publica o explora", "description": "Publica tus productos con certificaciones o explora RFQs de exportadores buscando proveedores." },
+        "03": { "title": "Conecta y negocia", "description": "Chatea directamente, envía cotizaciones y cierra acuerdos con contratos digitales seguros." },
+        "04": { "title": "Exporta con confianza", "description": "Gestiona solicitudes logísticas, compara cotizaciones y da seguimiento al estado de tu operación desde la plataforma." }
+      }
+    },
+    "products": {
+      "title": "Productos del agro peruano con demanda mundial",
+      "subtitle": "Conectamos lo mejor de nuestra tierra con compradores en más de 15 países",
+      "badgeDemand": "Alta demanda",
+      "badgeExport": "Exportación",
+      "cta": "Ver catálogo completo",
+      "items": {
+        "avocado": "Palta Hass",
+        "coffee": "Café Premium",
+        "cacao": "Cacao Fino",
+        "maca": "Maca Andina"
+      }
+    },
+    "producerStory": {
+      "badge": "¿Por qué MARKARU?",
+      "title": "Los productores merecen llegar directo al mundo",
+      "body": "Durante años, los productores agrícolas de LATAM perdieron margen en cadenas de intermediarios. MARKARU los conecta directamente con exportadores y compradores internacionales, con trazabilidad y confianza en cada operación.",
+      "point1": "Sin intermediarios innecesarios",
+      "point2": "Operaciones verificadas y documentadas",
+      "point3": "Acceso a compradores de 15+ países",
+      "cta": "Únete como productor"
+    },
+    "export": {
+      "badge": "Logística integrada",
+      "title": "De la cosecha al contenedor, todo en MARKARU",
+      "body": "Conecta con agentes de carga verificados, cotiza fletes en tiempo real, gestiona Incoterms y haz seguimiento de cada etapa de tu operación desde un solo lugar.",
+      "point1": "Cotizador de flete integrado",
+      "point2": "Seguimiento por etapas en tiempo real",
+      "point3": "Forwarders verificados",
+      "point4": "Gestión de documentos de exportación",
+      "cta": "Ver cómo funciona"
+    },
+    "footer": {
+      "tagline": "El marketplace B2B que conecta a toda la cadena agroexportadora de América Latina.",
+      "platform": "Plataforma",
+      "company": "Empresa",
+      "legal": "Legal",
+      "madeIn": "Hecho en América Latina",
+      "allRights": "© {{year}} MARKARU. Todos los derechos reservados.",
+      "aboutUs": "Sobre nosotros",
+      "contact": "Contacto",
+      "terms": "Términos de uso",
+      "privacy": "Política de privacidad",
+      "cookiesPolicy": "Política de cookies"
+    }
+  },
+
+  "catalog": {
+    "title": "Catálogo de productos",
+    "subtitle": "Encuentra el proveedor ideal para tu operación de exportación.",
+    "searchPlaceholder": "Buscar productos...",
+    "filters": "Filtros",
+    "filtersCount": "Filtros ({{n}})",
+    "sort": "Ordenar",
+    "sortNewest": "Más recientes",
+    "sortPriceHigh": "Mayor precio",
+    "sortPriceLow": "Menor precio",
+    "sortSeason": "Por temporada",
+    "noResults": "No encontramos productos con esos filtros.",
+    "noResultsHint": "Intenta con otros términos o quita algunos filtros.",
+    "loading": "Cargando catálogo...",
+    "viewCard": "Ver ficha",
+    "inSeason": "En temporada",
+    "outSeason": "Fuera de temporada",
+    "priceFOB": "FOB",
+    "perMonth": "TM/mes",
+    "perYear": "TM/año",
+    "producerCount": "{{n}} productores",
+    "exporterCount": "{{n}} exportadores",
+    "categories": {
+      "fruta": "Fruta",
+      "verdura": "Verdura",
+      "grano": "Grano",
+      "procesado": "Procesado",
+      "insumo": "Insumo",
+      "ganaderia": "Ganadería",
+      "otro": "Otro"
+    },
+    "filterLabels": {
+      "available": "Disponible ahora",
+      "inSeason": "En temporada",
+      "verified": "Solo verificados",
+      "minPrice": "Precio mín. FOB (USD)",
+      "maxPrice": "Precio máx. FOB (USD)"
+    }
+  },
+
+  "directory": {
+    "title": "Directorio de empresas",
+    "subtitle": "Productores, exportadores, forwarders y más actores de la cadena agroexportadora",
+    "searchPlaceholder": "Buscar por nombre, producto...",
+    "contacting": "Contactando...",
+    "viewProfile": "Ver perfil",
+    "tabs": {
+      "all": "Todos",
+      "productor": "Productores",
+      "exportador": "Exportadores",
+      "comprador": "Compradores",
+      "forwarder": "Forwarders",
+      "certificadora": "Certificadoras"
+    },
+    "filters": {
+      "allCountries": "Todos los países",
+      "allRegions": "Todas las regiones"
+    },
+    "noResults": "No encontramos empresas con esos filtros.",
+    "loading": "Cargando directorio...",
+    "operations": "operaciones",
+    "loginToContact": "Inicia sesión para contactar"
+  },
+
+  "plans": {
+    "title": "Planes para cada actor del ecosistema",
+    "subtitle": "Cada rol tiene su propio modelo. Selecciona el tuyo para ver los planes disponibles.",
+    "allPricesNote": "Todos los precios en USD · Sin costos ocultos · Cancela cuando quieras",
+    "mostPopular": "Más popular",
+    "viewIn": "Ver precios en:",
+    "changeCurrency": "cambiar moneda",
+    "approxPerDay": "{{amount}} al día",
+    "trialDays": "{{n}} días gratis",
+    "comingSoon": {
+      "title": "Pagos con Culqi",
+      "description": "Los pagos se procesan de forma segura con Culqi. Activa tu plan directamente desde la página de planes."
+    },
+    "tabs": {
+      "productores": "Productores",
+      "exportadores": "Exportadores",
+      "forwarders": "Forwarders",
+      "certificadoras": "Certificadoras",
+      "compradores": "Compradores"
+    },
+    "cta": {
+      "startNow": "Empezar ahora",
+      "startPro": "Empezar PRO",
+      "startPremium": "Empezar Premium",
+      "contactPro": "Contactar para PRO",
+      "registerFree": "Registrarme gratis",
+      "registerBuyer": "Registrarme como comprador"
+    },
+    "productor": {
+      "free": {
+        "name": "Gratis",
+        "period": "",
+        "description": "30 días gratis, sin tarjeta de crédito.",
+        "features": [
+          "Perfil de productor verificado",
+          "Hasta 5 productos publicados",
+          "1 RFQ logístico por mes",
+          "Acceso a directorio de exportadores",
+          "Mensajería: 1 chat",
+          "Duración: 30 días"
+        ]
+      },
+      "paid": {
+        "name": "Productor",
+        "period": "/año",
+        "description": "Para productores que quieren exportar en serio.",
+        "features": [
+          "Todo lo del plan Gratis",
+          "Productos ilimitados",
+          "RFQs ilimitados",
+          "Mensajería ilimitada",
+          "Cursos de exportación incluidos",
+          "Cotizador logístico completo",
+          "Certificaciones grupales",
+          "Prioridad en búsqueda",
+          "Sello MARKARU Verified",
+          "Ferias nacionales y virtuales incluidas",
+          "Participación en ferias internacionales MARKARU",
+          "Gestión asistida disponible (comisión 5%, opcional)",
+          "Soporte preferente"
+        ]
+      }
+    },
+    "exportador": {
+      "basic": {
+        "name": "Exportador",
+        "period": "/año",
+        "description": "Para empresas que quieren acceder a proveedores verificados.",
+        "features": [
+          "Búsqueda de productores verificados",
+          "Hasta 2 productos publicados",
+          "Publicación de RFQs comerciales",
+          "Cotizador logístico integrado",
+          "Acceso a perfiles con certificaciones",
+          "Mensajería: hasta 5 chats",
+          "Sello MARKARU Verified",
+          "Ferias nacionales y virtuales incluidas",
+          "Participación en ferias internacionales MARKARU",
+          "Soporte por email"
+        ]
+      },
+      "pro": {
+        "name": "Exportador PRO",
+        "period": "/año",
+        "description": "Para exportadores que quieren crecer y liderar el mercado.",
+        "features": [
+          "Todo lo del plan Exportador (ferias incluidas)",
+          "Hasta 9 productos publicados",
+          "Mensajería ilimitada + buscar exportadores",
+          "Posición destacada en búsquedas",
+          "Leads prioritarios",
+          "Reportes de mercado mensuales",
+          "Conexión directa con compradores internacionales",
+          "Gestor de cuenta dedicado",
+          "Soporte prioritario 24/7"
+        ]
+      }
+    },
+    "forwarder": {
+      "basic": {
+        "name": "Forwarder",
+        "period": "/año",
+        "description": "Para empresas logísticas que quieren recibir RFQs del sector agro.",
+        "features": [
+          "Recepción de RFQs logísticos (hasta 10)",
+          "Perfil de empresa verificado (sello)",
+          "Cotización en línea",
+          "Gestión de operaciones activas",
+          "Tracking por etapas",
+          "Mensajería: hasta 10 chats",
+          "Ferias nacionales y virtuales incluidas",
+          "Soporte por email"
+        ]
+      },
+      "pro": {
+        "name": "Forwarder PRO",
+        "period": "/año",
+        "description": "Para forwarders que buscan volumen y exclusividad por rutas.",
+        "features": [
+          "Todo lo del plan Forwarder (ferias incluidas)",
+          "Recepción ilimitada de RFQs + los recibe primero",
+          "Mensajería ilimitada",
+          "Prioridad por rutas negociadas",
+          "Participación en ferias internacionales MARKARU",
+          "Panel de analytics de operaciones",
+          "Gestor de cuenta dedicado",
+          "Soporte prioritario 24/7"
+        ]
+      }
+    },
+    "certificadora": {
+      "basic": {
+        "name": "Certificadora",
+        "period": "/año",
+        "description": "Para entidades que otorgan certificaciones al sector agro.",
+        "features": [
+          "Perfil de certificadora verificado",
+          "Emisión de certificados digitales",
+          "Gestión de grupos de certificación",
+          "Notificaciones de vencimiento automáticas",
+          "Acceso a productores activos",
+          "Mensajería: hasta 10 chats",
+          "Ferias nacionales y virtuales incluidas",
+          "Soporte por email"
+        ]
+      },
+      "premium": {
+        "name": "Certificadora Premium",
+        "period": "/año",
+        "description": "Para certificadoras que quieren máxima visibilidad y volumen.",
+        "features": [
+          "Todo lo del plan Certificadora (ferias incluidas)",
+          "Mensajería ilimitada",
+          "Posición destacada en directorio",
+          "Certificaciones grupales ilimitadas",
+          "Reportes de cumplimiento por cliente",
+          "Participación en ferias internacionales MARKARU",
+          "Gestor de cuenta dedicado",
+          "Soporte prioritario"
+        ]
+      }
+    },
+    "comprador": {
+      "free": {
+        "name": "Comprador",
+        "period": "siempre",
+        "description": "Sin costo, solo registro. Acceso completo al marketplace.",
+        "features": [
+          "Explorar catálogo completo",
+          "Buscar proveedores en directorio",
+          "Publicar solicitudes de compra",
+          "Recibir ofertas",
+          "Chatear y cerrar acuerdos",
+          "Cotizar flete",
+          "Comercio internacional y nacional"
+        ]
+      }
+    }
+  },
+
+  "myPlan": {
+    "title": "Mi plan",
+    "subtitleFree": "Tu acceso a MARKARU es siempre gratuito.",
+    "subtitleRole": "Planes disponibles para {{role}}.",
+    "mostPopular": "Más popular",
+    "approxPerDay": "{{amount}} al día",
+    "trialBadge": "{{n}} días gratis",
+    "trialEnded": "Tu prueba gratuita terminó",
+    "trialEndedDesc": "Activa tu plan para seguir usando todas las funciones de MARKARU.",
+    "trialActive": "Prueba gratuita — {{remaining}}",
+    "trialLastDay": "último día",
+    "trialDaysLeft": "te quedan {{n}} día{{s}}",
+    "trialActivateUrgent": "Activa tu plan para no perder el acceso.",
+    "trialEndsOn": "Tu periodo de prueba finaliza el {{date}}.",
+    "statusBadge": {
+      "active": "Plan activo ✓",
+      "free": "Plan gratuito",
+      "expired": "Prueba expirada",
+      "trial": "En prueba gratuita"
+    },
+    "comingSoon": {
+      "title": "Pagos con Culqi",
+      "description": "Los pagos se procesan de forma segura con Culqi. Activa tu plan directamente desde la página de planes."
+    },
+    "cta": {
+      "startNow": "Empezar ahora",
+      "reactivate": "Reactivar plan",
+      "activate": "Activar plan",
+      "soonSuffix": "— Próximamente",
+      "activeFree": "Acceso gratuito permanente",
+      "currentTrial": "Plan actual de prueba",
+      "planActive": "✓ Plan activo"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "q1": "¿Puedo usar la plataforma durante el periodo de prueba?",
+      "a1": "Sí. Durante el periodo de prueba tienes acceso completo a todas las funciones de tu plan.",
+      "q2": "¿Qué pasa cuando expira la prueba sin activar el plan?",
+      "a2": "Tu acceso se limita. Tu historial queda guardado y puedes activar el plan en cualquier momento.",
+      "q3": "¿Cómo se procesa el pago?",
+      "a3": "A través de Culqi, con tarjeta de crédito o débito de forma segura."
+    },
+    "paymentHistory": {
+      "title": "Historial de pagos",
+      "processedBy": "Procesado por Culqi",
+      "noPayments": "Sin pagos registrados",
+      "noPaymentsDesc": "Cuando actives tu plan, tu historial de transacciones aparecerá aquí."
+    }
+  },
+
+  "dashboard": {
+    "shell": {
+      "openMenu": "Abrir menú"
+    },
+    "profileBanner": {
+      "completeProfile": "Completa tu perfil",
+      "profileIncomplete": "Tu perfil está incompleto. Añade más información para aparecer en el directorio.",
+      "goToProfile": "Ir a mi perfil"
+    },
+    "home": {
+      "welcome": "¡Bienvenido, {{name}}!",
+      "noActivity": "Sin actividad reciente",
+      "recentOps": "Operaciones recientes",
+      "quickActions": "Acciones rápidas"
+    },
+    "messages": {
+      "title": "Mensajes",
+      "noMessages": "No tienes mensajes aún",
+      "startConversation": "Inicia una conversación desde el catálogo o directorio",
+      "writeMessage": "Escribe un mensaje...",
+      "send": "Enviar",
+      "unread": "sin leer"
+    },
+    "operations": {
+      "title": "Mis operaciones",
+      "noOperations": "No tienes operaciones aún",
+      "status": {
+        "pending": "Pendiente",
+        "confirmed": "Confirmada",
+        "inProgress": "En progreso",
+        "completed": "Completada",
+        "cancelled": "Cancelada"
+      }
+    },
+    "logistics": {
+      "title": "Cotizador de flete",
+      "subtitle": "Solicita cotizaciones a freight forwarders verificados",
+      "submitted": {
+        "title": "¡Solicitud enviada!",
+        "description": "Tu solicitud está activa. Los agentes de carga enviarán cotizaciones pronto (puede tomar unas horas). Puedes cerrar y volver luego.",
+        "newRequest": "Nueva solicitud"
+      }
+    }
+  },
+
+  "product": {
+    "requestQuote": "Solicitar oferta",
+    "contactSeller": "Contactar vendedor",
+    "contacting": "Contactando...",
+    "inSeason": "En temporada",
+    "outSeason": "Fuera de temporada",
+    "certifications": "Certificaciones",
+    "availability": "Disponibilidad",
+    "volume": "Volumen",
+    "price": "Precio FOB",
+    "origin": "Origen",
+    "loginToContact": "Inicia sesión para contactar",
+    "registerFree": "Registro gratuito · Sin tarjeta de crédito"
+  },
+
+  "profile": {
+    "copyLink": "Copiar enlace",
+    "copied": "¡Copiado!",
+    "sendMessage": "Enviar mensaje",
+    "requestQuote": "Solicitar cotización",
+    "operations": "operaciones",
+    "rating": "calificación",
+    "verified": "Verificado",
+    "notVerified": "No verificado",
+    "products": "Productos",
+    "certifications": "Certificaciones",
+    "routes": "Rutas"
+  },
+
+  "blog": {
+    "comingSoon": "Próximamente noticias y guías de agroexportación",
+    "soonTitle": "El blog está en camino",
+    "soonSubtitle": "Pronto encontrarás artículos, guías y noticias del sector agroexportador latinoamericano.",
+    "backToHome": "Volver al inicio"
+  },
+
+  "rolePage": {
+    "backToHome": "Volver al inicio",
+    "registerAs": "Registrarme como {{role}}",
+    "whatYouCanDo": "¿Qué puedes hacer?",
+    "benefits": "¿Por qué unirte?",
+    "whoIsItFor": "Es para ti si...",
+    "ctaTitle": "¿Listo para empezar?",
+    "ctaSubtitle": "Únete a la comunidad que transforma el agroexportación latinoamericano.",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "signIn": "Inicia sesión",
+    "productor": {
+      "headline": "Lleva tu producción al mercado global",
+      "description": "Conecta directamente con exportadores verificados, publica tu catálogo y recibe solicitudes de compra internacionales desde una sola plataforma.",
+      "featureTitles": ["Catálogo digital", "RFQs directos", "Logística integrada", "Documentación digital", "Visibilidad internacional", "Capacitación incluida"],
+      "featureDescs": [
+        "Publica tus productos con fotos, certificaciones y precios para que exportadores te encuentren fácilmente.",
+        "Recibe solicitudes de cotización directamente de exportadores verificados interesados en tu producción.",
+        "Accede a freight forwarders certificados dentro de la plataforma para coordinar envíos.",
+        "Gestiona fitosanitarios, certificaciones y documentos de exportación en un solo lugar.",
+        "Tu perfil verificado llega a compradores en más de 15 países de forma directa.",
+        "Accede a guías y cursos de exportación pensados para el sector agro."
+      ],
+      "benefits": ["Sin comisiones sobre ventas", "Perfil verificado con sello MARKARU", "Soporte en español", "Empieza gratis", "Más de 380 exportadores activos"],
+      "whoFor": ["Eres productor agrícola en LATAM", "Quieres vender directamente sin intermediarios", "Buscas escalar tu producción hacia mercados internacionales", "Tienes o puedes obtener certificaciones de exportación"]
+    },
+    "exportador": {
+      "headline": "Encuentra los mejores proveedores agro de LATAM",
+      "description": "Accede al directorio de productores verificados, gestiona operaciones y conecta con compradores internacionales desde tu panel.",
+      "featureTitles": ["Directorio de productores", "Catálogo exportado", "Gestión de operaciones", "Conexión con forwarders", "Compradores verificados", "Trazabilidad completa"],
+      "featureDescs": [
+        "Busca y filtra entre miles de productores verificados por producto, región y certificación.",
+        "Publica tus productos exportados para que compradores internacionales te encuentren.",
+        "Centraliza documentación, logística y comunicación de cada operación en tu dashboard.",
+        "Coordina directamente con freight forwarders integrados en la plataforma.",
+        "Accede a importadores internacionales con demanda activa en el sector agro.",
+        "Seguimiento completo de cada operación desde el campo hasta el destino final."
+      ],
+      "benefits": ["Panel completo de operaciones", "Perfil empresarial verificado", "Leads de compradores internacionales", "Soporte dedicado", "Integraciones documentales"],
+      "whoFor": ["Eres empresa exportadora del sector agro", "Necesitas proveedores confiables en LATAM", "Quieres centralizar tus operaciones en una sola plataforma", "Buscas compradores internacionales para tus productos"]
+    },
+    "forwarder": {
+      "headline": "La plataforma logística del agro latinoamericano",
+      "description": "Recibe solicitudes de cotización logísticas del sector agroexportador y gestiona tus servicios desde un panel especializado.",
+      "featureTitles": ["RFQs logísticos", "Panel de operaciones", "Red de clientes", "Visibilidad sectorial", "Gestión documental", "Especialización agro"],
+      "featureDescs": [
+        "Recibe solicitudes de cotización de exportadores y productores que necesitan servicios de flete.",
+        "Gestiona rutas, servicios y clientes del sector agro desde un dashboard centralizado.",
+        "Conéctate con exportadores y productores que buscan servicios logísticos de confianza.",
+        "Tu perfil aparece ante toda la cadena agroexportadora de LATAM.",
+        "Coordina BL, certificados y documentación aduanera dentro de la plataforma.",
+        "Destácate como operador especializado en mercancía agrícola y perecederos."
+      ],
+      "benefits": ["Leads del sector agroexportador", "Perfil de empresa certificado", "Panel de gestión integrado", "Visibilidad ante productores y exportadores", "Soporte especializado"],
+      "whoFor": ["Eres freight forwarder o agente de carga", "Quieres especializarte en el sector agroexportador", "Buscas clientes activos en LATAM", "Gestionas servicios de flete internacional"]
+    },
+    "comprador": {
+      "headline": "Importa directamente de los mejores exportadores de LATAM",
+      "description": "Accede al catálogo verificado de exportadores latinoamericanos, solicita cotizaciones y gestiona tus importaciones desde un solo lugar.",
+      "featureTitles": ["Catálogo verificado", "Solicitud de cotizaciones", "Perfiles con certificaciones", "Comunicación directa", "Tracking de operaciones", "Acceso gratuito"],
+      "featureDescs": [
+        "Encuentra exportadores con certificaciones internacionales (GlobalGAP, BASC, HACCP) y trayectoria comprobada.",
+        "Publica tu requerimiento y recibe propuestas de múltiples exportadores verificados.",
+        "Cada exportador muestra sus certificaciones, origen, capacidad y referencias verificadas.",
+        "Negocia y comunícate directamente con exportadores, sin intermediarios.",
+        "Seguimiento en tiempo real de tus pedidos desde el origen hasta tu destino.",
+        "Regístrate gratis y comienza a explorar el catálogo de exportadores latinoamericanos."
+      ],
+      "benefits": ["Acceso gratuito al catálogo", "Exportadores verificados y certificados", "Comunicación directa, sin comisiones", "Diversidad de productos agro", "Soporte en múltiples idiomas"],
+      "whoFor": ["Eres importador o distribuidor internacional", "Buscas productos agrícolas de calidad de LATAM", "Quieres diversificar tus proveedores", "Necesitas exportadores con certificaciones internacionales"]
+    },
+    "certificadora": {
+      "headline": "Certifica y habilita al agro latinoamericano",
+      "description": "Emite certificaciones digitales, gestiona grupos de productores y conecta con toda la cadena agroexportadora desde tu panel.",
+      "featureTitles": ["Certificaciones digitales", "Gestión de grupos", "Notificaciones automáticas", "Visibilidad en plataforma", "Reportes de cumplimiento", "Mensajería integrada"],
+      "featureDescs": [
+        "Emite y gestiona certificaciones digitales reconocidas por exportadores y compradores internacionales.",
+        "Organiza y certifica grupos de productores de forma eficiente desde un solo panel.",
+        "Notificaciones automáticas de vencimiento para ti y para los productores certificados.",
+        "Tu perfil de certificadora aparece ante productores y exportadores que buscan cumplimiento.",
+        "Genera reportes de cumplimiento por cliente y por grupo de forma automatizada.",
+        "Comunícate directamente con productores y exportadores desde la plataforma."
+      ],
+      "benefits": ["Perfil verificado de certificadora", "Emisión de certificados digitales", "Gestión de grupos de certificación", "Visibilidad ante toda la cadena agro", "Soporte especializado"],
+      "whoFor": ["Eres entidad certificadora del sector agro", "Emites certificaciones GlobalGAP, BASC, HACCP u otras", "Quieres digitalizar y escalar tu proceso de certificación", "Buscas visibilidad ante productores y exportadores verificados"]
+    }
+  },
+
+  "about": {
+    "title": "Sobre MARKARU",
+    "subtitle": "De nuestra tierra al mundo",
+    "intro": "Conectamos el agro de Latinoamérica con compradores del mundo, sin intermediarios.",
+    "meaning": {
+      "title": "¿Qué significa MARKARU?",
+      "body": "MARKARU nace de la palabra quechua y aimara 'marka', que significa pueblo, comunidad y tierra. Es un homenaje a las raíces de quienes trabajan el campo en Latinoamérica, y a nuestra misión: llevar el fruto de su esfuerzo al mundo entero."
+    },
+    "mission": {
+      "title": "Nuestra misión",
+      "body": "Damos visibilidad y herramientas a los productores agrícolas de Latinoamérica para que conecten directamente con compradores del mundo, sin tantos intermediarios. Creemos que quienes alimentan al país y al mundo merecen crecer, ser vistos y vender en condiciones justas."
+    },
+    "problem": {
+      "title": "El problema que resolvemos",
+      "body": "El agro de LATAM produce alimentos de clase mundial, pero conectar con los productores es difícil: hay pocos canales, mucha informalidad y demasiados intermediarios que reducen su margen. MARKARU reúne en un solo lugar a productores, exportadores, agentes de carga, certificadoras y compradores, con perfiles verificados y seguimiento de cada operación. Hacemos visible a quien antes era difícil de encontrar."
+    },
+    "story": {
+      "title": "Nuestra historia",
+      "p1": "MARKARU nació de una experiencia real. Durante años, su fundador quiso comprar directamente a los agricultores, pero encontrarlos era casi imposible: no había forma fácil de contactarlos, ni canales que los hicieran visibles. Y sin embargo, hacían —y hacen— uno de los trabajos más importantes del mundo: alimentar a todo un país, y a buena parte del planeta.",
+      "p2": "De esa frustración nació una convicción: si esos productores fueran más visibles y tuvieran las herramientas correctas, podrían crecer sin límites. MARKARU existe para eso. Para que el esfuerzo de cada agricultor deje de quedarse en la sombra y llegue, por fin, de nuestra tierra al mundo."
+    },
+    "vision": {
+      "title": "Nuestra visión",
+      "body": "Convertirnos en la plataforma líder de agroexportación de Latinoamérica: expandirnos por toda la región, integrar financiamiento, insumos y certificación, y ser el puente digital que lleve el agro latinoamericano al mundo."
+    },
+    "cta": {
+      "title": "¿Listo para unirte?",
+      "subtitle": "Forma parte de la comunidad que está transformando el agro de Latinoamérica.",
+      "joinProducer": "Únete como productor",
+      "explore": "Explora la plataforma"
+    }
+  }
+}

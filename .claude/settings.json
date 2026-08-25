@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git commit -m ' *)",
+      "mcp__claude_ai_Vercel__list_teams",
+      "mcp__claude_ai_Vercel__list_projects",
+      "mcp__claude_ai_Vercel__list_deployments",
+      "Bash(node -e \"function norm\\(s\\){return s.normalize\\('NFD'\\).replace\\(/[̀-ͯ]/g,''\\).toLowerCase\\(\\)} console.log\\(norm\\('México'\\)\\); console.log\\(norm\\('España'\\)\\); console.log\\(norm\\('Perú'\\)\\); console.log\\(norm\\('Azerbaiyán'\\)\\);\")",
+      "PowerShell(node -e \"function norm\\(s\\){return s.normalize\\('NFD'\\).replace\\(/['-?]/g,''\\).toLowerCase\\(\\)} console.log\\(norm\\('Mexico'\\)===norm\\('Mexico'\\)\\); console.log\\(norm\\('Mexico'\\)===norm\\('Mexico'\\)\\); console.log\\('M�xico norm:', norm\\('M�xico'\\)\\); console.log\\('Mexico norm:', norm\\('Mexico'\\)\\); console.log\\('match:', norm\\('M�xico'\\)===norm\\('Mexico'\\)\\);\")",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\\\\src\\\\locales\\\\en.json\"\\).Count)",
+      "Read(//c/Users/Dell/Documents/agrodigital/src/app/rol/**)",
+      "PowerShell(cd C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital; Get-ChildItem src -Recurse -Depth 2 | Where-Object { $_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(cd C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital; Get-Content .env.local | Where-Object { $_ -match \"SUPABASE\" })",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\admin\\\\blog\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\admin\\\\banners\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\admin\\\\reclamaciones\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\admin\\\\configuracion\")",
+      "PowerShell(cd \"C:\\\\Users\\\\Dell\\\\Documents\\\\agrodigital\"; git add src/app/page.tsx src/app/\\(dashboard\\)/dashboard/admin/banners/page.tsx src/components/admin/ImageUpload.tsx; git status)",
+      "Bash(grep -qiE 'Compiled successfully|Failed to compile|error|Build error' 'C:\\\\Users\\\\Dell\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Dell-Documents-agrodigital\\\\b3531c95-6805-455d-be09-acd4f4af69b5\\\\tasks\\\\b5uwvzi6v.output')",
+      "Bash(sleep 5)",
+      "Bash(echo \"=== DONE ===\")",
+      "Bash(tail -60 'C:\\\\Users\\\\Dell\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Dell-Documents-agrodigital\\\\b3531c95-6805-455d-be09-acd4f4af69b5\\\\tasks\\\\b5uwvzi6v.output')",
+      "Bash(ls -la /mnt/user-data/uploads/ 2>/dev/null && echo \"---FOUND---\" || echo \"NOT on /mnt\"; ls \"/c/Users/Dell/Documents/agrodigital/public\" 2>/dev/null)",
+      "Read(//mnt/user-data/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Dell\\Documents\\agrodigital\\src\\app\\blog"
+    ]
+  }
+}

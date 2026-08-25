@@ -1,0 +1,1019 @@
+{
+  "checkout": {
+    "title": "Activate your plan",
+    "subtitle": "You're one step away from activating your MARKARU membership.",
+    "planLabel": "Selected plan",
+    "annual": "/ year",
+    "cardNumber": "Card number",
+    "expiry": "Expiry",
+    "cvv": "CVV",
+    "cardName": "Name on card",
+    "cardNamePlaceholder": "As it appears on the card",
+    "pay": "Pay",
+    "secure": "Secure payment processed by Culqi",
+    "accepted": "We accept",
+    "processing": "Processing payment...",
+    "activatedTitle": "Payment received!",
+    "activated": "Your plan is being activated. We'll contact you soon to confirm.",
+    "goDashboard": "Go to my dashboard",
+    "successTitle": "Payment successful!",
+    "activeOneYear": "Your {{plan}} plan is active for 1 year.",
+    "orderNumber": "Order number",
+    "errorTitle": "Payment could not be completed",
+    "retry": "Try again",
+    "noPlanTitle": "Choose a plan",
+    "noPlan": "You didn't select a plan. Go back to the plans page to choose one.",
+    "seePlans": "See plans"
+  },
+  "planesPage": {
+    "heroBadge": "Simple, transparent pricing",
+    "heroTitle": "Choose your role. Start free.",
+    "heroSubtitle": "No commission on your sales. No contracts. Cancel anytime.",
+    "trust1": "No transaction commission",
+    "trust2": "Access to international buyers",
+    "trust3": "Support in Spanish",
+    "whyTitle": "Why MARKARU?",
+    "whySubtitle": "Compare what you'd pay on other platforms versus MARKARU.",
+    "compAlibabaName": "Alibaba",
+    "compAlibabaPrice": "USD 299/year + 3% commission",
+    "compAlibabaExample": "For an exporter selling USD 100,000/year: you pay USD 3,299 in commissions alone.",
+    "compMarkaruPrice": "USD 120–360/year. No commission on your sales.",
+    "compMarkaruExample": "For the same exporter: you pay only USD 360/year.",
+    "compMarkaruSaving": "You save over USD 3,000",
+    "compMarkaruBadge": "Recommended",
+    "compOtherName": "Other marketplaces",
+    "compOtherPrice": "USD 99/month (USD 1,188/year) + commissions",
+    "compOtherExample": "With MARKARU you pay up to 10× less.",
+    "faqTitle": "Frequently asked questions",
+    "faq1q": "Can I cancel anytime?",
+    "faq1a": "Yes, there are no contracts. Cancel anytime from your account.",
+    "faq2q": "Do you charge commission on my sales?",
+    "faq2a": "No. Unlike Alibaba and others, MARKARU does not charge commission on your transactions. You only pay your annual membership.",
+    "faq3q": "Can I try before paying?",
+    "faq3a": "Yes. Producer has 30 days free. Exporter, Forwarder and Certifier have a 3-day trial.",
+    "faq4q": "What happens when my trial ends?",
+    "faq4a": "We notify you before it expires. If you decide to continue, you activate your plan. If not, your account stays in limited free mode.",
+    "faq5q": "Can I change my plan?",
+    "faq5a": "Yes, you can change your plan anytime from your account panel.",
+    "ctaTitle": "Ready to take your business to the world?",
+    "ctaSubtitle": "Join the first producers and exporters of LATAM on MARKARU. Start free today.",
+    "ctaButton": "Create free account"
+  },
+  "reclamos": {
+    "title": "Virtual Complaints Book",
+    "legalRef": "In accordance with the Consumer Protection and Defense Code (Law No. 29571)",
+    "intro": "You have the right to file a complaint or grievance. We will respond within a maximum of 15 business days.",
+    "reclamoTitle": "Complaint (Reclamo)",
+    "reclamoDesc": "Disagreement related to the service received (directly affects the consumer).",
+    "quejaTitle": "Grievance (Queja)",
+    "quejaDesc": "Dissatisfaction regarding the attention received (does not imply direct harm).",
+    "reclamoWord": "complaint",
+    "quejaWord": "grievance",
+    "fullName": "Full name",
+    "dni": "ID / identity document",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "type": "Type",
+    "description": "Description of the problem",
+    "descriptionPlaceholder": "Describe what happened (minimum 20 characters)...",
+    "request": "What are you requesting?",
+    "requestPlaceholder": "What solution do you expect?",
+    "submit": "Submit complaint",
+    "sending": "Sending…",
+    "successTitle": "Complaint received!",
+    "successBody": "We received your {{tipo}} with code {{code}}. We will respond to {{email}} within a maximum of 15 business days.",
+    "backHome": "Back to home",
+    "footerLink": "Complaints Book",
+    "error": "Your complaint could not be submitted. Please try again."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "back": "Back",
+    "search": "Search",
+    "filters": "Filters",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "comingSoon": "Coming soon",
+    "verified": "Verified",
+    "noResults": "No results",
+    "error": "Error",
+    "retry": "Retry",
+    "required": "Required",
+    "optional": "Optional",
+    "or": "Or",
+    "and": "and",
+    "of": "of",
+    "from": "From",
+    "to": "to",
+    "active": "Active",
+    "pending": "Pending",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "rejected": "Rejected",
+    "inProgress": "In progress",
+    "confirmed": "Confirmed",
+    "new": "New",
+    "viewAll": "View all",
+    "seeMore": "See more",
+    "contact": "Contact",
+    "send": "Send",
+    "create": "Create",
+    "update": "Update",
+    "confirm": "Confirm",
+    "soonBadge": "Coming soon",
+    "days": "days",
+    "day": "day",
+    "month": "month",
+    "year": "year",
+    "perYear": "/year",
+    "always": "always",
+    "free": "Free",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "region": "Region",
+    "description": "Description",
+    "price": "Price",
+    "quantity": "Quantity",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "noData": "No data",
+    "noItems": "No items"
+  },
+
+  "nav": {
+    "catalog": "Catalog",
+    "directory": "Directory",
+    "howItWorks": "How it works",
+    "plans": "Plans",
+    "signIn": "Sign in",
+    "register": "Sign up",
+    "myPanel": "My dashboard",
+    "signOut": "Sign out",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "about": "About us",
+    "blog": "Blog"
+  },
+
+  "cookieBanner": {
+    "text": "We use cookies to improve your experience on MARKARU.",
+    "learnMore": "Cookie policy",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Have questions? We're here to help.",
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "Your name",
+      "email": "Email address",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "send": "Send message",
+      "success": "Message received! We'll get back to you soon.",
+      "sendAnother": "Send another message"
+    },
+    "info": {
+      "emailLabel": "Email",
+      "email": "contacto@markaru.com",
+      "response": "We respond within 24–48 business hours.",
+      "socialsLabel": "Social media",
+      "comingSoon": "Coming soon on LinkedIn, Instagram and WhatsApp."
+    }
+  },
+
+  "legal": {
+    "updatedAt": "Last updated: January 2025",
+    "backToHome": "Back to home",
+    "terms": {
+      "title": "Terms of use",
+      "sectionTitles": [
+        "1. Acceptance of terms",
+        "2. Service description",
+        "3. User registration and account",
+        "4. Acceptable use",
+        "5. Intellectual property",
+        "6. Limitation of liability",
+        "7. Modifications",
+        "8. Governing law",
+        "9. Contact"
+      ],
+      "sectionBodies": [
+        "By accessing or using the MARKARU platform, you agree to be bound by these Terms of Use. If you do not agree with any part, you must not use the service. [PENDING — replace with final text]",
+        "MARKARU is a B2B agro-export platform connecting agricultural producers, exporters, freight forwarders and international buyers in Latin America. [PENDING — replace with final text]",
+        "To use certain features you must create an account. You are responsible for maintaining the confidentiality of your credentials and for all activity that occurs under your account. [PENDING — replace with final text]",
+        "You agree to use MARKARU only for lawful purposes and in accordance with these terms. Using the platform for fraudulent activities, spam or any illegal activity is prohibited. [PENDING — replace with final text]",
+        "All content on the platform, including texts, graphics, logos and software, is the property of MARKARU or its licensors and is protected by applicable intellectual property laws. [PENDING — replace with final text]",
+        "To the maximum extent permitted by law, MARKARU shall not be liable for indirect, incidental, special or consequential damages arising from the use or inability to use the service. [PENDING — replace with final text]",
+        "We reserve the right to modify these terms at any time. We will notify you of important changes via notice on the platform or by email. [PENDING — replace with final text]",
+        "These terms are governed by the laws of the Republic of Peru. Any dispute will be submitted to the jurisdiction of the courts of Lima. [PENDING — replace with final text]",
+        "If you have questions about these terms, contact us at contacto@markaru.com. [PENDING — replace with final text]"
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sectionTitles": [
+        "1. Information we collect",
+        "2. How we use your information",
+        "3. Who we share your information with",
+        "4. Data security",
+        "5. Your rights",
+        "6. Cookies",
+        "7. Changes to this policy",
+        "8. Contact"
+      ],
+      "sectionBodies": [
+        "We collect information you provide directly (name, email, company), platform usage data and technical data such as IP address and device type. [PENDING — replace with final text]",
+        "We use your information to operate and improve the platform, personalize your experience, send you relevant communications and comply with legal obligations. [PENDING — replace with final text]",
+        "We do not sell your information to third parties. We may share it with service providers who help us operate the platform, always under confidentiality agreements. [PENDING — replace with final text]",
+        "We implement technical and organizational measures to protect your information against unauthorized access, loss or disclosure. [PENDING — replace with final text]",
+        "You have the right to access, correct or delete your personal information. To exercise these rights, contact us at contacto@markaru.com. [PENDING — replace with final text]",
+        "We use cookies and similar technologies. See our Cookie Policy for more information. [PENDING — replace with final text]",
+        "We may update this policy periodically. We will notify you of important changes by email or via notice on the platform. [PENDING — replace with final text]",
+        "For privacy inquiries, email us at contacto@markaru.com. [PENDING — replace with final text]"
+      ]
+    },
+    "cookies": {
+      "title": "Cookie policy",
+      "sectionTitles": [
+        "1. What are cookies?",
+        "2. Cookies we use",
+        "3. Third-party cookies",
+        "4. How to manage cookies",
+        "5. Contact"
+      ],
+      "sectionBodies": [
+        "Cookies are small text files stored on your device when you visit a website. They allow the site to remember your preferences and improve your experience. [PENDING — replace with final text]",
+        "We use essential cookies (necessary for operation), preference cookies (storing your language and currency) and analytics cookies (helping us understand how the platform is used). [PENDING — replace with final text]",
+        "Some of our third-party services (such as Supabase) may also set cookies. Please refer to their policies for more information. [PENDING — replace with final text]",
+        "You can control cookies through your browser settings. Rejecting certain cookies may affect the functioning of some parts of the platform. [PENDING — replace with final text]",
+        "If you have questions about our use of cookies, email us at contacto@markaru.com. [PENDING — replace with final text]"
+      ]
+    }
+  },
+
+  "lang": {
+    "es": "Español",
+    "en": "English",
+    "pt": "Português"
+  },
+
+  "sidebar": {
+    "home": "Home",
+    "myProfile": "My profile",
+    "myCatalog": "My catalog",
+    "myProducts": "My products",
+    "searchProducers": "Search producers",
+    "searchSuppliers": "Search suppliers",
+    "purchaseRequests": "Purchase requests",
+    "publishRequest": "Post request",
+    "myRequests": "My requests",
+    "availableRequests": "Available requests",
+    "freightQuote": "Freight quote",
+    "myFreight": "My freight",
+    "myOperations": "My operations",
+    "messages": "Messages",
+    "certifications": "Certifications",
+    "courses": "Courses",
+    "myPlan": "My plan",
+    "availableRFQs": "Available RFQs",
+    "myQuotes": "My quotes",
+    "operations": "Operations",
+    "dashboard": "Dashboard",
+    "verification": "Verification",
+    "users": "Users",
+    "assistedManagement": "Assisted management",
+    "billing": "Billing",
+    "reports": "Reports",
+    "producers": "Producers",
+    "exploreCatalog": "Explore catalog",
+    "signOut": "Sign out",
+    "comingSoon": "Coming soon",
+    "blog": "Blog",
+    "banners": "Banners",
+    "complaints": "Complaints",
+    "cooperatives": "Cooperatives",
+    "settings": "Settings",
+    "backToHome": "Back to home"
+  },
+
+  "roles": {
+    "productor": "Producer",
+    "exportador": "Exporter",
+    "forwarder": "Freight Forwarder",
+    "admin": "Administrator",
+    "comprador": "Buyer / Importer",
+    "certificadora": "Certifier",
+    "banco": "Bank"
+  },
+
+  "auth": {
+    "login": {
+      "welcome": "Welcome back",
+      "subtitle": "Sign in to your account to continue.",
+      "email": "Email address",
+      "emailPlaceholder": "you@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "show": "Show",
+      "hide": "Hide",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one here",
+      "incorrectCredentials": "Incorrect email or password. Please try again."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a link to reset it.",
+      "email": "Email",
+      "submit": "Send recovery link",
+      "sending": "Sending...",
+      "sentTitle": "Check your email",
+      "sent": "We sent a link to your email. Check your inbox.",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "New password",
+      "subtitle": "Enter your new password.",
+      "password": "New password",
+      "confirm": "Confirm password",
+      "submit": "Save password",
+      "saving": "Saving...",
+      "successTitle": "Password updated!",
+      "success": "Your password was changed successfully. You can now sign in.",
+      "goToLogin": "Go to sign in",
+      "mismatch": "Passwords do not match.",
+      "tooShort": "Password must be at least 8 characters.",
+      "invalidLink": "The link is invalid or expired. Request a new one.",
+      "error": "Could not update the password. Please try again."
+    },
+    "google": {
+      "continue": "Continue with Google",
+      "orLogin": "or continue with",
+      "orRegister": "or sign up with",
+      "chooseRoleTitle": "How will you use MARKARU?",
+      "chooseRoleSubtitle": "Choose your role to complete your registration."
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Join the #1 B2B agro-export marketplace in LATAM.",
+      "step1": "Step 1 of 2 — Basic info",
+      "step2": "Step 2 of 2 — Your role",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Your full name",
+      "email": "Email address",
+      "emailPlaceholder": "you@email.com",
+      "password": "Password (min. 8 characters)",
+      "passwordPlaceholder": "Minimum 8 characters",
+      "country": "Country of origin",
+      "countryPlaceholder": "Type to search...",
+      "roleTitle": "What is your role in the agro-export chain?",
+      "next": "Continue →",
+      "back": "← Back",
+      "createAccount": "Create account",
+      "creatingAccount": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "termsPrefix": "By registering you accept our",
+      "terms": "Terms of use",
+      "and": "and",
+      "privacy": "Privacy policy",
+      "error": "An error occurred while creating your account.",
+      "roles": {
+        "productor": { "label": "Producer", "description": "I grow and sell agricultural products for export" },
+        "exportador": { "label": "Exporter", "description": "I buy products and export them to international markets" },
+        "forwarder": { "label": "Freight Forwarder", "description": "I manage logistics and transport for agricultural cargo" },
+        "comprador": { "label": "Buyer / Importer", "description": "I import fresh produce from LATAM for my market" },
+        "certificadora": { "label": "Certifier", "description": "I issue quality certifications for export agricultural products" },
+        "banco": { "label": "Bank / Finance", "description": "I provide financing and financial services for export operations" }
+      }
+    }
+  },
+
+  "landing": {
+    "slogan": "From our land to the world",
+    "hero": {
+      "badge": "The digital agro-export hub of LATAM",
+      "title1": "Export your products",
+      "title2": "to the world from LATAM",
+      "subtitle": "We connect agricultural producers, exporters and freight forwarders on a single platform. More business, fewer intermediaries.",
+      "ctaPrimary": "Create free account",
+      "ctaHelper": "Choose your role: producer, exporter, forwarder or buyer",
+      "ctaProducer": "I'm a Producer",
+      "ctaExporter": "I'm an Exporter"
+    },
+    "stats": {
+      "digital": "Digital",
+      "commission": "Sales commission",
+      "countries": "Countries"
+    },
+    "roles": {
+      "title": "One platform for the entire chain",
+      "subtitle": "Every actor has their space in MARKARU",
+      "productor": {
+        "title": "Agricultural Producer",
+        "description": "Publish your catalog, receive RFQs from verified exporters and access integrated logistics."
+      },
+      "exportador": {
+        "title": "Exporter",
+        "description": "Find verified suppliers, manage operations and connect with international buyers."
+      },
+      "forwarder": {
+        "title": "Freight Forwarder",
+        "description": "Receive agro-sector logistics RFQs and manage your operations from a single panel."
+      },
+      "comprador": {
+        "title": "International Buyer",
+        "description": "Access the catalog of verified Latin American exporters with international certifications."
+      },
+      "certificadora": {
+        "title": "Certifier",
+        "description": "Issue and manage certifications for producers within the platform."
+      },
+      "banco": {
+        "title": "Bank / Finance",
+        "description": "Offer financing and financial services integrated into the agro operations flow."
+      }
+    },
+    "soy": {
+      "title": "Who are you in the ecosystem?",
+      "subtitle": "MARKARU has a specific solution for every actor in the agro-export chain.",
+      "start": "Get started",
+      "iAm": "I'm a",
+      "cards": {
+        "productor": { "title": "Producer", "description": "Sell your harvest directly to certified exporters. No middlemen, higher margins." },
+        "exportador": { "title": "Exporter", "description": "Find reliable suppliers, manage RFQs and close operations from a single platform." },
+        "forwarder": { "title": "Freight Forwarder", "description": "Quote freight, manage documentation and connect with exporters who need reliable logistics." },
+        "comprador": { "title": "Buyer", "description": "Access fresh products directly from origin. Full traceability and certifications included." }
+      }
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "From farm to international market in 4 simple steps.",
+      "stepLabel": "Step",
+      "steps": {
+        "01": { "title": "Register by your role", "description": "Create your profile as a producer, exporter, freight forwarder or buyer in less than 5 minutes." },
+        "02": { "title": "Publish or explore", "description": "Publish your products with certifications or explore RFQs from exporters looking for suppliers." },
+        "03": { "title": "Connect and negotiate", "description": "Chat directly, send quotes and close deals with secure digital contracts." },
+        "04": { "title": "Export with confidence", "description": "Manage logistics requests, compare quotes and track your operation's status from the platform." }
+      }
+    },
+    "products": {
+      "title": "Peruvian agro products with worldwide demand",
+      "subtitle": "We connect the best of our land with buyers in more than 15 countries",
+      "badgeDemand": "High demand",
+      "badgeExport": "Export",
+      "cta": "View full catalog",
+      "items": {
+        "avocado": "Hass Avocado",
+        "coffee": "Premium Coffee",
+        "cacao": "Fine Cacao",
+        "maca": "Andean Maca"
+      }
+    },
+    "producerStory": {
+      "badge": "Why MARKARU?",
+      "title": "Producers deserve to reach the world directly",
+      "body": "For years, agricultural producers in LATAM lost margin to chains of intermediaries. MARKARU connects them directly with exporters and international buyers, with traceability and trust in every operation.",
+      "point1": "No unnecessary intermediaries",
+      "point2": "Verified and documented operations",
+      "point3": "Access to buyers in 15+ countries",
+      "cta": "Join as a producer"
+    },
+    "export": {
+      "badge": "Integrated logistics",
+      "title": "From harvest to container, all in MARKARU",
+      "body": "Connect with verified freight agents, quote freight in real time, manage Incoterms and track every stage of your operation from one place.",
+      "point1": "Integrated freight quoter",
+      "point2": "Real-time stage tracking",
+      "point3": "Verified forwarders",
+      "point4": "Export document management",
+      "cta": "See how it works"
+    },
+    "footer": {
+      "tagline": "The B2B marketplace connecting the entire Latin American agro-export chain.",
+      "platform": "Platform",
+      "company": "Company",
+      "legal": "Legal",
+      "madeIn": "Made in Latin America",
+      "allRights": "© {{year}} MARKARU. All rights reserved.",
+      "aboutUs": "About us",
+      "contact": "Contact",
+      "terms": "Terms of use",
+      "privacy": "Privacy policy",
+      "cookiesPolicy": "Cookie policy"
+    }
+  },
+
+  "catalog": {
+    "title": "Product catalog",
+    "subtitle": "Find the ideal supplier for your export operation.",
+    "searchPlaceholder": "Search products...",
+    "filters": "Filters",
+    "filtersCount": "Filters ({{n}})",
+    "sort": "Sort",
+    "sortNewest": "Newest first",
+    "sortPriceHigh": "Highest price",
+    "sortPriceLow": "Lowest price",
+    "sortSeason": "By season",
+    "noResults": "No products found with those filters.",
+    "noResultsHint": "Try different terms or remove some filters.",
+    "loading": "Loading catalog...",
+    "viewCard": "View product",
+    "inSeason": "In season",
+    "outSeason": "Out of season",
+    "priceFOB": "FOB",
+    "perMonth": "MT/month",
+    "perYear": "MT/year",
+    "producerCount": "{{n}} producers",
+    "exporterCount": "{{n}} exporters",
+    "categories": {
+      "fruta": "Fruit",
+      "verdura": "Vegetable",
+      "grano": "Grain",
+      "procesado": "Processed",
+      "insumo": "Input",
+      "ganaderia": "Livestock",
+      "otro": "Other"
+    },
+    "filterLabels": {
+      "available": "Available now",
+      "inSeason": "In season",
+      "verified": "Verified only",
+      "minPrice": "Min. FOB price (USD)",
+      "maxPrice": "Max. FOB price (USD)"
+    }
+  },
+
+  "directory": {
+    "title": "Company directory",
+    "subtitle": "Producers, exporters, forwarders and more actors in the agro-export chain",
+    "searchPlaceholder": "Search by name, product...",
+    "contacting": "Contacting...",
+    "viewProfile": "View profile",
+    "tabs": {
+      "all": "All",
+      "productor": "Producers",
+      "exportador": "Exporters",
+      "comprador": "Buyers",
+      "forwarder": "Forwarders",
+      "certificadora": "Certifiers"
+    },
+    "filters": {
+      "allCountries": "All countries",
+      "allRegions": "All regions"
+    },
+    "noResults": "No companies found with those filters.",
+    "loading": "Loading directory...",
+    "operations": "operations",
+    "loginToContact": "Sign in to contact"
+  },
+
+  "plans": {
+    "title": "Plans for every actor in the ecosystem",
+    "subtitle": "Each role has its own model. Select yours to see available plans.",
+    "allPricesNote": "All prices in USD · No hidden costs · Cancel anytime",
+    "mostPopular": "Most popular",
+    "viewIn": "View prices in:",
+    "changeCurrency": "change currency",
+    "approxPerDay": "{{amount}} per day",
+    "trialDays": "{{n}} days free",
+    "comingSoon": {
+      "title": "Payments with Culqi",
+      "description": "Payments are processed securely with Culqi. Activate your plan directly from the plans page."
+    },
+    "tabs": {
+      "productores": "Producers",
+      "exportadores": "Exporters",
+      "forwarders": "Forwarders",
+      "certificadoras": "Certifiers",
+      "compradores": "Buyers"
+    },
+    "cta": {
+      "startNow": "Start now",
+      "startPro": "Start PRO",
+      "startPremium": "Start Premium",
+      "contactPro": "Contact for PRO",
+      "registerFree": "Sign up free",
+      "registerBuyer": "Sign up as buyer"
+    },
+    "productor": {
+      "free": {
+        "name": "Free",
+        "period": "",
+        "description": "30 days free, no credit card required.",
+        "features": [
+          "Verified producer profile",
+          "Up to 5 published products",
+          "1 logistics RFQ per month",
+          "Access to exporter directory",
+          "Messaging: 1 chat",
+          "Duration: 30 days"
+        ]
+      },
+      "paid": {
+        "name": "Producer",
+        "period": "/year",
+        "description": "For producers who are serious about exporting.",
+        "features": [
+          "Everything in Free plan",
+          "Unlimited products",
+          "Unlimited RFQs",
+          "Unlimited messaging",
+          "Export courses included",
+          "Full logistics quoter",
+          "Group certifications",
+          "Search priority",
+          "MARKARU Verified seal",
+          "National and virtual fairs included",
+          "MARKARU international fairs participation",
+          "Assisted management available (5% commission, optional)",
+          "Priority support"
+        ]
+      }
+    },
+    "exportador": {
+      "basic": {
+        "name": "Exporter",
+        "period": "/year",
+        "description": "For companies that want access to verified suppliers.",
+        "features": [
+          "Search verified producers",
+          "Up to 2 published products",
+          "Post commercial RFQs",
+          "Integrated logistics quoter",
+          "Access to profiles with certifications",
+          "Messaging: up to 5 chats",
+          "MARKARU Verified seal",
+          "National and virtual fairs included",
+          "MARKARU international fairs participation",
+          "Email support"
+        ]
+      },
+      "pro": {
+        "name": "Exporter PRO",
+        "period": "/year",
+        "description": "For exporters who want to grow and lead the market.",
+        "features": [
+          "Everything in Exporter plan (fairs included)",
+          "Up to 9 published products",
+          "Unlimited messaging + search exporters",
+          "Featured position in searches",
+          "Priority leads",
+          "Monthly market reports",
+          "Direct connection with international buyers",
+          "Dedicated account manager",
+          "24/7 priority support"
+        ]
+      }
+    },
+    "forwarder": {
+      "basic": {
+        "name": "Forwarder",
+        "period": "/year",
+        "description": "For logistics companies that want to receive RFQs from the agro sector.",
+        "features": [
+          "Receive logistics RFQs (up to 10)",
+          "Verified company profile (seal)",
+          "Online quoting",
+          "Active operations management",
+          "Stage-by-stage tracking",
+          "Messaging: up to 10 chats",
+          "National and virtual fairs included",
+          "Email support"
+        ]
+      },
+      "pro": {
+        "name": "Forwarder PRO",
+        "period": "/year",
+        "description": "For forwarders seeking volume and exclusivity by route.",
+        "features": [
+          "Everything in Forwarder plan (fairs included)",
+          "Unlimited RFQ reception + first to receive",
+          "Unlimited messaging",
+          "Priority by negotiated routes",
+          "MARKARU international fairs participation",
+          "Operations analytics panel",
+          "Dedicated account manager",
+          "24/7 priority support"
+        ]
+      }
+    },
+    "certificadora": {
+      "basic": {
+        "name": "Certifier",
+        "period": "/year",
+        "description": "For entities that issue certifications to the agro sector.",
+        "features": [
+          "Verified certifier profile",
+          "Digital certificate issuance",
+          "Certification group management",
+          "Automatic expiration notifications",
+          "Access to active producers",
+          "Messaging: up to 10 chats",
+          "National and virtual fairs included",
+          "Email support"
+        ]
+      },
+      "premium": {
+        "name": "Certifier Premium",
+        "period": "/year",
+        "description": "For certifiers who want maximum visibility and volume.",
+        "features": [
+          "Everything in Certifier plan (fairs included)",
+          "Unlimited messaging",
+          "Featured position in directory",
+          "Unlimited group certifications",
+          "Compliance reports per client",
+          "MARKARU international fairs participation",
+          "Dedicated account manager",
+          "Priority support"
+        ]
+      }
+    },
+    "comprador": {
+      "free": {
+        "name": "Buyer",
+        "period": "always",
+        "description": "No cost, registration only. Full marketplace access.",
+        "features": [
+          "Browse full catalog",
+          "Search suppliers in directory",
+          "Post purchase requests",
+          "Receive offers",
+          "Chat and close deals",
+          "Get freight quotes",
+          "International and domestic trade"
+        ]
+      }
+    }
+  },
+
+  "myPlan": {
+    "title": "My plan",
+    "subtitleFree": "Your access to MARKARU is always free.",
+    "subtitleRole": "Available plans for {{role}}.",
+    "mostPopular": "Most popular",
+    "approxPerDay": "{{amount}} per day",
+    "trialBadge": "{{n}} days free",
+    "trialEnded": "Your free trial has ended",
+    "trialEndedDesc": "Activate your plan to keep using all MARKARU features.",
+    "trialActive": "Free trial — {{remaining}}",
+    "trialLastDay": "last day",
+    "trialDaysLeft": "{{n}} day{{s}} left",
+    "trialActivateUrgent": "Activate your plan to keep your access.",
+    "trialEndsOn": "Your trial period ends on {{date}}.",
+    "statusBadge": {
+      "active": "Plan active ✓",
+      "free": "Free plan",
+      "expired": "Trial expired",
+      "trial": "Free trial active"
+    },
+    "comingSoon": {
+      "title": "Payments with Culqi",
+      "description": "Payments are processed securely with Culqi. Activate your plan directly from the plans page."
+    },
+    "cta": {
+      "startNow": "Start now",
+      "reactivate": "Reactivate plan",
+      "activate": "Activate plan",
+      "soonSuffix": "— Coming soon",
+      "activeFree": "Permanent free access",
+      "currentTrial": "Current trial plan",
+      "planActive": "✓ Plan active"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "Can I use the platform during the trial period?",
+      "a1": "Yes. During the trial period you have full access to all features of your plan.",
+      "q2": "What happens when the trial expires without activating a plan?",
+      "a2": "Your access becomes limited. Your history is saved and you can activate your plan at any time.",
+      "q3": "How is payment processed?",
+      "a3": "Through Culqi, with credit or debit card, securely."
+    },
+    "paymentHistory": {
+      "title": "Payment history",
+      "processedBy": "Processed by Culqi",
+      "noPayments": "No payments recorded",
+      "noPaymentsDesc": "When you activate your plan, your transaction history will appear here."
+    }
+  },
+
+  "dashboard": {
+    "shell": {
+      "openMenu": "Open menu"
+    },
+    "profileBanner": {
+      "completeProfile": "Complete your profile",
+      "profileIncomplete": "Your profile is incomplete. Add more information to appear in the directory.",
+      "goToProfile": "Go to my profile"
+    },
+    "home": {
+      "welcome": "Welcome, {{name}}!",
+      "noActivity": "No recent activity",
+      "recentOps": "Recent operations",
+      "quickActions": "Quick actions"
+    },
+    "messages": {
+      "title": "Messages",
+      "noMessages": "No messages yet",
+      "startConversation": "Start a conversation from the catalog or directory",
+      "writeMessage": "Write a message...",
+      "send": "Send",
+      "unread": "unread"
+    },
+    "operations": {
+      "title": "My operations",
+      "noOperations": "No operations yet",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "inProgress": "In progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "logistics": {
+      "title": "Freight quoter",
+      "subtitle": "Request quotes from verified freight forwarders",
+      "submitted": {
+        "title": "Request submitted!",
+        "description": "Your request is active. Freight agents will send quotes soon (may take a few hours). You can close and come back later.",
+        "newRequest": "New request"
+      }
+    }
+  },
+
+  "product": {
+    "requestQuote": "Request offer",
+    "contactSeller": "Contact seller",
+    "contacting": "Contacting...",
+    "inSeason": "In season",
+    "outSeason": "Out of season",
+    "certifications": "Certifications",
+    "availability": "Availability",
+    "volume": "Volume",
+    "price": "FOB Price",
+    "origin": "Origin",
+    "loginToContact": "Sign in to contact",
+    "registerFree": "Free registration · No credit card required"
+  },
+
+  "profile": {
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "sendMessage": "Send message",
+    "requestQuote": "Request quote",
+    "operations": "operations",
+    "rating": "rating",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "products": "Products",
+    "certifications": "Certifications",
+    "routes": "Routes"
+  },
+
+  "blog": {
+    "comingSoon": "Coming soon: news and agro-export guides",
+    "soonTitle": "The blog is on its way",
+    "soonSubtitle": "Soon you'll find articles, guides and news from the Latin American agro-export sector.",
+    "backToHome": "Back to home"
+  },
+
+  "rolePage": {
+    "backToHome": "Back to home",
+    "registerAs": "Sign up as {{role}}",
+    "whatYouCanDo": "What can you do?",
+    "benefits": "Why join?",
+    "whoIsItFor": "It's for you if...",
+    "ctaTitle": "Ready to get started?",
+    "ctaSubtitle": "Join the community transforming agro-exports in Latin America.",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "productor": {
+      "headline": "Take your production to the global market",
+      "description": "Connect directly with verified exporters, publish your catalog and receive international purchase requests from one platform.",
+      "featureTitles": ["Digital catalog", "Direct RFQs", "Integrated logistics", "Digital documentation", "International visibility", "Training included"],
+      "featureDescs": [
+        "Publish your products with photos, certifications and prices so exporters can find you easily.",
+        "Receive quote requests directly from verified exporters interested in your production.",
+        "Access certified freight forwarders within the platform to coordinate shipments.",
+        "Manage phytosanitary permits, certifications and export documents in one place.",
+        "Your verified profile reaches buyers in more than 15 countries.",
+        "Access guides and export courses designed for the agro sector."
+      ],
+      "benefits": ["No sales commissions", "Verified profile with MARKARU seal", "Spanish-language support", "Start for free", "More than 380 active exporters"],
+      "whoFor": ["You are an agricultural producer in LATAM", "You want to sell directly without intermediaries", "You are looking to scale your production to international markets", "You have or can obtain export certifications"]
+    },
+    "exportador": {
+      "headline": "Find the best agro suppliers in LATAM",
+      "description": "Access the directory of verified producers, manage operations and connect with international buyers from your dashboard.",
+      "featureTitles": ["Producer directory", "Exported catalog", "Operations management", "Forwarder connection", "Verified buyers", "Full traceability"],
+      "featureDescs": [
+        "Search and filter among thousands of verified producers by product, region and certification.",
+        "Publish your exported products so international buyers can find you.",
+        "Centralize documentation, logistics and communication for each operation in your dashboard.",
+        "Coordinate directly with freight forwarders integrated into the platform.",
+        "Access international importers with active demand in the agro sector.",
+        "Complete tracking of each operation from the field to the final destination."
+      ],
+      "benefits": ["Complete operations dashboard", "Verified business profile", "International buyer leads", "Dedicated support", "Document integrations"],
+      "whoFor": ["You are an agro export company", "You need reliable suppliers in LATAM", "You want to centralize your operations in one platform", "You are looking for international buyers for your products"]
+    },
+    "forwarder": {
+      "headline": "The logistics platform for Latin American agro",
+      "description": "Receive logistics quote requests from the agro-export sector and manage your services from a specialized dashboard.",
+      "featureTitles": ["Logistics RFQs", "Operations dashboard", "Client network", "Sector visibility", "Document management", "Agro specialization"],
+      "featureDescs": [
+        "Receive quote requests from exporters and producers who need freight services.",
+        "Manage routes, services and agro sector clients from a centralized dashboard.",
+        "Connect with exporters and producers looking for reliable logistics services.",
+        "Your profile appears to the entire agro-export chain in LATAM.",
+        "Coordinate BL, certificates and customs documentation within the platform.",
+        "Stand out as a specialized operator in agricultural and perishable goods."
+      ],
+      "benefits": ["Agro-export sector leads", "Certified company profile", "Integrated management dashboard", "Visibility to producers and exporters", "Specialized support"],
+      "whoFor": ["You are a freight forwarder or cargo agent", "You want to specialize in the agro-export sector", "You are looking for active clients in LATAM", "You manage international freight services"]
+    },
+    "comprador": {
+      "headline": "Import directly from the best LATAM exporters",
+      "description": "Access the verified catalog of Latin American exporters, request quotes and manage your imports from one place.",
+      "featureTitles": ["Verified catalog", "Quote requests", "Profiles with certifications", "Direct communication", "Operations tracking", "Free access"],
+      "featureDescs": [
+        "Find exporters with international certifications (GlobalGAP, BASC, HACCP) and proven track records.",
+        "Post your requirements and receive proposals from multiple verified exporters.",
+        "Each exporter shows their certifications, origin, export capacity and verified references.",
+        "Negotiate and communicate directly with exporters, without intermediaries.",
+        "Real-time tracking of your orders from origin to your destination.",
+        "Register for free and start exploring the catalog of Latin American exporters."
+      ],
+      "benefits": ["Free access to the catalog", "Verified and certified exporters", "Direct communication, no commissions", "Diverse agro products", "Multi-language support"],
+      "whoFor": ["You are an international importer or distributor", "You are looking for quality agricultural products from LATAM", "You want to diversify your suppliers", "You need exporters with international certifications"]
+    },
+    "certificadora": {
+      "headline": "Certify and enable Latin American agriculture",
+      "description": "Issue digital certifications, manage producer groups and connect with the entire agro-export chain from your dashboard.",
+      "featureTitles": ["Digital certifications", "Group management", "Automatic notifications", "Platform visibility", "Compliance reports", "Integrated messaging"],
+      "featureDescs": [
+        "Issue and manage digital certifications recognized by exporters and international buyers.",
+        "Organize and certify producer groups efficiently from a single dashboard.",
+        "Automatic expiration notifications for you and for certified producers.",
+        "Your certifier profile appears to producers and exporters seeking compliance.",
+        "Generate compliance reports per client and per group automatically.",
+        "Communicate directly with producers and exporters from the platform."
+      ],
+      "benefits": ["Verified certifier profile", "Digital certificate issuance", "Certification group management", "Visibility across the agro chain", "Specialized support"],
+      "whoFor": ["You are a certifying body in the agro sector", "You issue GlobalGAP, BASC, HACCP or other certifications", "You want to digitize and scale your certification process", "You are looking for visibility among verified producers and exporters"]
+    }
+  },
+
+  "about": {
+    "title": "About MARKARU",
+    "subtitle": "From our land to the world",
+    "intro": "We connect Latin America's agriculture with buyers around the world, without intermediaries.",
+    "meaning": {
+      "title": "What does MARKARU mean?",
+      "body": "MARKARU comes from the Quechua and Aymara word 'marka', meaning people, community and land. It is a tribute to the roots of those who work the fields in Latin America, and to our mission: bringing the fruit of their labor to the world."
+    },
+    "mission": {
+      "title": "Our mission",
+      "body": "We give visibility and tools to agricultural producers in Latin America so they can connect directly with buyers around the world, with fewer intermediaries. We believe that those who feed their country and the world deserve to grow, be seen and sell on fair terms."
+    },
+    "problem": {
+      "title": "The problem we solve",
+      "body": "Latin America's agriculture produces world-class food, but connecting with producers is difficult: few channels, much informality and too many intermediaries that cut into their margins. MARKARU brings together producers, exporters, freight agents, certifiers and buyers in one place, with verified profiles and tracking of every operation. We make visible those who were previously hard to find."
+    },
+    "story": {
+      "title": "Our story",
+      "p1": "MARKARU was born from a real experience. For years, its founder wanted to buy directly from farmers, but finding them was nearly impossible: there was no easy way to reach them, no channels that made them visible. And yet, they were doing — and still do — one of the most important jobs in the world: feeding an entire country, and much of the planet.",
+      "p2": "From that frustration came a conviction: if those producers were more visible and had the right tools, they could grow without limits. MARKARU exists for that. So that the effort of every farmer stops going unnoticed and finally reaches, from our land, the world."
+    },
+    "vision": {
+      "title": "Our vision",
+      "body": "To become the leading agro-export platform in Latin America: expanding across the region, integrating financing, inputs and certification, and being the digital bridge that brings Latin American agriculture to the world."
+    },
+    "cta": {
+      "title": "Ready to join?",
+      "subtitle": "Be part of the community transforming agriculture in Latin America.",
+      "joinProducer": "Join as a producer",
+      "explore": "Explore the platform"
+    }
+  }
+}

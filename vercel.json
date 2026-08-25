@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/ping",
+      "schedule": "0 6 */4 * *"
+    },
+    {
+      "path": "/api/cron/check-trials",
+      "schedule": "0 7 * * *"
+    }
+  ]
+}
