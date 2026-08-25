@@ -14,35 +14,27 @@
 
 const BREVO_ENDPOINT = "https://api.brevo.com/v3/smtp/email";
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.markaru.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.apurape.com";
 export const LOGIN_URL = `${SITE_URL}/dashboard`;
 
 /* Rol → etiqueta en español (param ROL) */
 export const ROL_ES: Record<string, string> = {
-  productor: "Productor",
-  exportador: "Exportador",
-  comprador: "Comprador",
-  forwarder: "Forwarder",
-  certificadora: "Certificadora",
+  proveedor: "Proveedor",
+  cliente: "Cliente",
 };
 
 /* Rol → texto de la acción siguiente sugerida (param ACCION_SIGUIENTE del welcome) */
 export const ACCION_SIGUIENTE: Record<string, string> = {
-  productor: "Publica tus productos y completa tu oferta para que compradores y exportadores puedan encontrarte.",
-  exportador: "Publica tu oferta exportable y empieza a conectar con compradores internacionales.",
-  comprador: "Explora proveedores y publica tus requerimientos para recibir propuestas.",
-  forwarder: "Completa tus servicios y cobertura logística para empezar a recibir oportunidades.",
-  certificadora: "Completa tus certificaciones y servicios para que productores y exportadores puedan encontrarte.",
+  proveedor: "Publica tus servicios y tu zona de cobertura para que los clientes de tu distrito puedan encontrarte.",
+  cliente: "Cuéntanos qué necesitas y recibe cotizaciones de proveedores de tu zona en minutos.",
 };
 export const ACCION_SIGUIENTE_DEFAULT =
-  "Completa tu perfil para aprovechar al máximo MARKARU y conectar con la comunidad agroexportadora.";
+  "Completa tu perfil para aprovechar Apurape al máximo.";
 
-/* Rol → plan de entrada (para construir PRECIO y el link de checkout del email de trial) */
+/* Rol → plan de entrada (para construir PRECIO y el link de checkout del email de trial).
+ * Solo el Proveedor tiene plan de pago; el Cliente nunca paga. */
 export const DEFAULT_PLAN: Record<string, string> = {
-  productor: "productor",
-  exportador: "basic",
-  forwarder: "basic",
-  certificadora: "basic",
+  proveedor: "pro",
 };
 
 export function rolLabel(rol?: string | null): string {

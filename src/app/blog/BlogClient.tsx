@@ -260,9 +260,9 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
               <p className="text-gray-500 mb-7 leading-relaxed">
                 Estamos preparando contenido sobre agroexportación, mercados internacionales y guías para exportadores de LATAM.
               </p>
-              <Link href="/catalogo"
+              <Link href="/servicios"
                 className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#085041] transition-colors shadow-sm">
-                Ver catálogo
+                Buscar servicios
               </Link>
             </div>
           ) : isFiltering ? (

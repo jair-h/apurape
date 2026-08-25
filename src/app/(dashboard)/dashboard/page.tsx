@@ -6,12 +6,9 @@ import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
 const REDIRECT: Record<string, string> = {
-  productor:    "/dashboard/productor",
-  exportador:   "/dashboard/exportador",
-  forwarder:    "/dashboard/forwarder",
-  admin:        "/dashboard/admin",
-  comprador:    "/dashboard/comprador",
-  certificadora:"/dashboard/certificadora",
+  proveedor: "/dashboard/proveedor",
+  cliente:   "/dashboard/cliente",
+  admin:     "/dashboard/admin",
 };
 
 export default function DashboardIndexPage() {
@@ -33,10 +30,12 @@ export default function DashboardIndexPage() {
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("user_id", user.id)
+        .eq("id", user.id)
         .single();
 
-      const dest = REDIRECT[profile?.role ?? ""] ?? "/login";
+      // Sin rol reconocido cae a Cliente: es el rol por defecto de
+      // profiles y el único que no requiere onboarding.
+      const dest = REDIRECT[profile?.role ?? ""] ?? "/dashboard/cliente";
       startTransition(() => router.replace(dest));
     }
 

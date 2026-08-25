@@ -154,6 +154,7 @@
   },
 
   "nav": {
+    "services": "Servicios",
     "catalog": "Catálogo",
     "directory": "Directorio",
     "howItWorks": "Cómo funciona",
@@ -309,10 +310,20 @@
     "complaints": "Reclamaciones",
     "cooperatives": "Cooperativas",
     "settings": "Configuración",
-    "backToHome": "Volver al inicio"
+    "backToHome": "Volver al inicio",
+
+    "myServices": "Mis servicios",
+    "myJobs": "Mis trabajos",
+    "myHires": "Mis contrataciones",
+    "findServices": "Buscar servicios",
+    "raffle": "Sorteo del mes",
+    "raffles": "Sorteos",
+    "myPoints": "Mis puntos"
   },
 
   "roles": {
+    "proveedor": "Proveedor",
+    "cliente": "Cliente",
     "productor": "Productor",
     "exportador": "Exportador",
     "forwarder": "Freight Forwarder",
@@ -397,6 +408,8 @@
       "privacy": "Política de privacidad",
       "error": "Ocurrió un error al crear tu cuenta.",
       "roles": {
+        "proveedor": { "label": "Proveedor", "description": "Ofrezco mis servicios y quiero conseguir más clientes" },
+        "cliente": { "label": "Cliente", "description": "Busco a alguien de confianza que me resuelva algo" },
         "productor": { "label": "Productor", "description": "Cultivo y vendo productos agrícolas para exportación" },
         "exportador": { "label": "Exportador", "description": "Compro productos y los exporto a mercados internacionales" },
         "forwarder": { "label": "Freight Forwarder", "description": "Gestiono la logística y el transporte de carga agrícola" },
@@ -587,6 +600,46 @@
   },
 
   "plans": {
+    "proveedor": {
+      "basico": {
+        "name": "Básico",
+        "period": "para siempre",
+        "description": "Publica tu perfil y empieza a recibir clientes.",
+        "features": [
+          "Perfil público con tus servicios",
+          "Chat directo con clientes",
+          "Cotizaciones limitadas al mes",
+          "Calificaciones y reputación",
+          "0% de comisión sobre tus ventas"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "period": "al año",
+        "description": "Primer mes gratis + un mes adicional al suscribirte.",
+        "features": [
+          "Cotizaciones ilimitadas",
+          "Acceso al sorteo mensual de tu categoría",
+          "Perfil destacado en resultados",
+          "Insignia de proveedor Pro",
+          "0% de comisión sobre tus ventas"
+        ]
+      }
+    },
+    "cliente": {
+      "free": {
+        "name": "Cliente",
+        "period": "siempre gratis",
+        "description": "Contratar en Apurape no cuesta nada, nunca.",
+        "features": [
+          "Publica solicitudes ilimitadas",
+          "Recibe cotizaciones y compara",
+          "Chat directo con proveedores",
+          "Gana puntos por confirmar y calificar",
+          "Sorteo mensual propio para clientes"
+        ]
+      }
+    },
     "title": "Planes para cada actor del ecosistema",
     "subtitle": "Cada rol tiene su propio modelo. Selecciona el tuyo para ver los planes disponibles.",
     "allPricesNote": "Todos los precios en USD · Sin costos ocultos · Cancela cuando quieras",

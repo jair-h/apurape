@@ -27,110 +27,56 @@ type DashPlan = {
   recommended?: boolean;
 };
 
-/* ─── Plan data por rol (usa claves de traducción) ─────────── */
-const ROLE_PLANS: Record<string, DashPlan[]> = {
-  productor: [
-    {
-      id: "productor-free",
-      nameKey: "plans.productor.free.name",
-      price: "USD 0",
-      periodKey: "plans.productor.free.period",
-      descKey: "plans.productor.free.description",
-      isFree: true,
-      featuresKey: "plans.productor.free.features",
-    },
-    {
-      id: "productor-paid",
-      nameKey: "plans.productor.paid.name",
-      price: "USD 120",
-      periodKey: "plans.productor.paid.period",
-      descKey: "plans.productor.paid.description",
-      recommended: true,
-      annualUsd: 120,
-      featuresKey: "plans.productor.paid.features",
-    },
-  ],
-  exportador: [
-    {
-      id: "exportador-basic",
-      nameKey: "plans.exportador.basic.name",
-      price: "USD 360",
-      periodKey: "plans.exportador.basic.period",
-      descKey: "plans.exportador.basic.description",
-      annualUsd: 360,
-      trialDays: 3,
-      featuresKey: "plans.exportador.basic.features",
-    },
-    {
-      id: "exportador-pro",
-      nameKey: "plans.exportador.pro.name",
-      price: "USD 960",
-      periodKey: "plans.exportador.pro.period",
-      descKey: "plans.exportador.pro.description",
-      recommended: true,
-      annualUsd: 960,
-      trialDays: 3,
-      featuresKey: "plans.exportador.pro.features",
-    },
-  ],
-  forwarder: [
-    {
-      id: "forwarder-basic",
-      nameKey: "plans.forwarder.basic.name",
-      price: "USD 600",
-      periodKey: "plans.forwarder.basic.period",
-      descKey: "plans.forwarder.basic.description",
-      annualUsd: 600,
-      trialDays: 3,
-      featuresKey: "plans.forwarder.basic.features",
-    },
-    {
-      id: "forwarder-pro",
-      nameKey: "plans.forwarder.pro.name",
-      price: "USD 1,200",
-      periodKey: "plans.forwarder.pro.period",
-      descKey: "plans.forwarder.pro.description",
-      recommended: true,
-      annualUsd: 1200,
-      trialDays: 3,
-      featuresKey: "plans.forwarder.pro.features",
-    },
-  ],
-  certificadora: [
-    {
-      id: "certif-basic",
-      nameKey: "plans.certificadora.basic.name",
-      price: "USD 720",
-      periodKey: "plans.certificadora.basic.period",
-      descKey: "plans.certificadora.basic.description",
-      annualUsd: 720,
-      trialDays: 3,
-      featuresKey: "plans.certificadora.basic.features",
-    },
-    {
-      id: "certif-premium",
-      nameKey: "plans.certificadora.premium.name",
-      price: "USD 1,200",
-      periodKey: "plans.certificadora.premium.period",
-      descKey: "plans.certificadora.premium.description",
-      recommended: true,
-      annualUsd: 1200,
-      trialDays: 3,
-      featuresKey: "plans.certificadora.premium.features",
-    },
-  ],
-  comprador: [
-    {
-      id: "comprador-free",
-      nameKey: "plans.comprador.free.name",
-      price: "Gratis",
-      periodKey: "plans.comprador.free.period",
-      descKey: "plans.comprador.free.description",
-      isFree: true,
-      featuresKey: "plans.comprador.free.features",
-    },
-  ],
+/* ─── Planes por rol ───────────────────────────────────────────
+ * En Apurape solo paga el Proveedor, y solo el plan Pro. El precio
+ * depende del tipo de cuenta (persona / negocio), no del rol.
+ * El Cliente nunca paga: su tarjeta es informativa.
+ * Los importes viven además en la tabla `config` de Supabase
+ * (price_pro_persona_cents / price_pro_negocio_cents).            */
+const PRO_PRICE: Record<string, { label: string; soles: number }> = {
+  persona: { label: "S/ 120", soles: 120 },
+  negocio: { label: "S/ 330", soles: 330 },
 };
+
+function buildPlans(role: string, accountType: string): DashPlan[] {
+  if (role === "cliente") {
+    return [
+      {
+        id: "cliente-free",
+        nameKey: "plans.cliente.free.name",
+        price: "Gratis",
+        periodKey: "plans.cliente.free.period",
+        descKey: "plans.cliente.free.description",
+        isFree: true,
+        featuresKey: "plans.cliente.free.features",
+      },
+    ];
+  }
+
+  const pro = PRO_PRICE[accountType] ?? PRO_PRICE.persona;
+  return [
+    {
+      id: "proveedor-basico",
+      nameKey: "plans.proveedor.basico.name",
+      price: "Gratis",
+      periodKey: "plans.proveedor.basico.period",
+      descKey: "plans.proveedor.basico.description",
+      isFree: true,
+      featuresKey: "plans.proveedor.basico.features",
+    },
+    {
+      id: "proveedor-pro",
+      nameKey: "plans.proveedor.pro.name",
+      price: pro.label,
+      periodKey: "plans.proveedor.pro.period",
+      descKey: "plans.proveedor.pro.description",
+      recommended: true,
+      // Sin annualUsd a propósito: el "≈ por día" del CurrencyContext
+      // convierte desde USD y aquí el precio ya está en soles.
+      featuresKey: "plans.proveedor.pro.features",
+    },
+  ];
+}
 
 /* ─── Trial banner ────────────────────────────────────────── */
 function TrialBanner({
@@ -209,13 +155,7 @@ function TrialBanner({
 
 /* ─── Checkout link per paid plan (→ /activar-plan) ────────── */
 const ACTIVATE_HREF: Record<string, string> = {
-  "productor-paid":  "/activar-plan?rol=productor&plan=productor",
-  "exportador-basic": "/activar-plan?rol=exportador&plan=basic",
-  "exportador-pro":   "/activar-plan?rol=exportador&plan=pro",
-  "forwarder-basic":  "/activar-plan?rol=forwarder&plan=basic",
-  "forwarder-pro":    "/activar-plan?rol=forwarder&plan=pro",
-  "certif-basic":     "/activar-plan?rol=certificadora&plan=basic",
-  "certif-premium":   "/activar-plan?rol=certificadora&plan=premium",
+  "proveedor-pro": "/activar-plan?rol=proveedor&plan=pro",
 };
 
 /* ─── Plan card ───────────────────────────────────────────── */
@@ -229,8 +169,8 @@ function PlanCard({
   const { t, ta } = useTranslation();
   const { formatDaily } = useCurrency();
   const isActive     = planStatus === "active";
-  const isComprador  = plan.id === "comprador-free";
-  const isProducFree = plan.id === "productor-free";
+  const isComprador  = plan.id === "cliente-free";
+  const isProducFree = plan.id === "proveedor-basico";
   const localDailyText = plan.annualUsd ? formatDaily(plan.annualUsd) : null;
   const dark = plan.recommended;
   const features = ta(plan.featuresKey);
@@ -328,7 +268,8 @@ export default function MiPlanPage() {
   const { t } = useTranslation();
   const { setCurrency } = useCurrency();
   const [loading,       setLoading]       = useState(true);
-  const [role,          setRole]          = useState<string>("productor");
+  const [role,          setRole]          = useState<string>("cliente");
+  const [accountType,   setAccountType]   = useState<string>("persona");
   const [planStatus,    setPlanStatus]    = useState<string>("trial");
   const [trialEndsAt,   setTrialEndsAt]   = useState<string | null>(null);
 
@@ -339,11 +280,12 @@ export default function MiPlanPage() {
       if (!user) { setLoading(false); return; }
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role, plan_status, trial_ends_at, country")
-        .eq("user_id", user.id)
+        .select("role, account_type, plan_status, trial_ends_at, country")
+        .eq("id", user.id)
         .single();
       if (profile) {
-        setRole(profile.role ?? "productor");
+        setRole(profile.role ?? "cliente");
+        setAccountType(profile.account_type ?? "persona");
         setTrialEndsAt(profile.trial_ends_at ?? null);
         let status = profile.plan_status ?? "trial";
         if (status === "trial" && profile.trial_ends_at) {
@@ -369,8 +311,8 @@ export default function MiPlanPage() {
     );
   }
 
-  const isComprador = role === "comprador";
-  const plans = ROLE_PLANS[role] ?? ROLE_PLANS.productor;
+  const isComprador = role === "cliente";
+  const plans = buildPlans(role, accountType);
 
   const faqItems = [
     { q: t("myPlan.faq.q1"), a: t("myPlan.faq.a1") },

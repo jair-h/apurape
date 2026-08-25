@@ -8,9 +8,10 @@ import {
 export const dynamic = "force-dynamic";
 
 interface TrialProfile {
-  user_id: string;
+  id: string;
   name: string | null;
   role: string;
+  account_type: string | null;
   trial_ends_at: string | null;
 }
 
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("user_id, name, role, trial_ends_at")
+    .select("id, name, role, account_type, trial_ends_at")
     .eq("plan_status", "trial")
     .gte("trial_ends_at", from.toISOString())
     .lt("trial_ends_at", to.toISOString());
@@ -66,15 +67,15 @@ export async function GET(request: NextRequest) {
     // Email del usuario (no vive en profiles; se obtiene de auth con service-role).
     let email = "";
     try {
-      const { data: u } = await supabase.auth.admin.getUserById(p.user_id);
+      const { data: u } = await supabase.auth.admin.getUserById(p.id);
       email = u.user?.email ?? "";
     } catch (e) {
-      console.error("[check-trials] no se pudo obtener email de", p.user_id, e);
+      console.error("[check-trials] no se pudo obtener email de", p.id, e);
     }
     if (!email) continue;
 
     const planKey = DEFAULT_PLAN[p.role];
-    const info = planKey ? getPlanInfo(p.role, planKey) : null;
+    const info = planKey ? getPlanInfo(p.role, planKey, p.account_type) : null;
     const params = {
       NOMBRE: String(p.name ?? "").trim() || "Usuario",
       ROL: rolLabel(p.role),

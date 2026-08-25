@@ -39,14 +39,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=oauth`);
   }
 
-  // Does this user already have a role assigned?
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("user_id", data.session.user.id)
-    .maybeSingle();
-
-  const destination = profile?.role ? "/dashboard" : "/register/rol";
+  // ¿Ya eligió rol? Se mira el metadata de auth, NO profiles.role: el trigger
+  // handle_new_user crea el perfil con rol 'cliente' por defecto en cuanto
+  // nace el usuario, así que profiles.role nunca viene vacío y todo el mundo
+  // se saltaría la pantalla de elección.
+  const destination = data.session.user.user_metadata?.role ? "/dashboard" : "/register/rol";
 
   const response = NextResponse.redirect(`${origin}${destination}`);
   cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));

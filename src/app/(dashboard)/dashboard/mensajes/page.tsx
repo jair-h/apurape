@@ -1,10 +1,27 @@
 "use client";
 
+/* ─────────────────────────────────────────────────────────────
+ * Chat Proveedor ↔ Cliente con cotización y cierre de servicio.
+ *
+ * Heredado del chat de MARKARU. Cambios de fondo:
+ *   · deal_proposals (producto, volumen TM, incoterm, puerto) → quotes
+ *     (monto en soles, qué incluye, qué no, días estimados).
+ *   · Fuera logistics_quotes / cotización de flete: no existe la tabla.
+ *   · Fuera el truco de guardar el rol dentro de `notes` con un prefijo
+ *     "__role:buyer__": ahora provider_id y client_id son columnas.
+ *   · El hilo muestra el ciclo completo: cotización → aceptada → servicio
+ *     completado → confirmado y calificado por el Cliente.
+ *
+ * Todas las transiciones van por RPC (accept_quote, mark_job_completed,
+ * confirm_job, rate_client). Esas funciones ya insertan el mensaje de
+ * sistema en el hilo, así que el cliente no lo duplica.
+ * ───────────────────────────────────────────────────────────── */
+
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  MessageCircle, Send, Search, Loader2, ArrowLeft, Users,
-  Handshake, X, Check, ExternalLink, Clock, Truck,
+  Send, Search, Loader2, ArrowLeft, MessageCircle,
+  Handshake, X, Check, Clock, Star, CheckCircle2, Ban,
 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
@@ -13,7 +30,7 @@ import { createClient } from "@/lib/supabase";
 
 interface ConvRow {
   id: string; participant_1: string; participant_2: string;
-  product_id: string | null; product_type: string | null;
+  subject_id: string | null; subject_type: string | null;
   last_message: string | null; last_message_at: string | null;
   unread_count_p1: number; unread_count_p2: number; created_at: string;
 }
@@ -24,73 +41,44 @@ interface ConvItem extends ConvRow {
 
 interface MsgRow {
   id: string; conversation_id: string; sender_id: string;
-  content: string; created_at: string;
+  content: string; kind: string; ref_id: string | null; created_at: string;
 }
 
-interface DealProposal {
-  id: string; conversation_id: string; proposer_id: string; recipient_id: string;
-  product: string; variety: string | null; volume_tm: number | null; unit: string;
-  price_usd: number | null; price_unit: string; incoterm: string | null;
-  delivery_date: string | null; destination_country: string | null;
-  origin_port: string | null; notes: string | null;
-  status: string; operation_id: string | null; created_at: string;
+interface Quote {
+  id: string; conversation_id: string; provider_id: string; client_id: string;
+  service_id: string | null; request_id: string | null;
+  amount: number; currency: string; scope: string; excludes: string | null;
+  estimated_days: number | null; valid_until: string | null;
+  status: string; job_id: string | null; created_at: string;
 }
 
-interface ProposalFormState {
-  product: string; variety: string; volume_tm: string; price_usd: string;
-  price_unit: string; incoterm: string; delivery_date: string;
-  destination_country: string; ciudad_destino: string; origin_port: string; notes: string;
-  my_role: "buyer" | "seller";
-  trade_type: "internacional" | "nacional";
-  vol_unit: string;
+interface Job {
+  id: string; conversation_id: string | null;
+  provider_id: string; client_id: string;
+  title: string; amount: number; currency: string; status: string;
+  completed_at: string | null; confirmed_at: string | null; created_at: string;
 }
 
-interface FreightQuote {
-  id: string; conversation_id: string; rfq_id: string | null;
-  forwarder_id: string; freight_price_usd: number; local_charges_usd: number;
-  total_price_usd: number; carrier: string | null; departure_date: string | null;
-  transit_days: number | null; validity_days: number | null; notes: string | null;
-  fee_usd: number | null; status: string; created_at: string;
-}
-
-interface FreightQuoteFormState {
-  carrier: string; freight_price_usd: string; local_charges_usd: string;
-  departure_date: string; transit_days: string; validity_days: string; notes: string;
+interface QuoteFormState {
+  amount: string; scope: string; excludes: string;
+  estimated_days: string; valid_until: string;
 }
 
 type ChatItem =
-  | { type: "message";       id: string; created_at: string; data: MsgRow }
-  | { type: "proposal";      id: string; created_at: string; data: DealProposal }
-  | { type: "freight_quote"; id: string; created_at: string; data: FreightQuote };
-
-/* ─── Role helpers (stored as first line of notes) ─────── */
-
-function encodeNotes(role: "buyer" | "seller", notes: string, tradeType?: string): string {
-  const tt = tradeType === "nacional" ? ":tt:nacional" : "";
-  return `__role:${role}${tt}__${notes ? "\n" + notes : ""}`;
-}
-
-function decodeNotes(raw: string | null): { role: "buyer" | "seller" | null; tradeType: string | null; notes: string } {
-  if (!raw) return { role: null, tradeType: null, notes: "" };
-  const m = raw.match(/^__role:(buyer|seller)(?::tt:([\w]+))?__(?:\n([\s\S]*))?$/);
-  if (!m) return { role: null, tradeType: null, notes: raw };
-  return { role: m[1] as "buyer" | "seller", tradeType: m[2] ?? null, notes: m[3] ?? "" };
-}
-
-function estimateTotal(volume: number, volUnit: string, price: number, priceUnit: string): number {
-  const kg = volUnit === "TM" ? volume * 1000 : volUnit === "qq" ? volume * 46 : volume;
-  const pkgPrice = priceUnit === "TM" ? price / 1000 : priceUnit === "caja" ? price / 20 : price;
-  return kg * pkgPrice;
-}
+  | { type: "message"; id: string; created_at: string; data: MsgRow }
+  | { type: "quote";   id: string; created_at: string; data: Quote }
+  | { type: "job";     id: string; created_at: string; data: Job };
 
 /* ─── Formatters ────────────────────────────────────────── */
+
+const soles = (n: number) =>
+  `S/ ${Number(n).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 function formatTime(iso: string | null): string {
   if (!iso) return "";
   try {
     const date = new Date(iso);
-    const now  = new Date();
-    const days = Math.floor((now.getTime() - date.getTime()) / 86400000);
+    const days = Math.floor((Date.now() - date.getTime()) / 86400000);
     if (days === 0) return date.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" });
     if (days === 1) return "Ayer";
     if (days < 7)   return date.toLocaleDateString("es-PE", { weekday: "short" });
@@ -144,6 +132,18 @@ function MsgBubble({ msg, isMe, otherName }: { msg: MsgRow; isMe: boolean; other
   let timeStr = "";
   try { timeStr = new Date(msg.created_at).toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch { /* ignore */ }
 
+  /* Los avisos que insertan accept_quote / mark_job_completed /
+     confirm_job van centrados, no como burbuja de nadie. */
+  if (msg.kind === "system") {
+    return (
+      <div className="flex justify-center">
+        <span className="px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-[11px] text-[#6B7280]">
+          {msg.content}
+        </span>
+      </div>
+    );
+  }
+
   if (isMe) {
     return (
       <div className="flex justify-end gap-2 group">
@@ -174,228 +174,176 @@ function MsgBubble({ msg, isMe, otherName }: { msg: MsgRow; isMe: boolean; other
   );
 }
 
-/* ─── ProposalCard ──────────────────────────────────────── */
+/* ─── QuoteCard ─────────────────────────────────────────── */
 
-function ProposalCard({
-  proposal, currentUserId, onAccept, onReject, onCancel, processing,
+const QUOTE_STATUS: Record<string, { label: string; cls: string }> = {
+  pendiente: { label: "Pendiente",  cls: "bg-amber-50 text-amber-700 border-amber-200" },
+  aceptada:  { label: "Aceptada",   cls: "bg-green-50 text-green-700 border-green-200" },
+  rechazada: { label: "Rechazada",  cls: "bg-red-50 text-red-700 border-red-200" },
+  vencida:   { label: "Vencida",    cls: "bg-gray-100 text-gray-600 border-gray-200" },
+  cancelada: { label: "Cancelada",  cls: "bg-gray-100 text-gray-600 border-gray-200" },
+};
+
+function QuoteCard({
+  quote, currentUserId, onAccept, onReject, onCancel, processing,
 }: {
-  proposal: DealProposal; currentUserId: string;
-  onAccept: (p: DealProposal) => void;
-  onReject: (p: DealProposal) => void;
-  onCancel: (p: DealProposal) => void;
+  quote: Quote; currentUserId: string;
+  onAccept: (q: Quote) => void;
+  onReject: (q: Quote) => void;
+  onCancel: (q: Quote) => void;
   processing: boolean;
 }) {
-  const isProposer = proposal.proposer_id === currentUserId;
-  const { notes: displayNotes, tradeType: proposalTradeType } = decodeNotes(proposal.notes);
-  const currSym = proposalTradeType === "nacional" ? "S/" : "USD";
-  const totalValue = estimateTotal(proposal.volume_tm ?? 0, proposal.unit ?? "TM", proposal.price_usd ?? 0, proposal.price_unit ?? "kg");
+  const isProvider = quote.provider_id === currentUserId;
+  const isClient   = quote.client_id === currentUserId;
+  const st = QUOTE_STATUS[quote.status] ?? QUOTE_STATUS.pendiente;
+  const expired = quote.valid_until ? new Date(quote.valid_until) < new Date() : false;
 
   return (
-    <div className={`flex ${isProposer ? "justify-end" : "justify-start"}`}>
-      <div className="w-full max-w-xs lg:max-w-sm rounded-2xl border border-[#1D9E75]/40 shadow-md overflow-hidden">
-
-        {/* Header */}
-        <div className="bg-[#085041] px-4 py-2.5 flex items-center gap-2">
-          <Handshake className="h-4 w-4 text-[#1D9E75]" />
-          <span className="text-xs font-bold text-white">Propuesta de acuerdo</span>
-          <span className="ml-auto text-[10px] text-green-300">{formatTime(proposal.created_at)}</span>
+    <div className="flex justify-center">
+      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#085041]/15 shadow-sm overflow-hidden">
+        <div className="px-4 py-2.5 bg-[#E1F5EE] flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Handshake className="h-4 w-4 text-[#085041]" />
+            <p className="text-xs font-bold text-[#085041]">
+              {isProvider ? "Cotización que enviaste" : "Cotización recibida"}
+            </p>
+          </div>
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${st.cls}`}>{st.label}</span>
         </div>
 
-        {/* Terms grid */}
-        <div className="bg-white px-4 py-3">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-            <div className="col-span-2">
-              <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Producto</p>
-              <p className="font-bold text-[#085041]">{proposal.product}{proposal.variety ? ` — ${proposal.variety}` : ""}</p>
-            </div>
-            <div>
-              <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Volumen</p>
-              <p className="font-bold text-[#1E293B]">{proposal.volume_tm} {proposal.unit}</p>
-            </div>
-            <div>
-              <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Precio</p>
-              <p className="font-bold text-[#1E293B]">{currSym} {proposal.price_usd}/{proposal.price_unit}</p>
-            </div>
-            {proposal.incoterm && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Incoterm</p>
-                <p className="font-bold text-[#1E293B]">{proposal.incoterm}</p>
-              </div>
-            )}
-            {proposal.delivery_date && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Entrega</p>
-                <p className="font-bold text-[#1E293B]">{fmtDate(proposal.delivery_date)}</p>
-              </div>
-            )}
-            {proposal.destination_country && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Destino</p>
-                <p className="font-bold text-[#1E293B]">{proposal.destination_country}</p>
-              </div>
-            )}
-            {proposal.origin_port && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Puerto origen</p>
-                <p className="font-bold text-[#1E293B]">{proposal.origin_port}</p>
-              </div>
+        <div className="px-4 py-3.5 space-y-3">
+          <div>
+            <p className="text-2xl font-extrabold text-[#085041]">{soles(quote.amount)}</p>
+            {quote.estimated_days != null && (
+              <p className="text-[11px] text-[#6B7280] mt-0.5">
+                Tiempo estimado: {quote.estimated_days} {quote.estimated_days === 1 ? "día" : "días"}
+              </p>
             )}
           </div>
-          {displayNotes && (
-            <p className="mt-2 text-xs text-[#6B7280] italic border-t border-gray-100 pt-2">{displayNotes}</p>
+
+          <div>
+            <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Incluye</p>
+            <p className="text-xs text-[#1E293B] leading-relaxed whitespace-pre-wrap">{quote.scope}</p>
+          </div>
+
+          {quote.excludes && (
+            <div>
+              <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">No incluye</p>
+              <p className="text-xs text-[#6B7280] leading-relaxed whitespace-pre-wrap">{quote.excludes}</p>
+            </div>
           )}
-          {totalValue > 0 && (
-            <p className="mt-2 text-[11px] text-[#6B7280] border-t border-gray-100 pt-2">
-              Valor total est.:{" "}
-              <span className="font-extrabold text-[#085041]">
-                {currSym} {totalValue.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-              </span>
+
+          {quote.valid_until && (
+            <p className={`text-[11px] flex items-center gap-1.5 ${expired ? "text-red-600" : "text-[#6B7280]"}`}>
+              <Clock className="h-3 w-3" />
+              {expired ? "Venció el" : "Válida hasta el"} {fmtDate(quote.valid_until)}
             </p>
           )}
         </div>
 
-        {/* Actions */}
-        <div className="bg-gray-50 px-4 py-2.5 border-t border-gray-100">
-          {proposal.status === "pending" && isProposer && (
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] text-amber-600 flex items-center gap-1 font-medium">
-                <Clock className="h-3 w-3" /> Propuesta enviada, esperando respuesta
-              </span>
-              <button type="button" onClick={() => onCancel(proposal)} disabled={processing}
-                className="text-[11px] text-red-500 hover:text-red-700 font-semibold whitespace-nowrap disabled:opacity-40">
-                Cancelar propuesta
+        {quote.status === "pendiente" && (
+          <div className="px-4 pb-4 flex gap-2">
+            {isClient && (
+              <>
+                <button type="button" disabled={processing} onClick={() => onAccept(quote)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+                  {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                  Aceptar y agendar
+                </button>
+                <button type="button" disabled={processing} onClick={() => onReject(quote)}
+                  className="px-3 py-2 rounded-xl border border-gray-200 text-[#6B7280] text-xs font-bold hover:bg-gray-50 transition-colors disabled:opacity-50">
+                  Rechazar
+                </button>
+              </>
+            )}
+            {isProvider && (
+              <button type="button" disabled={processing} onClick={() => onCancel(quote)}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-gray-200 text-[#6B7280] text-xs font-bold hover:bg-gray-50 transition-colors disabled:opacity-50">
+                {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Ban className="h-3.5 w-3.5" />}
+                Cancelar cotización
               </button>
-            </div>
-          )}
-
-          {proposal.status === "pending" && !isProposer && (
-            <div className="flex gap-2">
-              <button type="button" onClick={() => onReject(proposal)} disabled={processing}
-                className="flex-1 py-1.5 text-xs font-bold border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-40">
-                {processing ? <Loader2 className="h-3 w-3 animate-spin mx-auto" /> : "Rechazar"}
-              </button>
-              <button type="button" onClick={() => onAccept(proposal)} disabled={processing}
-                className="flex-1 py-1.5 text-xs font-bold bg-[#1D9E75] text-white rounded-lg hover:bg-[#085041] transition-colors disabled:opacity-40">
-                {processing ? <Loader2 className="h-3 w-3 animate-spin mx-auto" /> : "Aceptar acuerdo"}
-              </button>
-            </div>
-          )}
-
-          {proposal.status === "accepted" && (
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-bold text-[#1D9E75] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5" /> Acuerdo aceptado
-              </span>
-              {proposal.operation_id && (
-                <Link href={`/dashboard/operacion/${proposal.operation_id}`}
-                  className="text-[11px] text-[#085041] font-bold flex items-center gap-1 hover:text-[#1D9E75] transition-colors">
-                  Ver operación <ExternalLink className="h-3 w-3" />
-                </Link>
-              )}
-            </div>
-          )}
-
-          {proposal.status === "rejected" && (
-            <span className="text-xs text-red-600 font-medium">Propuesta rechazada</span>
-          )}
-
-          {proposal.status === "cancelled" && (
-            <span className="text-xs text-[#6B7280]">Propuesta cancelada</span>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-/* ─── FreightQuoteCard ──────────────────────────────────── */
+/* ─── JobCard ───────────────────────────────────────────── */
 
-function FreightQuoteCard({
-  quote, currentUserId, onAccept, onReject, processing,
+const JOB_STATUS: Record<string, { label: string; cls: string }> = {
+  agendado:            { label: "Agendado",                cls: "bg-blue-50 text-blue-700 border-blue-200" },
+  pendiente_confirmar: { label: "Esperando confirmación",  cls: "bg-amber-50 text-amber-700 border-amber-200" },
+  confirmado:          { label: "Confirmado",              cls: "bg-green-50 text-green-700 border-green-200" },
+  cancelado:           { label: "Cancelado",               cls: "bg-gray-100 text-gray-600 border-gray-200" },
+  disputa:             { label: "En disputa",              cls: "bg-red-50 text-red-700 border-red-200" },
+};
+
+function JobCard({
+  job, currentUserId, onComplete, onConfirm, processing,
 }: {
-  quote: FreightQuote; currentUserId: string;
-  onAccept: (q: FreightQuote) => void;
-  onReject: (q: FreightQuote) => void;
+  job: Job; currentUserId: string;
+  onComplete: (j: Job) => void;
+  onConfirm: (j: Job) => void;
   processing: boolean;
 }) {
-  const isForwarder = quote.forwarder_id === currentUserId;
+  const isProvider = job.provider_id === currentUserId;
+  const isClient   = job.client_id === currentUserId;
+  const st = JOB_STATUS[job.status] ?? JOB_STATUS.agendado;
 
   return (
-    <div className={`flex ${isForwarder ? "justify-end" : "justify-start"}`}>
-      <div className="w-full max-w-xs lg:max-w-sm rounded-2xl border border-blue-200 shadow-md overflow-hidden">
-
-        <div className="bg-[#085041] px-4 py-2.5 flex items-center gap-2">
-          <Truck className="h-4 w-4 text-[#1D9E75]" />
-          <span className="text-xs font-bold text-white">Cotización de flete</span>
-          <span className="ml-auto text-[10px] text-green-300">{formatTime(quote.created_at)}</span>
+    <div className="flex justify-center">
+      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#1D9E75]/25 shadow-sm overflow-hidden">
+        <div className="px-4 py-2.5 bg-[#085041] flex items-center justify-between gap-2">
+          <p className="text-xs font-bold text-white truncate">{job.title}</p>
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border flex-shrink-0 ${st.cls}`}>{st.label}</span>
         </div>
 
-        <div className="bg-white px-4 py-3">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-            <div className="col-span-2">
-              <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Precio total</p>
-              <p className="text-lg font-extrabold text-[#085041]">USD {quote.total_price_usd.toLocaleString()}</p>
-              {(quote.freight_price_usd > 0 || quote.local_charges_usd > 0) && (
-                <p className="text-[10px] text-[#6B7280]">
-                  Flete {quote.freight_price_usd.toLocaleString()} + Loc. {quote.local_charges_usd.toLocaleString()}
-                </p>
-              )}
-            </div>
-            {quote.carrier && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Naviera</p>
-                <p className="font-bold text-[#1E293B]">{quote.carrier}</p>
-              </div>
-            )}
-            {quote.departure_date && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Zarpe</p>
-                <p className="font-bold text-[#1E293B]">{fmtDate(quote.departure_date)}</p>
-              </div>
-            )}
-            {quote.transit_days != null && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Tránsito</p>
-                <p className="font-bold text-[#1E293B]">{quote.transit_days} días</p>
-              </div>
-            )}
-            {quote.validity_days != null && (
-              <div>
-                <p className="text-[10px] text-[#6B7280] uppercase tracking-wider font-semibold">Validez</p>
-                <p className="font-bold text-[#1E293B]">{quote.validity_days} días</p>
-              </div>
-            )}
-          </div>
-          {quote.notes && (
-            <p className="mt-2 text-xs text-[#6B7280] italic border-t border-gray-100 pt-2">{quote.notes}</p>
+        <div className="px-4 py-3.5 space-y-2">
+          <p className="text-lg font-extrabold text-[#085041]">{soles(job.amount)}</p>
+
+          {job.completed_at && (
+            <p className="text-[11px] text-[#6B7280]">
+              El proveedor lo marcó como completado el {fmtDate(job.completed_at)}
+            </p>
+          )}
+          {job.confirmed_at && (
+            <p className="text-[11px] text-green-700 flex items-center gap-1.5">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              Confirmado por el cliente el {fmtDate(job.confirmed_at)}
+            </p>
           )}
         </div>
 
-        <div className="bg-gray-50 px-4 py-2.5 border-t border-gray-100">
-          {quote.status === "pending" && isForwarder && (
-            <span className="text-[11px] text-amber-600 flex items-center gap-1 font-medium">
-              <Clock className="h-3 w-3" /> Cotización enviada, esperando respuesta
-            </span>
+        <div className="px-4 pb-4">
+          {isProvider && job.status === "agendado" && (
+            <button type="button" disabled={processing} onClick={() => onComplete(job)}
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+              {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+              Marcar servicio como completado
+            </button>
           )}
-          {quote.status === "pending" && !isForwarder && (
-            <div className="flex gap-2">
-              <button type="button" onClick={() => onReject(quote)} disabled={processing}
-                className="flex-1 py-1.5 text-xs font-bold border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-40">
-                {processing ? <Loader2 className="h-3 w-3 animate-spin mx-auto" /> : "Rechazar"}
-              </button>
-              <button type="button" onClick={() => onAccept(quote)} disabled={processing}
-                className="flex-1 py-1.5 text-xs font-bold bg-[#1D9E75] text-white rounded-lg hover:bg-[#085041] transition-colors disabled:opacity-40">
-                {processing ? <Loader2 className="h-3 w-3 animate-spin mx-auto" /> : "Confirmar cotización"}
-              </button>
-            </div>
+
+          {isProvider && job.status === "pendiente_confirmar" && (
+            <p className="text-[11px] text-[#6B7280] text-center leading-relaxed">
+              Esperando que el cliente confirme. Solo su confirmación cuenta
+              para tu reputación y para el sorteo.
+            </p>
           )}
-          {quote.status === "accepted" && (
-            <span className="text-xs font-bold text-[#1D9E75] flex items-center gap-1">
-              <Check className="h-3.5 w-3.5" /> Cotización confirmada
-            </span>
+
+          {isClient && job.status === "pendiente_confirmar" && (
+            <button type="button" disabled={processing} onClick={() => onConfirm(job)}
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+              {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Star className="h-3.5 w-3.5" />}
+              Confirmar y calificar
+            </button>
           )}
-          {quote.status === "rejected" && (
-            <span className="text-xs text-red-600 font-medium">Cotización rechazada</span>
+
+          {isClient && job.status === "agendado" && (
+            <p className="text-[11px] text-[#6B7280] text-center leading-relaxed">
+              Cuando el proveedor termine, lo marcará aquí y podrás confirmar y calificar.
+            </p>
           )}
         </div>
       </div>
@@ -403,333 +351,181 @@ function FreightQuoteCard({
   );
 }
 
-/* ─── ProposalModal ─────────────────────────────────────── */
+/* ─── QuoteModal ────────────────────────────────────────── */
 
-const INCOTERMS = ["FOB", "CIF", "EXW", "DDP", "FCA", "CFR", "DAP"];
-
-function ProposalModal({
-  onClose, onSubmit, submitting, userRole,
+function QuoteModal({
+  onClose, onSubmit, submitting, quotesLeft,
 }: {
   onClose: () => void;
-  onSubmit: (f: ProposalFormState) => Promise<void>;
+  onSubmit: (form: QuoteFormState) => void;
   submitting: boolean;
-  userRole: string | null;
+  quotesLeft: number | null;
 }) {
-  const [form, setForm] = useState<ProposalFormState>({
-    product: "", variety: "", volume_tm: "", price_usd: "", price_unit: "kg",
-    incoterm: "FOB", delivery_date: "", destination_country: "", ciudad_destino: "",
-    origin_port: "", notes: "",
-    my_role: userRole === "comprador" ? "buyer" : "seller",
-    trade_type: "internacional",
-    vol_unit: "TM",
+  const [form, setForm] = useState<QuoteFormState>({
+    amount: "", scope: "", excludes: "", estimated_days: "", valid_until: "",
   });
 
-  const set = (k: keyof ProposalFormState, v: string) => setForm(p => {
-    const next = { ...p, [k]: v };
-    if (k === "trade_type") next.vol_unit = v === "nacional" ? "kg" : "TM";
-    return next;
-  });
+  const set = (key: keyof QuoteFormState) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm(prev => ({ ...prev, [key]: e.target.value }));
 
-  const isNacional = form.trade_type === "nacional";
-  const currSym    = isNacional ? "S/" : "USD";
-  const vol        = parseFloat(form.volume_tm || "0");
-  const price      = parseFloat(form.price_usd || "0");
-  const total      = estimateTotal(vol, form.vol_unit, price, form.price_unit);
-  const canSubmit  = form.product.trim() && form.volume_tm && form.price_usd && !submitting;
+  const labelClass = "block text-[11px] font-bold text-[#6B7280] uppercase tracking-wide mb-1";
+  const inputClass = "w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent";
+
+  const valid = Number(form.amount) > 0 && form.scope.trim().length > 0;
+  const outOfQuotes = quotesLeft !== null && quotesLeft <= 0;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-[#085041] rounded-t-2xl sticky top-0">
-          <div className="flex items-center gap-2">
-            <Handshake className="h-4 w-4 text-[#1D9E75]" />
-            <h3 className="text-sm font-bold text-white">Proponer acuerdo</h3>
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-extrabold text-[#085041]">Enviar cotización</h3>
+            <p className="text-[11px] text-[#6B7280] mt-0.5">
+              {quotesLeft === null
+                ? "Cotizaciones ilimitadas con tu plan"
+                : `Te quedan ${quotesLeft} cotizaciones este mes`}
+            </p>
           </div>
-          <button type="button" onClick={onClose} className="text-white/70 hover:text-white transition-colors">
+          <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="px-5 py-4 space-y-4">
-          {/* Tipo de operación */}
+        {outOfQuotes ? (
+          <div className="px-5 py-8 text-center space-y-3">
+            <p className="text-sm font-bold text-[#085041]">Llegaste al límite del plan Básico</p>
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              Ya usaste todas tus cotizaciones de este mes. Con el plan Pro son
+              ilimitadas y además entras al sorteo mensual de tu categoría.
+            </p>
+            <Link href="/dashboard/plan"
+              className="inline-block px-4 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors">
+              Ver el plan Pro
+            </Link>
+          </div>
+        ) : (
+          <div className="px-5 py-4 space-y-4">
+            <div>
+              <label className={labelClass}>Monto (S/) *</label>
+              <input type="number" min="0" step="0.01" value={form.amount} onChange={set("amount")}
+                placeholder="150.00" className={inputClass} />
+            </div>
+
+            <div>
+              <label className={labelClass}>Qué incluye *</label>
+              <textarea rows={3} value={form.scope} onChange={set("scope")}
+                placeholder="Ej. Reparación de la tubería, materiales y mano de obra."
+                className={`${inputClass} resize-none`} />
+            </div>
+
+            <div>
+              <label className={labelClass}>Qué no incluye</label>
+              <textarea rows={2} value={form.excludes} onChange={set("excludes")}
+                placeholder="Ej. Repuestos adicionales si la tubería está dañada."
+                className={`${inputClass} resize-none`} />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className={labelClass}>Días estimados</label>
+                <input type="number" min="0" value={form.estimated_days} onChange={set("estimated_days")}
+                  placeholder="2" className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>Válida hasta</label>
+                <input type="date" value={form.valid_until} onChange={set("valid_until")} className={inputClass} />
+              </div>
+            </div>
+
+            <button type="button" disabled={!valid || submitting} onClick={() => onSubmit(form)}
+              className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#085041] text-white text-sm font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-40">
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Handshake className="h-4 w-4" />}
+              Enviar cotización
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── ConfirmModal (confirmar + calificar en un paso) ───── */
+
+function ConfirmModal({
+  job, onClose, onSubmit, submitting,
+}: {
+  job: Job;
+  onClose: () => void;
+  onSubmit: (stars: number, comment: string) => void;
+  submitting: boolean;
+}) {
+  const [stars, setStars]     = useState(0);
+  const [comment, setComment] = useState("");
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-white w-full sm:max-w-sm sm:rounded-2xl rounded-t-2xl">
+        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <h3 className="text-base font-extrabold text-[#085041]">Confirmar y calificar</h3>
+          <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="px-5 py-5 space-y-4">
+          <p className="text-xs text-[#6B7280] leading-relaxed">
+            Confirmas que <strong className="text-[#1E293B]">{job.title}</strong> por{" "}
+            <strong className="text-[#1E293B]">{soles(job.amount)}</strong> se realizó.
+            Tu confirmación cierra el servicio y te da puntos.
+          </p>
+
           <div>
-            <p className="text-xs font-bold text-[#085041] mb-2">Tipo de operación *</p>
-            <div className="flex gap-2">
-              {([
-                { value: "internacional", label: "Internacional" },
-                { value: "nacional",      label: "Venta nacional" },
-              ] as const).map(opt => (
-                <button key={opt.value} type="button" onClick={() => set("trade_type", opt.value)}
-                  className={`flex-1 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
-                    form.trade_type === opt.value
-                      ? "bg-[#085041] text-white border-[#085041]"
-                      : "bg-white text-[#6B7280] border-gray-200 hover:border-[#1D9E75]"
-                  }`}>
-                  {opt.label}
+            <p className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">Tu calificación *</p>
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map(n => (
+                <button key={n} type="button" onClick={() => setStars(n)} aria-label={`${n} estrellas`}
+                  className="transition-transform hover:scale-110">
+                  <Star className={`h-8 w-8 ${n <= stars ? "text-amber-400 fill-amber-400" : "text-gray-300"}`} />
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Rol selector — solo para exportador */}
-          {userRole === "exportador" && (
-            <div>
-              <p className="text-xs font-bold text-[#085041] mb-2">En esta operación, yo soy *</p>
-              <div className="flex gap-2">
-                {(["buyer", "seller"] as const).map(r => (
-                  <button key={r} type="button" onClick={() => set("my_role", r)}
-                    className={`flex-1 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
-                      form.my_role === r
-                        ? "bg-[#085041] text-white border-[#085041]"
-                        : "bg-white text-[#6B7280] border-gray-200 hover:border-[#1D9E75]"
-                    }`}>
-                    {r === "buyer" ? "🛒 Comprador" : "📦 Vendedor"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Producto */}
           <div>
-            <label className="block text-xs font-semibold text-[#085041] mb-1">Producto *</label>
-            <input type="text" value={form.product} onChange={e => set("product", e.target.value)}
-              placeholder="Ej: Palta Hass"
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
+            <label className="block text-[11px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">
+              Comentario (opcional)
+            </label>
+            <textarea rows={3} value={comment} onChange={e => setComment(e.target.value)}
+              placeholder="¿Cómo te fue con el servicio?"
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent" />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-[#085041] mb-1">Variedad</label>
-            <input type="text" value={form.variety} onChange={e => set("variety", e.target.value)}
-              placeholder="Ej: Hass, Fuerte..."
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Volumen ({form.vol_unit}) *</label>
-              <div className="flex gap-1">
-                <input type="number" min="0" step="0.1" value={form.volume_tm} onChange={e => set("volume_tm", e.target.value)}
-                  placeholder="0.0"
-                  className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-                <select value={form.vol_unit} onChange={e => set("vol_unit", e.target.value)}
-                  className="px-1.5 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white">
-                  <option value="kg">kg</option>
-                  <option value="TM">TM</option>
-                  <option value="qq">qq</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Precio ({currSym}) *</label>
-              <div className="flex gap-1">
-                <input type="number" min="0" step="0.01" value={form.price_usd} onChange={e => set("price_usd", e.target.value)}
-                  placeholder="0.00"
-                  className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-                <select value={form.price_unit} onChange={e => set("price_unit", e.target.value)}
-                  className="px-1.5 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white">
-                  <option value="kg">/kg</option>
-                  <option value="TM">/TM</option>
-                  <option value="caja">/caja</option>
-                </select>
-              </div>
-            </div>
-            {form.trade_type === "internacional" && (
-              <div>
-                <label className="block text-xs font-semibold text-[#085041] mb-1">Incoterm</label>
-                <select value={form.incoterm} onChange={e => set("incoterm", e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white">
-                  <option value="">Sin especificar</option>
-                  {INCOTERMS.map(i => <option key={i} value={i}>{i}</option>)}
-                </select>
-              </div>
-            )}
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Fecha de entrega</label>
-              <input type="date" value={form.delivery_date} onChange={e => set("delivery_date", e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-            {form.trade_type === "internacional" ? (
-              <>
-                <div>
-                  <label className="block text-xs font-semibold text-[#085041] mb-1">País destino</label>
-                  <input type="text" value={form.destination_country} onChange={e => set("destination_country", e.target.value)}
-                    placeholder="Ej: España"
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#085041] mb-1">Puerto origen</label>
-                  <input type="text" value={form.origin_port} onChange={e => set("origin_port", e.target.value)}
-                    placeholder="Ej: Callao"
-                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-                </div>
-              </>
-            ) : (
-              <div className="col-span-2">
-                <label className="block text-xs font-semibold text-[#085041] mb-1">Ciudad / Región destino</label>
-                <input type="text" value={form.ciudad_destino} onChange={e => set("ciudad_destino", e.target.value)}
-                  placeholder="Ej: Lima, Arequipa, La Libertad"
-                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-              </div>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#085041] mb-1">Notas adicionales</label>
-            <textarea rows={2} value={form.notes} onChange={e => set("notes", e.target.value)}
-              placeholder="Certificaciones requeridas, condiciones de pago, calidad..."
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none" />
-          </div>
-
-          {total > 0 && (
-            <div className="bg-[#E1F5EE] rounded-xl px-4 py-2.5">
-              <p className="text-xs text-[#085041]">
-                Valor total estimado:{" "}
-                <span className="font-extrabold">
-                  {currSym} {total.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-                </span>
-                <span className="text-[10px] text-[#6B7280] ml-1">({form.vol_unit} × {currSym}/{form.price_unit})</span>
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="px-5 pb-5 flex gap-2">
-          <button type="button" onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-[#6B7280] hover:border-gray-300 transition-colors">
-            Cancelar
+          <button type="button" disabled={stars === 0 || submitting} onClick={() => onSubmit(stars, comment)}
+            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] transition-colors disabled:opacity-40">
+            {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+            Confirmar servicio
           </button>
-          <button type="button" onClick={() => onSubmit(form)} disabled={!canSubmit}
-            className="flex-1 py-2.5 rounded-xl bg-[#085041] text-white text-sm font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {submitting ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Enviar propuesta"}
-          </button>
+          <p className="text-[10px] text-[#6B7280] text-center leading-relaxed">
+            Esta acción no se puede deshacer.
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── FreightQuoteModal ─────────────────────────────────── */
-
-function FreightQuoteModal({
-  onClose, onSubmit, submitting,
-}: {
-  onClose: () => void;
-  onSubmit: (f: FreightQuoteFormState) => Promise<void>;
-  submitting: boolean;
-}) {
-  const [form, setForm] = useState<FreightQuoteFormState>({
-    carrier: "", freight_price_usd: "", local_charges_usd: "0",
-    departure_date: "", transit_days: "", validity_days: "7", notes: "",
-  });
-
-  const set = (k: keyof FreightQuoteFormState, v: string) => setForm(p => ({ ...p, [k]: v }));
-  const freight = parseFloat(form.freight_price_usd || "0");
-  const local   = parseFloat(form.local_charges_usd  || "0");
-  const total   = freight + local;
-  const canSubmit = freight > 0 && !submitting;
-
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-[#085041] rounded-t-2xl sticky top-0">
-          <div className="flex items-center gap-2">
-            <Truck className="h-4 w-4 text-[#1D9E75]" />
-            <h3 className="text-sm font-bold text-white">Enviar cotización de flete</h3>
-          </div>
-          <button type="button" onClick={onClose} className="text-white/70 hover:text-white transition-colors">
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        <div className="px-5 py-4 space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Flete USD *</label>
-              <input type="number" min="0" value={form.freight_price_usd}
-                onChange={e => set("freight_price_usd", e.target.value)}
-                placeholder="0.00"
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Gastos locales USD</label>
-              <input type="number" min="0" value={form.local_charges_usd}
-                onChange={e => set("local_charges_usd", e.target.value)}
-                placeholder="0.00"
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#085041] mb-1">Naviera / Carrier</label>
-            <input type="text" value={form.carrier} onChange={e => set("carrier", e.target.value)}
-              placeholder="Ej: Maersk, MSC, Hapag-Lloyd"
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Fecha zarpe</label>
-              <input type="date" value={form.departure_date} onChange={e => set("departure_date", e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Tránsito (días)</label>
-              <input type="number" min="1" value={form.transit_days} onChange={e => set("transit_days", e.target.value)}
-                placeholder="21"
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[#085041] mb-1">Validez (días)</label>
-              <input type="number" min="1" value={form.validity_days} onChange={e => set("validity_days", e.target.value)}
-                placeholder="7"
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75]" />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#085041] mb-1">Notas adicionales</label>
-            <textarea rows={2} value={form.notes} onChange={e => set("notes", e.target.value)}
-              placeholder="Condiciones, restricciones, etc."
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D9E75] resize-none" />
-          </div>
-
-          {total > 0 && (
-            <div className="bg-[#E1F5EE] rounded-xl px-4 py-2.5">
-              <p className="text-xs text-[#6B7280]">Total estimado</p>
-              <p className="text-xl font-extrabold text-[#085041]">USD {total.toLocaleString()}</p>
-            </div>
-          )}
-        </div>
-
-        <div className="px-5 pb-5 flex gap-2">
-          <button type="button" onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-[#6B7280] hover:border-gray-300 transition-colors">
-            Cancelar
-          </button>
-          <button type="button" onClick={() => onSubmit(form)} disabled={!canSubmit}
-            className="flex-1 py-2.5 rounded-xl bg-[#085041] text-white text-sm font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {submitting ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Enviar cotización"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Empty / no-conversations states ───────────────────── */
+/* ─── Empty states ──────────────────────────────────────── */
 
 function EmptyChat() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-8">
-      <div className="w-16 h-16 rounded-2xl bg-[#E1F5EE] flex items-center justify-center mb-4">
-        <MessageCircle className="h-8 w-8 text-[#1D9E75]" />
+    <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
+      <div className="w-14 h-14 rounded-2xl bg-[#E1F5EE] flex items-center justify-center mb-4">
+        <MessageCircle className="h-7 w-7 text-[#1D9E75]" />
       </div>
-      <h3 className="text-base font-bold text-[#085041] mb-1">Tus mensajes</h3>
-      <p className="text-sm text-[#6B7280] max-w-xs leading-relaxed">
-        Selecciona una conversación de la lista para ver los mensajes.
+      <p className="text-sm font-bold text-[#085041]">Elige una conversación</p>
+      <p className="text-xs text-[#6B7280] mt-1 max-w-xs leading-relaxed">
+        Aquí acuerdas el precio, cierras el servicio y lo confirmas.
       </p>
     </div>
   );
@@ -737,17 +533,16 @@ function EmptyChat() {
 
 function NoConversations() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12">
-      <Users className="h-10 w-10 text-gray-300 mb-3" />
-      <p className="text-xs font-semibold text-[#085041] mb-1">Sin conversaciones</p>
-      <p className="text-[11px] text-[#6B7280] leading-relaxed">
-        Cuando contactes un proveedor desde el catálogo, las conversaciones aparecerán aquí.
+    <div className="p-6 text-center">
+      <p className="text-xs font-semibold text-[#085041]">Todavía no tienes conversaciones</p>
+      <p className="text-[11px] text-[#6B7280] mt-1 leading-relaxed">
+        Cuando contactes a alguien aparecerá aquí.
       </p>
     </div>
   );
 }
 
-/* ─── Inner page ─────────────────────────────────────────── */
+/* ─── Main ──────────────────────────────────────────────── */
 
 function MensajesInner() {
   const searchParams = useSearchParams();
@@ -755,28 +550,24 @@ function MensajesInner() {
 
   const supabase = useRef(createClient()).current;
 
-  const [currentUserId,      setCurrentUserId]      = useState<string | null>(null);
-  const [conversations,      setConversations]      = useState<ConvItem[]>([]);
-  const [loadingConvs,       setLoadingConvs]       = useState(true);
-  const [selectedConvId,     setSelectedConvId]     = useState<string | null>(null);
-  const [messages,           setMessages]           = useState<MsgRow[]>([]);
-  const [loadingMsgs,        setLoadingMsgs]        = useState(false);
-  const [input,              setInput]              = useState("");
-  const [sending,            setSending]            = useState(false);
-  const [search,             setSearch]             = useState("");
+  const [currentUserId,   setCurrentUserId]   = useState<string | null>(null);
+  const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [conversations,   setConversations]   = useState<ConvItem[]>([]);
+  const [loadingConvs,    setLoadingConvs]    = useState(true);
+  const [selectedConvId,  setSelectedConvId]  = useState<string | null>(null);
+  const [messages,        setMessages]        = useState<MsgRow[]>([]);
+  const [loadingMsgs,     setLoadingMsgs]     = useState(false);
+  const [input,           setInput]           = useState("");
+  const [sending,         setSending]         = useState(false);
+  const [search,          setSearch]          = useState("");
 
-  // Proposal state
-  const [proposals,          setProposals]          = useState<DealProposal[]>([]);
-  const [showProposalForm,   setShowProposalForm]   = useState(false);
-  const [submittingProposal, setSubmittingProposal] = useState(false);
-  const [processingProposal, setProcessingProposal] = useState<string | null>(null);
-
-  // Freight quote state
-  const [currentUserRole,        setCurrentUserRole]        = useState<string | null>(null);
-  const [freightQuotes,          setFreightQuotes]          = useState<FreightQuote[]>([]);
-  const [showFreightQuoteForm,   setShowFreightQuoteForm]   = useState(false);
-  const [submittingFreightQuote, setSubmittingFreightQuote] = useState(false);
-  const [processingFreightQuote, setProcessingFreightQuote] = useState<string | null>(null);
+  const [quotes,          setQuotes]          = useState<Quote[]>([]);
+  const [jobs,            setJobs]            = useState<Job[]>([]);
+  const [showQuoteForm,   setShowQuoteForm]   = useState(false);
+  const [submitting,      setSubmitting]      = useState(false);
+  const [processingId,    setProcessingId]    = useState<string | null>(null);
+  const [quotesLeft,      setQuotesLeft]      = useState<number | null>(null);
+  const [confirmingJob,   setConfirmingJob]   = useState<Job | null>(null);
 
   const messagesEndRef    = useRef<HTMLDivElement>(null);
   const selectedConvIdRef = useRef<string | null>(null);
@@ -790,17 +581,17 @@ function MensajesInner() {
 
   const selectedConv = conversations.find(c => c.id === selectedConvId) ?? null;
 
-  /* ── 1. Load user ──────────────────────────────────────── */
+  /* ── 1. Usuario y rol ──────────────────────────────────── */
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       setCurrentUserId(user?.id ?? null);
       if (!user) { setLoadingConvs(false); return; }
-      const { data: profile } = await supabase.from("profiles").select("role").eq("user_id", user.id).single();
+      const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
       setCurrentUserRole(profile?.role ?? null);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── 2. Load conversations ─────────────────────────────── */
+  /* ── 2. Conversaciones ─────────────────────────────────── */
   useEffect(() => {
     if (!currentUserId) return;
     setLoadingConvs(true);
@@ -819,40 +610,36 @@ function MensajesInner() {
       )];
 
       const { data: profiles } = await supabase
-        .from("profiles").select("user_id, name, business_name").in("user_id", otherIds);
+        .from("profiles").select("id, name, business_name").in("id", otherIds);
 
       const nameMap: Record<string, string> = {};
-      profiles?.forEach((p: { user_id: string; name: string | null; business_name: string | null }) => {
-        nameMap[p.user_id] = p.business_name || p.name || "Usuario";
+      profiles?.forEach((p: { id: string; name: string | null; business_name: string | null }) => {
+        nameMap[p.id] = p.business_name || p.name || "Usuario";
       });
 
-      const enriched: ConvItem[] = convs.map((c: ConvRow) => {
+      setConversations(convs.map((c: ConvRow) => {
         const isP1  = c.participant_1 === currentUserId;
         const other = isP1 ? c.participant_2 : c.participant_1;
         return { ...c, other_user_id: other, other_user_name: nameMap[other] ?? "Usuario", my_unread: isP1 ? c.unread_count_p1 : c.unread_count_p2 };
-      });
-
-      setConversations(enriched);
+      }));
       setLoadingConvs(false);
     }
     load();
   }, [currentUserId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── 3. Auto-select from URL param ─────────────────────── */
+  /* ── 3. Selección desde la URL ─────────────────────────── */
   useEffect(() => {
     if (!convParam || conversations.length === 0) return;
     if (conversations.some(c => c.id === convParam)) setSelectedConvId(convParam);
   }, [convParam, conversations]);
 
-  /* ── 4. Load messages + proposals when conv changes ───── */
+  /* ── 4. Cargar hilo al cambiar de conversación ─────────── */
   useEffect(() => {
     if (!selectedConvId || !currentUserId) return;
 
     lastMsgTimeRef.current = null;
     setLoadingMsgs(true);
-    setMessages([]);
-    setProposals([]);
-    setFreightQuotes([]);
+    setMessages([]); setQuotes([]); setJobs([]);
 
     const loadStartTime = new Date().toISOString();
 
@@ -866,26 +653,25 @@ function MensajesInner() {
         lastMsgTimeRef.current = msgs.length > 0 ? msgs[msgs.length - 1].created_at : loadStartTime;
       });
 
-    supabase.from("deal_proposals").select("*")
+    supabase.from("quotes").select("*")
       .eq("conversation_id", selectedConvId)
       .order("created_at", { ascending: true })
-      .then(({ data }) => setProposals((data as DealProposal[]) ?? []));
+      .then(({ data }) => setQuotes((data as Quote[]) ?? []));
 
-    supabase.from("logistics_quotes").select("*")
+    supabase.from("jobs").select("*")
       .eq("conversation_id", selectedConvId)
       .order("created_at", { ascending: true })
-      .then(({ data }) => setFreightQuotes((data as FreightQuote[]) ?? []));
+      .then(({ data }) => setJobs((data as Job[]) ?? []));
 
+    // Marca leído en servidor (también marca los mensajes) y en local.
     const conv = conversationsRef.current.find(c => c.id === selectedConvId);
     if (conv && conv.my_unread > 0) {
-      const isP1  = conv.participant_1 === currentUserId;
-      const field = isP1 ? "unread_count_p1" : "unread_count_p2";
-      supabase.from("conversations").update({ [field]: 0 }).eq("id", selectedConvId).then(() => {});
+      supabase.rpc("mark_conversation_read", { p_conversation_id: selectedConvId }).then(() => {});
       setConversations(prev => prev.map(c => c.id === selectedConvId ? { ...c, my_unread: 0 } : c));
     }
   }, [selectedConvId, currentUserId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── 5. Poll messages + proposals every 3 s ────────────── */
+  /* ── 5. Poll del hilo cada 3 s ─────────────────────────── */
   useEffect(() => {
     if (!selectedConvId || !currentUserId) return;
 
@@ -894,7 +680,6 @@ function MensajesInner() {
       const convId = selectedConvIdRef.current;
       if (!since || !convId) return;
 
-      // New messages
       const { data } = await supabase.from("messages").select("*")
         .eq("conversation_id", convId).gt("created_at", since).order("created_at", { ascending: true });
 
@@ -913,22 +698,21 @@ function MensajesInner() {
         });
       }
 
-      // Refresh proposals (small set, safe to refetch all)
-      const { data: propData } = await supabase.from("deal_proposals").select("*")
+      // Cotizaciones y trabajos son pocos por conversación: se refrescan enteros.
+      const { data: qData } = await supabase.from("quotes").select("*")
         .eq("conversation_id", convId).order("created_at", { ascending: true });
-      if (propData) setProposals(propData as DealProposal[]);
+      if (qData) setQuotes(qData as Quote[]);
 
-      // Refresh freight quotes
-      const { data: fqData } = await supabase.from("logistics_quotes").select("*")
+      const { data: jData } = await supabase.from("jobs").select("*")
         .eq("conversation_id", convId).order("created_at", { ascending: true });
-      if (fqData) setFreightQuotes(fqData as FreightQuote[]);
+      if (jData) setJobs(jData as Job[]);
     };
 
     const interval = setInterval(tick, 3000);
     return () => clearInterval(interval);
   }, [selectedConvId, currentUserId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── 6. Poll conversation list every 5 s ───────────────── */
+  /* ── 6. Poll de la lista cada 5 s ──────────────────────── */
   useEffect(() => {
     if (!currentUserId) return;
 
@@ -962,13 +746,16 @@ function MensajesInner() {
     return () => clearInterval(interval);
   }, [currentUserId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── 7. Auto-scroll ─────────────────────────────────────── */
-  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, proposals, freightQuotes]);
+  /* ── 7. Auto-scroll ────────────────────────────────────── */
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, quotes, jobs]);
 
-  /* ── Send message ──────────────────────────────────────── */
+  /* ── Enviar mensaje ────────────────────────────────────── */
+  /* Ojo: NO se toca `conversations` aquí. El trigger bump_conversation
+     ya escribe last_message y sube el contador del otro participante;
+     hacerlo también desde el cliente lo contaba dos veces. */
   const handleSend = async () => {
     const text = input.trim();
-    if (!text || !selectedConvId || !currentUserId || !selectedConv) return;
+    if (!text || !selectedConvId || !currentUserId) return;
 
     const now    = new Date().toISOString();
     const tempId = `temp-${now}-${Math.random()}`;
@@ -977,312 +764,179 @@ function MensajesInner() {
     setSending(true);
     setMessages(prev => [
       ...prev,
-      { id: tempId, conversation_id: selectedConvId, sender_id: currentUserId, content: text, created_at: now } as MsgRow,
+      { id: tempId, conversation_id: selectedConvId, sender_id: currentUserId, content: text, kind: "text", ref_id: null, created_at: now } as MsgRow,
     ]);
 
-    const { data: saved } = await supabase.from("messages")
+    const { data: saved, error } = await supabase.from("messages")
       .insert({ conversation_id: selectedConvId, sender_id: currentUserId, content: text })
       .select().single();
 
-    if (saved) {
+    if (error) {
+      setMessages(prev => prev.filter(m => m.id !== tempId));
+      alert(`No se pudo enviar el mensaje:\n${error.message}`);
+    } else if (saved) {
       setMessages(prev => prev.map(m => m.id === tempId ? (saved as MsgRow) : m));
       lastMsgTimeRef.current = (saved as MsgRow).created_at;
+      setConversations(prev =>
+        prev.map(c => c.id === selectedConvId ? { ...c, last_message: text, last_message_at: now } : c)
+          .sort((a, b) => {
+            const ta = a.last_message_at ? new Date(a.last_message_at).getTime() : 0;
+            const tb = b.last_message_at ? new Date(b.last_message_at).getTime() : 0;
+            return tb - ta;
+          })
+      );
     }
-
-    const isP1             = selectedConv.participant_1 === currentUserId;
-    const otherUnreadField = isP1 ? "unread_count_p2" : "unread_count_p1";
-    const otherUnreadNow   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-
-    await supabase.from("conversations").update({
-      last_message: text, last_message_at: now, [otherUnreadField]: otherUnreadNow + 1,
-    }).eq("id", selectedConvId);
-
-    setConversations(prev =>
-      prev.map(c => {
-        if (c.id !== selectedConvId) return c;
-        return { ...c, last_message: text, last_message_at: now, [otherUnreadField]: otherUnreadNow + 1 };
-      }).sort((a, b) => {
-        const ta = a.last_message_at ? new Date(a.last_message_at).getTime() : 0;
-        const tb = b.last_message_at ? new Date(b.last_message_at).getTime() : 0;
-        return tb - ta;
-      })
-    );
 
     setSending(false);
   };
 
-  /* ── Submit proposal ────────────────────────────────────── */
-  const handleSubmitProposal = async (form: ProposalFormState) => {
+  /* ── Abrir el formulario de cotización ─────────────────── */
+  const openQuoteForm = async () => {
+    if (currentUserId) {
+      const { data } = await supabase.rpc("provider_quotes_left", { p_provider_id: currentUserId });
+      setQuotesLeft(data === null || data === undefined ? null : Number(data));
+    }
+    setShowQuoteForm(true);
+  };
+
+  /* ── Enviar cotización ─────────────────────────────────── */
+  /* `period` lo pone el trigger enforce_quote_limit (hora de Lima),
+     por eso no se manda desde aquí. Ese mismo trigger es el que
+     rechaza la inserción si el plan Básico ya agotó el mes. */
+  const handleSubmitQuote = async (form: QuoteFormState) => {
     if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setSubmittingProposal(true);
+    setSubmitting(true);
 
-    const isNacional = form.trade_type === "nacional";
-    const encodedNotes = encodeNotes(form.my_role, form.notes.trim(), form.trade_type);
-
-    const { data, error } = await supabase.from("deal_proposals").insert({
-      conversation_id:    selectedConvId,
-      proposer_id:        currentUserId,
-      recipient_id:       selectedConv.other_user_id,
-      product:            form.product.trim(),
-      variety:            form.variety.trim() || null,
-      volume_tm:          parseFloat(form.volume_tm) || null,
-      unit:               form.vol_unit,
-      price_usd:          parseFloat(form.price_usd) || null,
-      price_unit:         form.price_unit,
-      incoterm:           isNacional ? null : (form.incoterm || null),
-      delivery_date:      form.delivery_date || null,
-      destination_country: isNacional ? (form.ciudad_destino.trim() || null) : (form.destination_country.trim() || null),
-      origin_port:        isNacional ? null : (form.origin_port.trim() || null),
-      notes:              encodedNotes,
-      status:             "pending",
+    const { data, error } = await supabase.from("quotes").insert({
+      conversation_id: selectedConvId,
+      provider_id:     currentUserId,
+      client_id:       selectedConv.other_user_id,
+      service_id:      selectedConv.subject_type === "service" ? selectedConv.subject_id : null,
+      request_id:      selectedConv.subject_type === "request" ? selectedConv.subject_id : null,
+      amount:          Number(form.amount),
+      scope:           form.scope.trim(),
+      excludes:        form.excludes.trim() || null,
+      estimated_days:  form.estimated_days ? parseInt(form.estimated_days) : null,
+      valid_until:     form.valid_until || null,
     }).select().single();
 
     if (error) {
-      console.error("[deal_proposals] error:", error);
-      alert(`Error al enviar la propuesta:\n${error.message}`);
-      setSubmittingProposal(false);
+      const limite = error.message.includes("Límite de cotizaciones");
+      alert(limite
+        ? "Llegaste al límite de cotizaciones del plan Básico este mes.\nCon el plan Pro son ilimitadas."
+        : `No se pudo enviar la cotización:\n${error.message}`);
+      setSubmitting(false);
       return;
     }
 
     if (data) {
-      setProposals(prev => [...prev, data as DealProposal]);
-    }
-
-    setShowProposalForm(false);
-    setSubmittingProposal(false);
-  };
-
-  /* ── Accept proposal ────────────────────────────────────── */
-  const handleAcceptProposal = async (proposal: DealProposal) => {
-    if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setProcessingProposal(proposal.id);
-
-    const { role, tradeType } = decodeNotes(proposal.notes);
-    const buyer_id  = role === "buyer"  ? proposal.proposer_id : proposal.recipient_id;
-    const seller_id = role === "seller" ? proposal.proposer_id : proposal.recipient_id;
-
-    const { data: op, error: opError } = await supabase.from("operations").insert({
-      type:               "commercial",
-      trade_type:         tradeType ?? "internacional",
-      currency:           (tradeType ?? "internacional") === "nacional" ? "PEN" : "USD",
-      buyer_id,
-      seller_id,
-      product:            proposal.product,
-      variety:            proposal.variety ?? null,
-      volume_tm:          (() => {
-        const v = proposal.volume_tm ?? 0;
-        const u = proposal.unit ?? "TM";
-        return u === "kg" ? v / 1000 : u === "qq" ? v * 0.046 : v;
-      })(),
-      unit:               proposal.unit ?? "TM",
-      agreed_price_usd:   proposal.price_usd,
-      price_unit:         proposal.price_unit ?? "kg",
-      incoterm:           proposal.incoterm ?? null,
-      delivery_date:      proposal.delivery_date ?? null,
-      destination_country: proposal.destination_country ?? null,
-      total_value_usd:    estimateTotal(proposal.volume_tm ?? 0, proposal.unit ?? "TM", proposal.price_usd ?? 0, proposal.price_unit ?? "kg"),
-      status:             "confirmed",
-    }).select("id, operation_number").single();
-
-    if (opError) {
-      console.error("[operations] error:", opError);
-      alert(`Error al crear la operación:\n${opError.message}`);
-      setProcessingProposal(null);
-      return;
-    }
-
-    if (op) {
-      await supabase.from("operation_tracking").insert({
-        operation_id: op.id, stage: "confirmed", updated_by: currentUserId,
-      });
-
-      await supabase.from("deal_proposals")
-        .update({ status: "accepted", operation_id: op.id })
-        .eq("id", proposal.id);
-
-      const msgText = `✓ Acuerdo cerrado. Operación #${op.operation_number} creada. Ver: /dashboard/operacion/${op.id}`;
-      const now     = new Date().toISOString();
-
+      const q = data as Quote;
+      setQuotes(prev => [...prev, q]);
       await supabase.from("messages").insert({
-        conversation_id: selectedConvId, sender_id: currentUserId, content: msgText,
+        conversation_id: selectedConvId,
+        sender_id:       currentUserId,
+        content:         `Te envié una cotización por ${soles(q.amount)}.`,
+        kind:            "quote",
+        ref_id:          q.id,
       });
-
-      const isP1 = selectedConv.participant_1 === currentUserId;
-      const field = isP1 ? "unread_count_p2" : "unread_count_p1";
-      const cnt   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-      await supabase.from("conversations").update({
-        last_message: msgText, last_message_at: now, [field]: cnt + 1,
-      }).eq("id", selectedConvId);
-
-      setProposals(prev => prev.map(p =>
-        p.id === proposal.id ? { ...p, status: "accepted", operation_id: op.id } : p
-      ));
     }
 
-    setProcessingProposal(null);
+    setShowQuoteForm(false);
+    setSubmitting(false);
   };
 
-  /* ── Reject proposal ────────────────────────────────────── */
-  const handleRejectProposal = async (proposal: DealProposal) => {
-    if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setProcessingProposal(proposal.id);
+  /* ── Aceptar cotización → crea el trabajo ──────────────── */
+  const handleAcceptQuote = async (quote: Quote) => {
+    setProcessingId(quote.id);
+    const { error } = await supabase.rpc("accept_quote", { p_quote_id: quote.id });
+    if (error) alert(`No se pudo aceptar la cotización:\n${error.message}`);
+    await refreshThread();
+    setProcessingId(null);
+  };
 
-    await supabase.from("deal_proposals").update({ status: "rejected" }).eq("id", proposal.id);
+  const handleRejectQuote = async (quote: Quote) => {
+    setProcessingId(quote.id);
+    const { error } = await supabase.from("quotes").update({ status: "rechazada", responded_at: new Date().toISOString() }).eq("id", quote.id);
+    if (error) alert(`No se pudo rechazar:\n${error.message}`);
+    else setQuotes(prev => prev.map(q => q.id === quote.id ? { ...q, status: "rechazada" } : q));
+    setProcessingId(null);
+  };
 
-    const msgText = "Propuesta rechazada.";
-    const now     = new Date().toISOString();
+  const handleCancelQuote = async (quote: Quote) => {
+    setProcessingId(quote.id);
+    const { error } = await supabase.from("quotes").update({ status: "cancelada" }).eq("id", quote.id);
+    if (error) alert(`No se pudo cancelar:\n${error.message}`);
+    else setQuotes(prev => prev.map(q => q.id === quote.id ? { ...q, status: "cancelada" } : q));
+    setProcessingId(null);
+  };
 
-    await supabase.from("messages").insert({
-      conversation_id: selectedConvId, sender_id: currentUserId, content: msgText,
+  /* ── Proveedor marca completado ────────────────────────── */
+  const handleCompleteJob = async (job: Job) => {
+    setProcessingId(job.id);
+    const { error } = await supabase.rpc("mark_job_completed", { p_job_id: job.id });
+    if (error) alert(`No se pudo marcar como completado:\n${error.message}`);
+    await refreshThread();
+    setProcessingId(null);
+  };
+
+  /* ── Cliente confirma + califica (un solo paso) ────────── */
+  const handleConfirmJob = async (stars: number, comment: string) => {
+    if (!confirmingJob) return;
+    setSubmitting(true);
+    const { error } = await supabase.rpc("confirm_job", {
+      p_job_id: confirmingJob.id, p_stars: stars, p_comment: comment.trim() || null,
     });
-
-    const isP1 = selectedConv.participant_1 === currentUserId;
-    const field = isP1 ? "unread_count_p2" : "unread_count_p1";
-    const cnt   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-    await supabase.from("conversations").update({
-      last_message: msgText, last_message_at: now, [field]: cnt + 1,
-    }).eq("id", selectedConvId);
-
-    setProposals(prev => prev.map(p => p.id === proposal.id ? { ...p, status: "rejected" } : p));
-    setProcessingProposal(null);
+    if (error) alert(`No se pudo confirmar el servicio:\n${error.message}`);
+    await refreshThread();
+    setConfirmingJob(null);
+    setSubmitting(false);
   };
 
-  /* ── Cancel proposal ────────────────────────────────────── */
-  const handleCancelProposal = async (proposal: DealProposal) => {
-    if (!currentUserId) return;
-    setProcessingProposal(proposal.id);
-    await supabase.from("deal_proposals").update({ status: "cancelled" }).eq("id", proposal.id);
-    setProposals(prev => prev.map(p => p.id === proposal.id ? { ...p, status: "cancelled" } : p));
-    setProcessingProposal(null);
-  };
-
-  /* ── Submit freight quote ──────────────────────────────── */
-  const handleSubmitFreightQuote = async (form: FreightQuoteFormState) => {
-    if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setSubmittingFreightQuote(true);
-
-    const freight = parseFloat(form.freight_price_usd) || 0;
-    const local   = parseFloat(form.local_charges_usd)  || 0;
-    const total   = freight + local;
-
-    const { data, error } = await supabase.from("logistics_quotes").insert({
-      conversation_id:    selectedConvId,
-      forwarder_id:       currentUserId,
-      rfq_id:             null,
-      freight_price_usd:  freight,
-      local_charges_usd:  local,
-      total_price_usd:    total,
-      carrier:            form.carrier.trim() || null,
-      departure_date:     form.departure_date || null,
-      transit_days:       parseInt(form.transit_days) || null,
-      validity_days:      parseInt(form.validity_days) || null,
-      notes:              form.notes.trim() || null,
-      fee_usd:            null,
-      fee_paid:           false,
-      status:             "pending",
-    }).select().single();
-
-    if (error) {
-      console.error("[freight_quote] error:", error);
-      alert(`Error al enviar cotización:\n${error.message}`);
-      setSubmittingFreightQuote(false);
-      return;
+  /* ── Refresco puntual tras una acción ──────────────────── */
+  const refreshThread = async () => {
+    const convId = selectedConvIdRef.current;
+    if (!convId) return;
+    const [{ data: qData }, { data: jData }, { data: mData }] = await Promise.all([
+      supabase.from("quotes").select("*").eq("conversation_id", convId).order("created_at", { ascending: true }),
+      supabase.from("jobs").select("*").eq("conversation_id", convId).order("created_at", { ascending: true }),
+      supabase.from("messages").select("*").eq("conversation_id", convId).order("created_at", { ascending: true }),
+    ]);
+    if (qData) setQuotes(qData as Quote[]);
+    if (jData) setJobs(jData as Job[]);
+    if (mData) {
+      const msgs = mData as MsgRow[];
+      setMessages(msgs);
+      if (msgs.length > 0) lastMsgTimeRef.current = msgs[msgs.length - 1].created_at;
     }
-
-    if (data) {
-      setFreightQuotes(prev => [...prev, data as FreightQuote]);
-
-      const msgText = `🚢 Envié una cotización de flete: USD ${total.toLocaleString()} total.`;
-      const now     = new Date().toISOString();
-      await supabase.from("messages").insert({
-        conversation_id: selectedConvId, sender_id: currentUserId, content: msgText,
-      });
-
-      const isP1  = selectedConv.participant_1 === currentUserId;
-      const field = isP1 ? "unread_count_p2" : "unread_count_p1";
-      const cnt   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-      await supabase.from("conversations").update({
-        last_message: msgText, last_message_at: now, [field]: cnt + 1,
-      }).eq("id", selectedConvId);
-    }
-
-    setShowFreightQuoteForm(false);
-    setSubmittingFreightQuote(false);
-  };
-
-  /* ── Accept freight quote ──────────────────────────────── */
-  const handleAcceptFreightQuote = async (quote: FreightQuote) => {
-    if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setProcessingFreightQuote(quote.id);
-
-    await supabase.from("logistics_quotes").update({ status: "accepted" }).eq("id", quote.id);
-
-    const msgText = "✓ Cotización de flete confirmada.";
-    const now     = new Date().toISOString();
-    await supabase.from("messages").insert({
-      conversation_id: selectedConvId, sender_id: currentUserId, content: msgText,
-    });
-
-    const isP1  = selectedConv.participant_1 === currentUserId;
-    const field = isP1 ? "unread_count_p2" : "unread_count_p1";
-    const cnt   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-    await supabase.from("conversations").update({
-      last_message: msgText, last_message_at: now, [field]: cnt + 1,
-    }).eq("id", selectedConvId);
-
-    setFreightQuotes(prev => prev.map(q => q.id === quote.id ? { ...q, status: "accepted" } : q));
-    setProcessingFreightQuote(null);
-  };
-
-  /* ── Reject freight quote ──────────────────────────────── */
-  const handleRejectFreightQuote = async (quote: FreightQuote) => {
-    if (!currentUserId || !selectedConvId || !selectedConv) return;
-    setProcessingFreightQuote(quote.id);
-
-    await supabase.from("logistics_quotes").update({ status: "rejected" }).eq("id", quote.id);
-
-    const msgText = "Cotización de flete rechazada.";
-    const now     = new Date().toISOString();
-    await supabase.from("messages").insert({
-      conversation_id: selectedConvId, sender_id: currentUserId, content: msgText,
-    });
-
-    const isP1  = selectedConv.participant_1 === currentUserId;
-    const field = isP1 ? "unread_count_p2" : "unread_count_p1";
-    const cnt   = isP1 ? selectedConv.unread_count_p2 : selectedConv.unread_count_p1;
-    await supabase.from("conversations").update({
-      last_message: msgText, last_message_at: now, [field]: cnt + 1,
-    }).eq("id", selectedConvId);
-
-    setFreightQuotes(prev => prev.map(q => q.id === quote.id ? { ...q, status: "rejected" } : q));
-    setProcessingFreightQuote(null);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
   };
 
-  const filtered      = conversations.filter(c =>
+  const filtered = conversations.filter(c =>
     c.other_user_name.toLowerCase().includes(search.toLowerCase()) ||
     (c.last_message ?? "").toLowerCase().includes(search.toLowerCase())
   );
-  const totalUnread   = conversations.reduce((s, c) => s + c.my_unread, 0);
-  const pendingIncoming = proposals.filter(
-    p => p.status === "pending" && p.recipient_id === currentUserId
-  ).length;
+  const totalUnread = conversations.reduce((s, c) => s + c.my_unread, 0);
 
-  // Combined thread: messages + proposals + freight quotes sorted by created_at
+  // Lo que le toca hacer al usuario en esta conversación.
+  const pendingForMe = currentUserRole === "proveedor"
+    ? jobs.filter(j => j.provider_id === currentUserId && j.status === "agendado").length
+    : quotes.filter(q => q.status === "pendiente" && q.client_id === currentUserId).length +
+      jobs.filter(j => j.client_id === currentUserId && j.status === "pendiente_confirmar").length;
+
   const chatItems: ChatItem[] = [
-    ...messages.map(m     => ({ type: "message"       as const, id: m.id,  created_at: m.created_at,  data: m })),
-    ...proposals.map(p    => ({ type: "proposal"      as const, id: p.id,  created_at: p.created_at,  data: p })),
-    ...freightQuotes.map(q => ({ type: "freight_quote" as const, id: q.id, created_at: q.created_at, data: q })),
+    ...messages.filter(m => m.kind !== "quote").map(m => ({ type: "message" as const, id: m.id, created_at: m.created_at, data: m })),
+    ...quotes.map(q => ({ type: "quote" as const, id: q.id, created_at: q.created_at, data: q })),
+    ...jobs.map(j   => ({ type: "job"   as const, id: j.id, created_at: j.created_at, data: j })),
   ].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
   /* ── Render ────────────────────────────────────────────── */
   return (
     <div className="flex flex-1 overflow-hidden">
 
-      {/* Left: conversation list */}
+      {/* Lista de conversaciones */}
       <div className={`${selectedConvId ? "hidden lg:flex" : "flex"} w-full lg:w-72 flex-shrink-0 bg-white border-r border-gray-200 flex-col`}>
         <div className="px-4 py-3.5 border-b border-gray-100 bg-[#085041]">
           <h2 className="text-sm font-bold text-white">Mensajes</h2>
@@ -1315,49 +969,38 @@ function MensajesInner() {
         </div>
       </div>
 
-      {/* Right: messages panel */}
+      {/* Panel del hilo */}
       <div className={`${selectedConvId ? "flex" : "hidden lg:flex"} flex-1 flex-col overflow-hidden bg-gray-50`}>
         {!selectedConv ? (
           <EmptyChat />
         ) : (
           <>
-            {/* Chat header */}
             <div className="flex-shrink-0 bg-white border-b border-gray-200 px-5 py-3.5 flex items-center gap-3 shadow-sm">
               <button type="button" onClick={() => setSelectedConvId(null)}
                 className="lg:hidden text-gray-400 hover:text-[#085041] transition-colors">
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <div className="w-8 h-8 rounded-lg bg-[#085041] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              <Link href={`/perfil/${selectedConv.other_user_id}`}
+                className="w-8 h-8 rounded-lg bg-[#085041] flex items-center justify-center text-white text-xs font-bold flex-shrink-0 hover:bg-[#1D9E75] transition-colors">
                 {initials(selectedConv.other_user_name)}
-              </div>
+              </Link>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-[#085041]">{selectedConv.other_user_name}</p>
-                <p className="text-xs text-[#6B7280]">Conversación privada</p>
+                <p className="text-sm font-bold text-[#085041] truncate">{selectedConv.other_user_name}</p>
+                <p className="text-xs text-[#6B7280]">
+                  {pendingForMe > 0 ? `${pendingForMe} acción pendiente` : "Conversación privada"}
+                </p>
               </div>
-              {/* Cotizar flete — forwarders only */}
-              {currentUserRole === "forwarder" && (
-                <button type="button" onClick={() => setShowFreightQuoteForm(true)}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-colors flex-shrink-0 shadow-sm">
-                  <Truck className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Cotizar flete</span>
-                </button>
-              )}
-              {/* Proponer acuerdo — non-forwarders only */}
-              {currentUserRole !== "forwarder" && (
-                <button type="button" onClick={() => setShowProposalForm(true)}
-                  className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] transition-colors flex-shrink-0 shadow-sm">
+
+              {/* Cotizar — solo el Proveedor */}
+              {currentUserRole === "proveedor" && (
+                <button type="button" onClick={openQuoteForm}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] transition-colors flex-shrink-0 shadow-sm">
                   <Handshake className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Proponer acuerdo</span>
-                  {pendingIncoming > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
-                      {pendingIncoming}
-                    </span>
-                  )}
+                  <span className="hidden sm:inline">Cotizar</span>
                 </button>
               )}
             </div>
 
-            {/* Chat thread */}
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {loadingMsgs ? (
                 <div className="flex justify-center pt-12"><Loader2 className="h-6 w-6 text-[#1D9E75] animate-spin" /></div>
@@ -1370,14 +1013,14 @@ function MensajesInner() {
                   {chatItems.map(item =>
                     item.type === "message" ? (
                       <MsgBubble key={item.id} msg={item.data} isMe={item.data.sender_id === currentUserId} otherName={selectedConv.other_user_name} />
-                    ) : item.type === "proposal" ? (
-                      <ProposalCard key={item.id} proposal={item.data} currentUserId={currentUserId!}
-                        onAccept={handleAcceptProposal} onReject={handleRejectProposal} onCancel={handleCancelProposal}
-                        processing={processingProposal === item.id} />
+                    ) : item.type === "quote" ? (
+                      <QuoteCard key={item.id} quote={item.data} currentUserId={currentUserId!}
+                        onAccept={handleAcceptQuote} onReject={handleRejectQuote} onCancel={handleCancelQuote}
+                        processing={processingId === item.id} />
                     ) : (
-                      <FreightQuoteCard key={item.id} quote={item.data} currentUserId={currentUserId!}
-                        onAccept={handleAcceptFreightQuote} onReject={handleRejectFreightQuote}
-                        processing={processingFreightQuote === item.id} />
+                      <JobCard key={item.id} job={item.data} currentUserId={currentUserId!}
+                        onComplete={handleCompleteJob} onConfirm={setConfirmingJob}
+                        processing={processingId === item.id} />
                     )
                   )}
                   <div ref={messagesEndRef} />
@@ -1385,7 +1028,6 @@ function MensajesInner() {
               )}
             </div>
 
-            {/* Input area */}
             <div className="flex-shrink-0 bg-white border-t border-gray-200 px-4 py-3">
               <div className="flex items-end gap-3">
                 <textarea rows={1} value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
@@ -1397,28 +1039,27 @@ function MensajesInner() {
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </button>
               </div>
-              <p className="text-[10px] text-[#6B7280] mt-1.5 text-center">Mensajes en tiempo real · MARKARU</p>
+              <p className="text-[10px] text-[#6B7280] mt-1.5 text-center">Mensajes en tiempo real · Apurape</p>
             </div>
           </>
         )}
       </div>
 
-      {/* Proposal modal */}
-      {showProposalForm && (
-        <ProposalModal
-          onClose={() => setShowProposalForm(false)}
-          onSubmit={handleSubmitProposal}
-          submitting={submittingProposal}
-          userRole={currentUserRole}
+      {showQuoteForm && (
+        <QuoteModal
+          onClose={() => setShowQuoteForm(false)}
+          onSubmit={handleSubmitQuote}
+          submitting={submitting}
+          quotesLeft={quotesLeft}
         />
       )}
 
-      {/* Freight quote modal */}
-      {showFreightQuoteForm && (
-        <FreightQuoteModal
-          onClose={() => setShowFreightQuoteForm(false)}
-          onSubmit={handleSubmitFreightQuote}
-          submitting={submittingFreightQuote}
+      {confirmingJob && (
+        <ConfirmModal
+          job={confirmingJob}
+          onClose={() => setConfirmingJob(null)}
+          onSubmit={handleConfirmJob}
+          submitting={submitting}
         />
       )}
     </div>

@@ -12,29 +12,26 @@ export async function generateMetadata({
   const { data: profile } = await supabase
     .from("profiles")
     .select("name, business_name, role, avatar_url, bio")
-    .eq("user_id", id)
+    .eq("id", id)
     .single();
 
-  const displayName = profile?.business_name || profile?.name || "Perfil MARKARU";
+  const displayName = profile?.business_name || profile?.name || "Perfil Apurape";
   const role = profile?.role ?? "usuario";
   const roleLabel: Record<string, string> = {
-    productor: "Productor agrícola",
-    exportador: "Exportador",
-    comprador: "Comprador",
-    forwarder: "Forwarder",
-    certificadora: "Certificadora",
+    proveedor: "Proveedor de servicios",
+    cliente: "Cliente",
   };
-  const description = `${displayName} — ${roleLabel[role] ?? role} en MARKARU. ${profile?.bio ?? "Plataforma de comercio agro en Perú y LATAM."}`.slice(0, 160);
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://MARKARU.com"}/perfil/${id}`;
+  const description = `${displayName} — ${roleLabel[role] ?? role} en Apurape. ${profile?.bio ?? "Marketplace de servicios en Perú."}`.slice(0, 160);
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.apurape.com"}/perfil/${id}`;
 
   return {
-    title: `${displayName} | MARKARU`,
+    title: `${displayName} | Apurape`,
     description,
     openGraph: {
       title: displayName,
       description,
       url,
-      siteName: "MARKARU",
+      siteName: "Apurape",
       type: "profile",
       ...(profile?.avatar_url ? { images: [{ url: profile.avatar_url, width: 400, height: 400, alt: displayName }] } : {}),
     },

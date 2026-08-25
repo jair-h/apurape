@@ -377,9 +377,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <p className="text-sm font-bold text-[#085041] mb-4">Accesos rápidos</p>
               <div className="space-y-2">
                 {[
-                  { href: "/catalogo",  icon: Package,   label: "Catálogo" },
-                  { href: "/directorio", icon: Building2, label: "Directorio" },
-                  { href: "/dashboard/logistica/cotizar", icon: Ship, label: "Cotizador de flete" },
+                  { href: "/servicios", icon: Package, label: "Buscar servicios" },
+                  { href: "/dashboard/cliente/solicitud/nueva", icon: Building2, label: "Publicar solicitud" },
+                  { href: "/register?rol=proveedor", icon: Ship, label: "Ofrecer mis servicios" },
                 ].map((tool) => (
                   <Link key={tool.href} href={tool.href}
                     className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#E1F5EE] text-gray-700 hover:text-[#085041] transition-colors group">

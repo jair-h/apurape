@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       const { data } = await supabase
         .from("profiles")
         .select("name, business_name, country, role, plan, plan_status, trial_ends_at, plan_expires_at, created_at")
-        .eq("user_id", user.id)
+        .eq("id", user.id)
         .maybeSingle();
       profile = data ?? null;
     }

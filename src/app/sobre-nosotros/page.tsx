@@ -149,7 +149,7 @@ export default function SobreNosotrosPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/catalogo"
+                href="/servicios"
                 className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white px-8 py-4 rounded-xl text-base font-bold hover:bg-white/20 transition-colors"
               >
                 {t("about.cta.explore")}

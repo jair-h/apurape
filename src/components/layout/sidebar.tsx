@@ -7,12 +7,8 @@ import {
   LayoutDashboard,
   User,
   Package,
-  Award,
-  FileText,
-  Truck,
   TrendingUp,
   MessageCircle,
-  BookOpen,
   CreditCard,
   Search,
   Users,
@@ -27,7 +23,6 @@ import {
   AlertCircle,
   Settings,
   Home,
-  Building2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useTranslation, SUPPORTED_LANGS } from "@/lib/i18n";
@@ -45,72 +40,38 @@ type NavItem = {
 /* ─── Navigation per role ─────────────────────────────────── */
 
 const NAV_BY_ROLE: Record<string, NavItem[]> = {
-  productor: [
-    { icon: LayoutDashboard, labelKey: "sidebar.home",             href: "/dashboard/productor" },
-    { icon: User,            labelKey: "sidebar.myProfile",        href: "/dashboard/productor/perfil" },
-    { icon: Package,         labelKey: "sidebar.myCatalog",        href: "/dashboard/productor/catalogo" },
-    { icon: ClipboardList,   labelKey: "sidebar.purchaseRequests", href: "/dashboard/productor/rfqs" },
-    { icon: Truck,           labelKey: "sidebar.freightQuote",     href: "/dashboard/logistica/cotizar" },
-    { icon: FileText,        labelKey: "sidebar.myFreight",        href: "/dashboard/logistica/mis-solicitudes" },
-    { icon: TrendingUp,      labelKey: "sidebar.myOperations",     href: "/dashboard/productor/operaciones" },
-    { icon: MessageCircle,   labelKey: "sidebar.messages",         href: "/dashboard/mensajes" },
-    { icon: Award,           labelKey: "sidebar.certifications",   href: "/dashboard/certificaciones",        comingSoon: true },
-    { icon: BookOpen,        labelKey: "sidebar.courses",          href: "/dashboard/cursos",                 comingSoon: true },
-    { icon: CreditCard,      labelKey: "sidebar.myPlan",           href: "/dashboard/plan" },
-  ],
-  exportador: [
-    { icon: LayoutDashboard, labelKey: "sidebar.home",              href: "/dashboard/exportador" },
-    { icon: User,            labelKey: "sidebar.myProfile",         href: "/dashboard/exportador/perfil" },
-    { icon: Package,         labelKey: "sidebar.myProducts",        href: "/dashboard/exportador/productos" },
-    { icon: Search,          labelKey: "sidebar.searchProducers",   href: "/dashboard/exportador/productores" },
-    { icon: ClipboardList,   labelKey: "sidebar.myRequests",        href: "/dashboard/exportador/solicitudes" },
-    { icon: Plus,            labelKey: "sidebar.publishRequest",    href: "/dashboard/exportador/rfq/nuevo" },
-    { icon: Search,          labelKey: "sidebar.availableRequests", href: "/dashboard/exportador/disponibles" },
-    { icon: Truck,           labelKey: "sidebar.freightQuote",      href: "/dashboard/logistica/cotizar" },
-    { icon: FileText,        labelKey: "sidebar.myFreight",         href: "/dashboard/logistica/mis-solicitudes" },
-    { icon: TrendingUp,      labelKey: "sidebar.myOperations",      href: "/dashboard/exportador/operaciones" },
+  proveedor: [
+    { icon: LayoutDashboard, labelKey: "sidebar.home",              href: "/dashboard/proveedor" },
+    { icon: User,            labelKey: "sidebar.myProfile",         href: "/dashboard/proveedor/perfil" },
+    { icon: Package,         labelKey: "sidebar.myServices",        href: "/dashboard/proveedor/servicios" },
+    { icon: Search,          labelKey: "sidebar.availableRequests", href: "/dashboard/proveedor/solicitudes" },
+    { icon: ClipboardList,   labelKey: "sidebar.myQuotes",          href: "/dashboard/proveedor/cotizaciones" },
+    { icon: TrendingUp,      labelKey: "sidebar.myJobs",            href: "/dashboard/proveedor/trabajos" },
     { icon: MessageCircle,   labelKey: "sidebar.messages",          href: "/dashboard/mensajes" },
+    { icon: Star,            labelKey: "sidebar.raffle",            href: "/dashboard/sorteo" },
     { icon: CreditCard,      labelKey: "sidebar.myPlan",            href: "/dashboard/plan" },
   ],
-  comprador: [
-    { icon: LayoutDashboard, labelKey: "sidebar.home",             href: "/dashboard/comprador" },
-    { icon: User,            labelKey: "sidebar.myProfile",        href: "/dashboard/comprador/perfil" },
-    { icon: Search,          labelKey: "sidebar.exploreCatalog",   href: "/catalogo" },
-    { icon: Users,           labelKey: "sidebar.searchSuppliers",  href: "/directorio" },
-    { icon: Plus,            labelKey: "sidebar.publishRequest",   href: "/dashboard/comprador/solicitud/nueva" },
-    { icon: ClipboardList,   labelKey: "sidebar.myRequests",       href: "/dashboard/comprador/solicitudes" },
-    { icon: TrendingUp,      labelKey: "sidebar.myOperations",     href: "/dashboard/comprador/operaciones" },
-    { icon: Truck,           labelKey: "sidebar.freightQuote",     href: "/dashboard/logistica/cotizar" },
-    { icon: FileText,        labelKey: "sidebar.myFreight",        href: "/dashboard/logistica/mis-solicitudes" },
-    { icon: MessageCircle,   labelKey: "sidebar.messages",         href: "/dashboard/mensajes" },
-    { icon: CreditCard,      labelKey: "sidebar.myPlan",           href: "/dashboard/plan" },
-  ],
-  forwarder: [
-    { icon: LayoutDashboard, labelKey: "sidebar.home",           href: "/dashboard/forwarder" },
-    { icon: User,            labelKey: "sidebar.myProfile",      href: "/dashboard/forwarder/perfil" },
-    { icon: FileText,        labelKey: "sidebar.availableRFQs",  href: "/dashboard/forwarder/rfqs" },
-    { icon: ClipboardList,   labelKey: "sidebar.myQuotes",       href: "/dashboard/forwarder/cotizaciones" },
+  cliente: [
+    { icon: LayoutDashboard, labelKey: "sidebar.home",           href: "/dashboard/cliente" },
+    { icon: User,            labelKey: "sidebar.myProfile",      href: "/dashboard/cliente/perfil" },
+    { icon: Search,          labelKey: "sidebar.findServices",   href: "/servicios" },
+    { icon: Plus,            labelKey: "sidebar.publishRequest", href: "/dashboard/cliente/solicitud/nueva" },
+    { icon: ClipboardList,   labelKey: "sidebar.myRequests",     href: "/dashboard/cliente/solicitudes" },
+    { icon: TrendingUp,      labelKey: "sidebar.myHires",        href: "/dashboard/cliente/trabajos" },
     { icon: MessageCircle,   labelKey: "sidebar.messages",       href: "/dashboard/mensajes" },
-    { icon: TrendingUp,      labelKey: "sidebar.operations",     href: "/dashboard/forwarder/operaciones" },
-  ],
-  certificadora: [
-    { icon: LayoutDashboard, labelKey: "sidebar.home",            href: "/dashboard/certificadora" },
-    { icon: Award,           labelKey: "sidebar.certifications",  href: "/dashboard/certificadora/certificaciones" },
-    { icon: Users,           labelKey: "sidebar.producers",       href: "/dashboard/certificadora/productores",    comingSoon: true },
-    { icon: FileText,        labelKey: "sidebar.reports",         href: "/dashboard/certificadora/informes",       comingSoon: true },
+    { icon: Star,            labelKey: "sidebar.myPoints",       href: "/dashboard/cliente/puntos" },
   ],
   admin: [
-    { icon: LayoutDashboard, labelKey: "sidebar.dashboard",          href: "/dashboard/admin" },
-    { icon: Users,           labelKey: "sidebar.users",              href: "/dashboard/admin/usuarios" },
-    { icon: PenSquare,       labelKey: "sidebar.blog",               href: "/dashboard/admin/blog" },
-    { icon: Image,           labelKey: "sidebar.banners",            href: "/dashboard/admin/banners" },
-    { icon: AlertCircle,     labelKey: "sidebar.complaints",         href: "/dashboard/admin/reclamaciones" },
-    { icon: Building2,       labelKey: "sidebar.cooperatives",       href: "/dashboard/admin/cooperativas" },
-    { icon: Settings,        labelKey: "sidebar.settings",           href: "/dashboard/admin/configuracion" },
-    { icon: Shield,          labelKey: "sidebar.verification",       href: "/dashboard/admin/verificacion" },
-    { icon: TrendingUp,      labelKey: "sidebar.operations",         href: "/dashboard/admin/operaciones" },
-    { icon: DollarSign,      labelKey: "sidebar.billing",            href: "/dashboard/admin/cobros" },
-    { icon: Home,            labelKey: "sidebar.backToHome",         href: "/" },
+    { icon: LayoutDashboard, labelKey: "sidebar.dashboard",    href: "/dashboard/admin" },
+    { icon: Users,           labelKey: "sidebar.users",        href: "/dashboard/admin/usuarios" },
+    { icon: Star,            labelKey: "sidebar.raffles",      href: "/dashboard/admin/sorteos" },
+    { icon: PenSquare,       labelKey: "sidebar.blog",         href: "/dashboard/admin/blog" },
+    { icon: Image,           labelKey: "sidebar.banners",      href: "/dashboard/admin/banners" },
+    { icon: AlertCircle,     labelKey: "sidebar.complaints",   href: "/dashboard/admin/reclamaciones" },
+    { icon: Settings,        labelKey: "sidebar.settings",     href: "/dashboard/admin/configuracion" },
+    { icon: Shield,          labelKey: "sidebar.verification", href: "/dashboard/admin/verificacion" },
+    { icon: DollarSign,      labelKey: "sidebar.billing",      href: "/dashboard/admin/cobros" },
+    { icon: Home,            labelKey: "sidebar.backToHome",   href: "/" },
   ],
 };
 
@@ -130,8 +91,7 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
   const [loading,          setLoading]          = useState(true);
   const [userId,           setUserId]           = useState<string | null>(null);
   const [totalUnread,      setTotalUnread]      = useState(0);
-  const [freightBadge,     setFreightBadge]     = useState(0);
-  const [operacionesBadge, setOperacionesBadge] = useState(0);
+  const [trabajosBadge,    setTrabajosBadge]    = useState(0);
 
   useEffect(() => {
     async function load() {
@@ -143,7 +103,7 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("user_id", user.id)
+        .eq("id", user.id)
         .single();
       setRole(profile?.role ?? null);
       setLoading(false);
@@ -173,45 +133,24 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
     return () => clearInterval(interval);
   }, [userId]);
 
+  // Badge de trabajos: para el Cliente son los servicios que el
+  // Proveedor marcó como completados y esperan su confirmación —
+  // el paso que sostiene todo el ranking del sorteo, así que tiene
+  // que verse. Para el Proveedor, los que aún están agendados.
   useEffect(() => {
-    const rolesWithFletes = ["productor", "exportador", "comprador"];
-    if (!userId || !role || !rolesWithFletes.includes(role)) return;
+    if (!userId || !role) return;
     const supabase = createClient();
-    async function fetchFreightBadge() {
-      const { data: rfqs } = await supabase
-        .from("rfq_logistics")
-        .select("id")
-        .eq("requester_id", userId);
-      if (!rfqs || rfqs.length === 0) { setFreightBadge(0); return; }
-      const { count } = await supabase
-        .from("logistics_quotes")
-        .select("id", { count: "exact", head: true })
-        .in("rfq_id", rfqs.map(r => r.id))
-        .eq("status", "pending");
-      setFreightBadge(count ?? 0);
+    async function fetchJobsBadge() {
+      const query = supabase.from("jobs").select("id", { count: "exact", head: true });
+      const { count } = role === "cliente"
+        ? await query.eq("client_id", userId).eq("status", "pendiente_confirmar")
+        : await query.eq("provider_id", userId).eq("status", "agendado");
+      setTrabajosBadge(count ?? 0);
     }
-    fetchFreightBadge();
-    const interval = setInterval(fetchFreightBadge, 5000);
+    fetchJobsBadge();
+    const interval = setInterval(fetchJobsBadge, 10000);
     return () => clearInterval(interval);
   }, [userId, role]);
-
-  useEffect(() => {
-    if (!userId) return;
-    const supabase = createClient();
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    async function fetchOpsBadge() {
-      const { count } = await supabase
-        .from("operations")
-        .select("id", { count: "exact", head: true })
-        .or(`buyer_id.eq.${userId},seller_id.eq.${userId},forwarder_id.eq.${userId}`)
-        .gte("created_at", sevenDaysAgo)
-        .eq("status", "confirmed");
-      setOperacionesBadge(count ?? 0);
-    }
-    fetchOpsBadge();
-    const interval = setInterval(fetchOpsBadge, 10000);
-    return () => clearInterval(interval);
-  }, [userId]);
 
   const handleLogout = () => {
     createClient().auth.signOut();
@@ -288,15 +227,12 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
             const active =
               pathname === item.href ||
               (item.href !== "/dashboard" && pathname.startsWith(item.href));
-            const isMensajes    = item.href === "/dashboard/mensajes";
-            const isMisFletes   = item.href === "/dashboard/logistica/mis-solicitudes";
-            const isOperaciones = item.href.endsWith("/operaciones");
+            const isMensajes  = item.href === "/dashboard/mensajes";
+            const isTrabajos  = item.href.endsWith("/trabajos");
             const badge = isMensajes && totalUnread > 0
               ? totalUnread
-              : isMisFletes && freightBadge > 0
-              ? freightBadge
-              : isOperaciones && operacionesBadge > 0
-              ? operacionesBadge
+              : isTrabajos && trabajosBadge > 0
+              ? trabajosBadge
               : 0;
 
             return (

@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 import { getPlanInfo } from "@/lib/plans";
 import { sendBrevoTemplate, syncBrevoContact, splitFullName, formatDateLima, missingParams, LOGIN_URL } from "@/lib/brevo";
@@ -28,8 +29,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { token, email, plan, rol } = body;
-  const info = getPlanInfo(rol, plan);
-  if (!token || !info || !email) {
+  if (!token || !email) {
     return NextResponse.json({ success: false, error: "Datos de pago incompletos." }, { status: 400 });
   }
 
@@ -48,14 +48,18 @@ export async function POST(request: NextRequest) {
 
   // Real customer data for Culqi: name from profiles, email from the auth session.
   let first_name = "Cliente";
-  let last_name = "MARKARU";
+  let last_name = "Apurape";
   let fullName = "Cliente";        // nombre real para el email (NOMBRE)
   let chargeEmail = email;
-  let wasTrial = false; // paid during the free trial → gets 1 bonus month (13 total)
+  let accountType = "persona";     // decide el precio: S/120 persona, S/330 negocio
   if (user) {
     chargeEmail = user.email ?? email;
-    const { data: profile } = await supabase.from("profiles").select("name, plan_status").eq("user_id", user.id).maybeSingle();
-    wasTrial = profile?.plan_status === "trial";
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("name, account_type")
+      .eq("id", user.id)
+      .maybeSingle();
+    accountType = (profile?.account_type as string) || "persona";
     const name = (profile?.name as string)
       || (user.user_metadata?.full_name as string)
       || (user.user_metadata?.name as string)
@@ -63,7 +67,14 @@ export async function POST(request: NextRequest) {
     fullName = String(name).trim() || "Cliente";
     const parts = String(name).trim().split(/\s+/).filter(Boolean);
     first_name = parts[0] || "Cliente";
-    last_name = parts.slice(1).join(" ") || "MARKARU";
+    last_name = parts.slice(1).join(" ") || "Apurape";
+  }
+
+  // El precio depende del tipo de cuenta, que solo se conoce tras leer el
+  // perfil: por eso el plan se resuelve aquí y no al validar el body.
+  const info = getPlanInfo(rol ?? "proveedor", plan ?? "pro", accountType);
+  if (!info) {
+    return NextResponse.json({ success: false, error: "Plan no válido." }, { status: 400 });
   }
 
   // Single charge
@@ -77,10 +88,10 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         amount: info.amountCents,
-        currency_code: "USD",
+        currency_code: "PEN",
         email: chargeEmail,
         source_id: token,
-        description: `Plan ${info.name} - MARKARU`,
+        description: `Plan ${info.name} - Apurape`,
         antifraud_details: {
           first_name,
           last_name,
@@ -109,24 +120,53 @@ export async function POST(request: NextRequest) {
   }
 
   // El plan se activa PRIMERO; el email se envía DESPUÉS (el correo nunca activa el plan).
-  // Paid during the trial → 13 months (12 + 1 bonus). Paid after trial → 12 months.
+  //
+  // La activación va por activate_pro_plan(), que aplica los 12 meses pagados
+  // más el mes gratis de la oferta y deja constancia en free_months_granted.
+  // Se llama con service-role a propósito: la función está revocada para
+  // 'authenticated' porque, siendo SECURITY DEFINER, cualquier usuario con
+  // sesión podría regalarse el plan Pro llamándola por RPC.
   const paidAt = new Date();
-  const expires = new Date(paidAt);
-  expires.setMonth(expires.getMonth() + (wasTrial ? 13 : 12));
+  let expires = new Date(paidAt);
+  expires.setMonth(expires.getMonth() + 13);
 
   if (user) {
-    try {
-      const base = { plan_status: "active", plan_active: true, trial_ends_at: null };
-      const { error: upErr } = await supabase
-        .from("profiles")
-        .update({ ...base, plan_expires_at: expires.toISOString() })
-        .eq("user_id", user.id);
-      // Fallback if the plan_expires_at column doesn't exist yet.
-      if (upErr) {
-        await supabase.from("profiles").update(base).eq("user_id", user.id);
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!serviceKey) {
+      console.error("[culqi] Falta SUPABASE_SERVICE_ROLE_KEY: cobro hecho pero plan sin activar", charge.id);
+    } else {
+      try {
+        const admin = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+
+        const { data: payment } = await admin
+          .from("payments")
+          .insert({
+            profile_id: user.id,
+            provider: "culqi",
+            charge_id: charge.id,
+            amount_cents: info.amountCents,
+            currency: "PEN",
+            plan: "pro",
+            account_type: accountType,
+            status: "pagado",
+          })
+          .select("id")
+          .single();
+
+        const { error: rpcError } = await admin.rpc("activate_pro_plan", {
+          p_profile_id: user.id,
+          p_payment_id: payment?.id ?? null,
+        });
+        if (rpcError) throw rpcError;
+
+        const { data: fresh } = await admin
+          .from("profiles").select("plan_expires_at").eq("id", user.id).maybeSingle();
+        if (fresh?.plan_expires_at) expires = new Date(fresh.plan_expires_at);
+      } catch (e) {
+        console.error("[culqi] activación del plan falló tras el cobro:", e);
       }
-    } catch (e) {
-      console.error("[culqi] profile update failed after charge:", e);
     }
   }
 

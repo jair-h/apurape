@@ -67,7 +67,7 @@ export default function ProfileActions({ profileUserId }: { profileUserId: strin
               {copied ? <Check className="h-3.5 w-3.5 text-[#1D9E75]" /> : <Copy className="h-3.5 w-3.5" />}
               {copied ? "¡Copiado!" : "Copiar link"}
             </button>
-            <a href={`https://wa.me/?text=${encodeURIComponent("Mira este perfil en MARKARU: " + profileUrl)}`} target="_blank" rel="noopener noreferrer"
+            <a href={`https://wa.me/?text=${encodeURIComponent("Mira este perfil en Apurape: " + profileUrl)}`} target="_blank" rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity">WhatsApp</a>
             <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`} target="_blank" rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity">Facebook</a>

@@ -6,9 +6,8 @@ import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
 const PERFIL: Record<string, string> = {
-  productor:  "/dashboard/productor/perfil",
-  exportador: "/dashboard/exportador/perfil",
-  forwarder:  "/dashboard/forwarder/perfil",
+  proveedor: "/dashboard/proveedor/perfil",
+  cliente:   "/dashboard/cliente/perfil",
 };
 
 export default function PerfilRedirectPage() {
@@ -22,7 +21,7 @@ export default function PerfilRedirectPage() {
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("user_id", user.id)
+        .eq("id", user.id)
         .single();
       const dest = PERFIL[profile?.role ?? ""];
       router.replace(dest ?? "/dashboard");

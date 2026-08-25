@@ -38,8 +38,7 @@ export default function LandingNavbar() {
   const { t } = useTranslation();
 
   const NAV_LINKS = [
-    { href: "/catalogo",        label: t("nav.catalog") },
-    { href: "/directorio",      label: t("nav.directory") },
+    { href: "/servicios",       label: t("nav.services") },
     { href: "/#como-funciona",  label: t("nav.howItWorks") },
     { href: "/#planes",         label: t("nav.plans") },
     { href: "/sobre-nosotros",  label: t("nav.about") },

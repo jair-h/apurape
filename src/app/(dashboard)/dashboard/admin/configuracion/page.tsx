@@ -275,7 +275,7 @@ export default function AdminConfigPage() {
             <label className={labelCls}>Link del botón</label>
             <input value={cfg.landing_sections.products.cta_link}
               onChange={(e) => setSection("products", "cta_link", e.target.value)}
-              placeholder="/catalogo" className={inputCls} />
+              placeholder="/servicios" className={inputCls} />
           </div>
         </div>
       </Card>
@@ -319,7 +319,7 @@ export default function AdminConfigPage() {
             <label className={labelCls}>Link del botón</label>
             <input value={cfg.landing_sections.producerStory.cta_link}
               onChange={(e) => setSection("producerStory", "cta_link", e.target.value)}
-              placeholder="/roles/productor" className={inputCls} />
+              placeholder="/register?rol=proveedor" className={inputCls} />
           </div>
         </div>
       </Card>

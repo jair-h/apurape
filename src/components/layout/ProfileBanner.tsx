@@ -6,10 +6,8 @@ import { X, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
 const PROFILE_HREF: Record<string, string> = {
-  productor:    "/dashboard/productor/perfil",
-  exportador:   "/dashboard/exportador/perfil",
-  forwarder:    "/dashboard/forwarder/perfil",
-  comprador:    "/dashboard/comprador/perfil",
+  proveedor: "/dashboard/proveedor/perfil",
+  cliente:   "/dashboard/cliente/perfil",
 };
 
 export default function ProfileBanner() {
@@ -24,37 +22,20 @@ export default function ProfileBanner() {
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role, name, business_name")
-        .eq("user_id", user.id)
+        .select("role, name, business_name, district")
+        .eq("id", user.id)
         .single();
 
       if (!profile) return;
       const role = profile.role as string | null;
-      if (!role || !PROFILE_HREF[role]) return; // admin/certificadora don't need this
+      if (!role || !PROFILE_HREF[role]) return; // admin doesn't need this
 
       setHref(PROFILE_HREF[role]);
 
-      // Check if the base profile has a name
+      // Un perfil está "completo" si tiene nombre (o razón social) y distrito:
+      // sin distrito no aparece en las búsquedas por zona.
       const hasName = !!(profile.name || profile.business_name);
-
-      if (!hasName) { setShow(true); return; }
-
-      // For productor and exportador also check role-specific profile
-      if (role === "productor") {
-        const { data: pp } = await supabase
-          .from("producer_profiles")
-          .select("farm_name")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (!pp?.farm_name) setShow(true);
-      } else if (role === "exportador") {
-        const { data: ep } = await supabase
-          .from("exporter_profiles")
-          .select("razon_social")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (!ep?.razon_social) setShow(true);
-      }
+      if (!hasName || !profile.district) setShow(true);
     }
     check();
   }, []);

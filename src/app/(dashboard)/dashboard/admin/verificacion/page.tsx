@@ -141,7 +141,8 @@ export default function VerificacionPage() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, user_id, name, business_name, role, country, region, created_at")
+        // profiles.id ES el id de auth; se alias a user_id para el resto de la pantalla.
+        .select("id, user_id:id, name, business_name, role, country, region, created_at")
         .eq("verified", false)
         .neq("role", "admin")
         .order("created_at", { ascending: false });
@@ -159,7 +160,7 @@ export default function VerificacionPage() {
     const { error } = await supabase
       .from("profiles")
       .update({ verified: true })
-      .eq("user_id", userId);
+      .eq("id", userId);
     if (error) console.error("[approve]", error);
     setDecisions((p) => ({ ...p, [userId]: "aprobado" }));
     setLoadingId(null);

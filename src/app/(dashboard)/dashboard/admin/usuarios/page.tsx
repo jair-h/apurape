@@ -60,7 +60,8 @@ export default function UsuariosPage() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, user_id, name, business_name, role, plan, verified, suspended, country, created_at")
+        // profiles.id ES el id de auth; se alias a user_id para el resto de la pantalla.
+        .select("id, user_id:id, name, business_name, role, plan, verified, suspended, country, created_at")
         .order("created_at", { ascending: false });
       if (error) console.error("[usuarios]", error);
       const profiles: AppUser[] = (data ?? []).map((p) => ({ ...p, suspended: p.suspended ?? false }));
@@ -102,7 +103,7 @@ export default function UsuariosPage() {
   const handleVerify = async (u: AppUser) => {
     setActionLoading(u.user_id);
     const supabase = createClient();
-    await supabase.from("profiles").update({ verified: true }).eq("user_id", u.user_id);
+    await supabase.from("profiles").update({ verified: true }).eq("id", u.user_id);
     setUsers((prev) => prev.map((x) => x.user_id === u.user_id ? { ...x, verified: true } : x));
     setActionLoading(null);
     setConfirmModal(null);
@@ -111,7 +112,7 @@ export default function UsuariosPage() {
   const handleSuspend = async (u: AppUser, suspend: boolean) => {
     setActionLoading(u.user_id);
     const supabase = createClient();
-    await supabase.from("profiles").update({ suspended: suspend }).eq("user_id", u.user_id);
+    await supabase.from("profiles").update({ suspended: suspend }).eq("id", u.user_id);
     setUsers((prev) => prev.map((x) => x.user_id === u.user_id ? { ...x, suspended: suspend } : x));
     setActionLoading(null);
     setConfirmModal(null);

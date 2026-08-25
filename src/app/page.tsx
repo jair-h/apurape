@@ -77,11 +77,11 @@ function StaticHero({ content }: { content?: HeroContent }) {
 
           {/* Secondary role shortcuts */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center mt-2">
-            <Link href="/roles/productor"
+            <Link href="/register?rol=proveedor"
               className="inline-flex items-center gap-2 bg-transparent border border-white/60 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-white/10 transition-colors">
               <Sprout className="h-4 w-4" />{ctaProducer}
             </Link>
-            <Link href="/roles/exportador"
+            <Link href="/servicios"
               className="inline-flex items-center gap-2 bg-transparent border border-white/60 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-white/10 transition-colors">
               <Globe className="h-4 w-4" />{ctaExporter}
             </Link>
@@ -237,7 +237,7 @@ function ProductsSection({ config }: { config?: SectionConfig }) {
   const title   = config?.title    || t("landing.products.title");
   const subtitle = config?.subtitle || t("landing.products.subtitle");
   const ctaText = config?.cta_text || t("landing.products.cta");
-  const ctaLink = config?.cta_link || "/catalogo";
+  const ctaLink = config?.cta_link || "/servicios";
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -274,10 +274,8 @@ function ProductsSection({ config }: { config?: SectionConfig }) {
 
 /* ─── Soy... ──────────────────────────────────────────────── */
 const SOY_ROLES = [
-  { id: "productor",  icon: Sprout,    href: "/roles/productor",  cardClass: "hover:border-[#1D9E75]", iconClass: "text-[#1D9E75] bg-green-100" },
-  { id: "exportador", icon: Building2, href: "/roles/exportador", cardClass: "hover:border-blue-500",   iconClass: "text-blue-600 bg-blue-100" },
-  { id: "forwarder",  icon: Truck,     href: "/roles/forwarder",  cardClass: "hover:border-orange-500", iconClass: "text-orange-600 bg-orange-100" },
-  { id: "comprador",  icon: Globe,     href: "/roles/comprador",  cardClass: "hover:border-purple-500", iconClass: "text-purple-600 bg-purple-100" },
+  { id: "proveedor", icon: Sprout,    href: "/register?rol=proveedor", cardClass: "hover:border-[#D92D20]", iconClass: "text-[#D92D20] bg-red-100" },
+  { id: "cliente",   icon: Building2, href: "/register?rol=cliente",   cardClass: "hover:border-[#0E9384]", iconClass: "text-[#0E9384] bg-teal-100" },
 ];
 
 function SoySection() {
@@ -316,7 +314,7 @@ function ProducerStory({ config }: { config?: SectionConfig }) {
   const title   = config?.title    || t("landing.producerStory.title");
   const body    = config?.body     || t("landing.producerStory.body");
   const ctaText = config?.cta_text || t("landing.producerStory.cta");
-  const ctaLink = config?.cta_link || "/roles/productor";
+  const ctaLink = config?.cta_link || "/register?rol=proveedor";
   const imgSrc  = config?.image_url || DEFAULT_PRODUCER_IMG;
   const points  = [t("landing.producerStory.point1"), t("landing.producerStory.point2"), t("landing.producerStory.point3")];
   return (
@@ -449,8 +447,7 @@ function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.platform")}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/catalogo"      className="hover:text-[#1D9E75] transition-colors">{t("nav.catalog")}</Link></li>
-              <li><Link href="/directorio"    className="hover:text-[#1D9E75] transition-colors">{t("nav.directory")}</Link></li>
+              <li><Link href="/servicios"     className="hover:text-[#1D9E75] transition-colors">{t("nav.services")}</Link></li>
               <li><Link href="/#como-funciona" className="hover:text-[#1D9E75] transition-colors">{t("nav.howItWorks")}</Link></li>
               <li><Link href="/#planes"       className="hover:text-[#1D9E75] transition-colors">{t("nav.plans")}</Link></li>
             </ul>

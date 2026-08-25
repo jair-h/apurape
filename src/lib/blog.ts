@@ -55,13 +55,10 @@ export const CTA_ORDER: CtaKey[] = ["productores", "exportadores", "logistica", 
 export interface BlogTool { key: string; label: string; href: string; icon: string; }
 
 export const BLOG_TOOLS: BlogTool[] = [
-  { key: "buscar_compradores",     label: "Buscar compradores",     href: "/directorio", icon: "users" },
-  { key: "cotizar_logistica",      label: "Cotizar logística",      href: "/dashboard/logistica/cotizar", icon: "ship" },
-  { key: "buscar_forwarders",      label: "Buscar forwarders",      href: "/directorio", icon: "truck" },
-  { key: "buscar_certificadoras",  label: "Buscar certificadoras",  href: "/directorio", icon: "shield" },
-  { key: "buscar_financiamiento",  label: "Buscar financiamiento",  href: "/directorio", icon: "banknote" },
-  { key: "crear_perfil_productor", label: "Crear perfil productor", href: "/register",   icon: "sprout" },
-  { key: "crear_perfil_exportador",label: "Crear perfil exportador",href: "/register",   icon: "building" },
+  { key: "buscar_servicios",       label: "Buscar servicios",        href: "/servicios", icon: "search" },
+  { key: "publicar_solicitud",     label: "Publicar una solicitud",  href: "/dashboard/cliente/solicitud/nueva", icon: "clipboard" },
+  { key: "crear_perfil_proveedor", label: "Ofrecer mis servicios",   href: "/register?rol=proveedor", icon: "wrench" },
+  { key: "crear_cuenta_cliente",   label: "Crear cuenta de cliente", href: "/register?rol=cliente",   icon: "users" },
 ];
 
 export const BLOG_TOOLS_MAP: Record<string, BlogTool> = Object.fromEntries(BLOG_TOOLS.map((t) => [t.key, t]));

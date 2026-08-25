@@ -3,12 +3,16 @@ import { createClient } from "@/lib/supabase";
 /**
  * Finds an existing conversation between two users, or creates one.
  * Returns the conversation id, or null on error.
+ *
+ * `subject` es de dónde nació la conversación: un servicio publicado por el
+ * proveedor o una solicitud publicada por el cliente. (En MARKARU esto se
+ * llamaba product_id / product_type y apuntaba a productos agro.)
  */
 export async function findOrCreateConversation(
   myId: string,
   otherId: string,
-  productId?: string | null,
-  productType?: string | null,
+  subjectId?: string | null,
+  subjectType?: "service" | "request" | null,
 ): Promise<string | null> {
   if (!myId || !otherId || myId === otherId) return null;
 
@@ -31,12 +35,12 @@ export async function findOrCreateConversation(
   const { data: created, error } = await supabase
     .from("conversations")
     .insert({
-      participant_1:    myId,
-      participant_2:    otherId,
-      product_id:       productId   ?? null,
-      product_type:     productType ?? null,
-      unread_count_p1:  0,
-      unread_count_p2:  0,
+      participant_1:   myId,
+      participant_2:   otherId,
+      subject_id:      subjectId   ?? null,
+      subject_type:    subjectType ?? null,
+      unread_count_p1: 0,
+      unread_count_p2: 0,
     })
     .select("id")
     .single();

@@ -46,7 +46,9 @@ export default function CobrosPage() {
 
       const { data } = await supabase
         .from("profiles")
-        .select("user_id, name, business_name, role, plan, plan_status, trial_ends_at, created_at")
+        // profiles.id ES el id de auth; se renombra a user_id en el resultado
+        // para no tocar el resto de la tabla de esta pantalla.
+        .select("user_id:id, name, business_name, role, plan, plan_status, trial_ends_at, created_at")
         .neq("role", "admin")
         .order("created_at", { ascending: false });
 

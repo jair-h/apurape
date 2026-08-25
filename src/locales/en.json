@@ -154,6 +154,7 @@
   },
 
   "nav": {
+    "services": "Services",
     "catalog": "Catalog",
     "directory": "Directory",
     "howItWorks": "How it works",
@@ -309,10 +310,20 @@
     "complaints": "Complaints",
     "cooperatives": "Cooperatives",
     "settings": "Settings",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+
+    "myServices": "My services",
+    "myJobs": "My jobs",
+    "myHires": "My hires",
+    "findServices": "Find services",
+    "raffle": "Monthly raffle",
+    "raffles": "Raffles",
+    "myPoints": "My points"
   },
 
   "roles": {
+    "proveedor": "Provider",
+    "cliente": "Client",
     "productor": "Producer",
     "exportador": "Exporter",
     "forwarder": "Freight Forwarder",
@@ -397,6 +408,8 @@
       "privacy": "Privacy policy",
       "error": "An error occurred while creating your account.",
       "roles": {
+        "proveedor": { "label": "Provider", "description": "I offer my services and want to reach more clients" },
+        "cliente": { "label": "Client", "description": "I'm looking for someone I can trust to get something done" },
         "productor": { "label": "Producer", "description": "I grow and sell agricultural products for export" },
         "exportador": { "label": "Exporter", "description": "I buy products and export them to international markets" },
         "forwarder": { "label": "Freight Forwarder", "description": "I manage logistics and transport for agricultural cargo" },
@@ -587,6 +600,46 @@
   },
 
   "plans": {
+    "proveedor": {
+      "basico": {
+        "name": "Basic",
+        "period": "forever",
+        "description": "Publish your profile and start getting clients.",
+        "features": [
+          "Public profile with your services",
+          "Direct chat with clients",
+          "Limited quotes per month",
+          "Ratings and reputation",
+          "0% commission on your sales"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "period": "per year",
+        "description": "First month free + one extra month when you subscribe.",
+        "features": [
+          "Unlimited quotes",
+          "Access to your category's monthly raffle",
+          "Featured profile in results",
+          "Pro provider badge",
+          "0% commission on your sales"
+        ]
+      }
+    },
+    "cliente": {
+      "free": {
+        "name": "Client",
+        "period": "always free",
+        "description": "Hiring on Apurape never costs a thing.",
+        "features": [
+          "Post unlimited requests",
+          "Receive quotes and compare",
+          "Direct chat with providers",
+          "Earn points for confirming and rating",
+          "Your own monthly client raffle"
+        ]
+      }
+    },
     "title": "Plans for every actor in the ecosystem",
     "subtitle": "Each role has its own model. Select yours to see available plans.",
     "allPricesNote": "All prices in USD · No hidden costs · Cancel anytime",

@@ -2,17 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Sprout, Building2, Truck, Globe, Users, Loader2 } from "lucide-react";
+import { Wrench, Search, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useTranslation } from "@/lib/i18n";
 
 /* Same roles as /register (the ones with a dashboard) */
 const ROLES = [
-  { id: "productor",     icon: Sprout,    iconClass: "text-[#1D9E75] bg-green-100",   borderClass: "hover:border-[#1D9E75]" },
-  { id: "exportador",    icon: Building2, iconClass: "text-blue-600 bg-blue-100",     borderClass: "hover:border-blue-500" },
-  { id: "forwarder",     icon: Truck,     iconClass: "text-orange-600 bg-orange-100", borderClass: "hover:border-orange-500" },
-  { id: "comprador",     icon: Globe,     iconClass: "text-purple-600 bg-purple-100", borderClass: "hover:border-purple-500" },
-  { id: "certificadora", icon: Users,     iconClass: "text-pink-600 bg-pink-100",     borderClass: "hover:border-pink-500" },
+  { id: "proveedor", icon: Wrench, iconClass: "text-[#D92D20] bg-red-100",    borderClass: "hover:border-[#D92D20]" },
+  { id: "cliente",   icon: Search, iconClass: "text-[#0E9384] bg-teal-100",   borderClass: "hover:border-[#0E9384]" },
 ] as const;
 
 export default function RegisterRolePage() {
@@ -21,14 +18,19 @@ export default function RegisterRolePage() {
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError]   = useState("");
 
-  // Require an authenticated (OAuth) session; skip if a role already exists.
+  // Require an authenticated (OAuth) session; skip if a role was already chosen.
+  //
+  // Ojo: NO sirve mirar profiles.role. El trigger handle_new_user crea el
+  // perfil en cuanto nace el usuario y le pone 'cliente' por defecto, así que
+  // siempre habría un rol y esta pantalla nunca se mostraría. La señal real de
+  // "ya eligió" es el rol en el metadata de auth: el registro por correo lo
+  // manda, el de Google no, y al elegir aquí lo guardamos.
   useEffect(() => {
     const supabase = createClient();
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { window.location.href = "/login"; return; }
-      const { data: profile } = await supabase.from("profiles").select("role").eq("user_id", user.id).maybeSingle();
-      if (profile?.role) { window.location.href = "/dashboard"; return; }
+      if (user.user_metadata?.role) { window.location.href = "/dashboard"; return; }
       setReady(true);
     })();
   }, []);
@@ -45,13 +47,22 @@ export default function RegisterRolePage() {
       || user.email
       || "Usuario";
 
-    // Upsert: update the role if a profile row already exists, otherwise create it.
-    const { data: existing } = await supabase.from("profiles").select("id").eq("user_id", user.id).maybeSingle();
-    const { error: saveError } = existing
-      ? await supabase.from("profiles").update({ role: roleId }).eq("user_id", user.id)
-      : await supabase.from("profiles").insert({ user_id: user.id, role: roleId, name });
+    // El perfil ya existe (lo crea el trigger handle_new_user), así que esto
+    // es siempre un update. profiles.id ES el id de auth.users.
+    //
+    // El rol es una de las columnas que guard_profile_columns bloquea al
+    // usuario, así que un UPDATE directo se revertiría en silencio: el cambio
+    // de cliente→proveedor va por la función become_provider().
+    const { error: nameError } = await supabase.from("profiles").update({ name }).eq("id", user.id);
+    if (nameError) { setError(nameError.message); setSaving(null); return; }
 
-    if (saveError) { setError(saveError.message); setSaving(null); return; }
+    if (roleId === "proveedor") {
+      const { error: roleError } = await supabase.rpc("become_provider");
+      if (roleError) { setError(roleError.message); setSaving(null); return; }
+    }
+
+    // Marca la elección en el metadata de auth para no volver a preguntar.
+    await supabase.auth.updateUser({ data: { role: roleId, full_name: name } });
 
     // Email de bienvenida (best-effort). Se envía siempre que el usuario acaba de elegir su rol:
     // esta pantalla solo se alcanza SIN rol previo (si ya tenía rol, el useEffect redirige al dashboard),

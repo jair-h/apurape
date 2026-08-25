@@ -2,132 +2,151 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowLeft, MapPin, Star, Award, Package,
-  Truck, Globe, Sprout, Building2, ChevronRight,
-  DollarSign, CheckCircle2, Users, Calendar,
+  ArrowLeft, MapPin, Star, Wrench, Search as SearchIcon,
+  ChevronRight, CheckCircle2, Award, Trophy, Quote as QuoteIcon,
 } from "lucide-react";
 import { createServerSupabase } from "@/lib/supabase-server";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import ProfileActions from "./ProfileActions";
 
+/* ─────────────────────────────────────────────────────────────
+ * Perfil público de Apurape.
+ *
+ * Reemplaza al perfil de MARKARU, que leía producer_profiles /
+ * exporter_profiles / forwarder_profiles / products / exporter_products
+ * y mostraba certificaciones agro, hectáreas, incoterms y meses de
+ * cosecha. Ahora todo vive en dos tablas: provider_services (lo que
+ * ofrece) y ratings (lo que dicen sus clientes).
+ * ───────────────────────────────────────────────────────────── */
+
 export const revalidate = 300;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.markaru.com";
-
-/* ─── Constants ───────────────────────────────────────────── */
-const MONTHS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.apurape.com";
 
 const ROLE_CONFIG: Record<string, { label: string; color: string; bg: string; Icon: React.ElementType }> = {
-  productor:    { label: "Productor",    color: "text-[#085041]",  bg: "bg-[#E1F5EE]",  Icon: Sprout    },
-  exportador:   { label: "Exportador",   color: "text-blue-700",   bg: "bg-blue-100",   Icon: Globe     },
-  forwarder:    { label: "Forwarder",    color: "text-orange-700", bg: "bg-orange-100", Icon: Truck     },
-  certificadora:{ label: "Certificadora",color: "text-purple-700", bg: "bg-purple-100", Icon: Award     },
-  banco:        { label: "Banco",        color: "text-amber-700",  bg: "bg-amber-100",  Icon: Building2 },
-  comprador:    { label: "Comprador",    color: "text-pink-700",   bg: "bg-pink-100",   Icon: Package   },
+  proveedor: { label: "Proveedor", color: "text-[#D92D20]", bg: "bg-red-50",  Icon: Wrench     },
+  cliente:   { label: "Cliente",   color: "text-[#0E9384]", bg: "bg-teal-50", Icon: SearchIcon },
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  fruta: "Fruta", verdura: "Verdura", grano: "Grano",
-  procesado: "Procesado", insumo: "Insumo", ganaderia: "Ganadería", otro: "Otro",
+const LEVEL_LABEL: Record<string, string> = {
+  bronce: "Bronce", plata: "Plata", oro: "Oro", platino: "Platino",
 };
 
-const MONTH_INDEX: Record<string, number> = {
-  enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5,
-  julio: 6, agosto: 7, septiembre: 8, octubre: 9, noviembre: 10, diciembre: 11,
+const PRICE_UNIT_LABEL: Record<string, string> = {
+  hora: "hora", servicio: "servicio", dia: "día", m2: "m²", punto: "punto", mes: "mes",
 };
 
 /* ─── Types ───────────────────────────────────────────────── */
+
 interface Profile {
-  user_id: string; name: string | null; business_name: string | null; role: string;
-  region: string | null; country: string | null; rating: number | null;
-  verified: boolean | null; operations_count: number | null;
+  id: string; name: string | null; business_name: string | null; role: string;
+  account_type: string | null; bio: string | null; avatar_url: string | null;
+  region: string | null; province: string | null; district: string | null; country: string | null;
+  rating: number | null; ratings_count: number | null; five_star_count: number | null;
+  confirmed_jobs_count: number | null; verified: boolean | null;
+  plan: string | null; level: string | null; points: number | null; created_at: string;
 }
-interface ProducerData {
-  farm_name: string | null; description: string | null; products: string[];
-  certifications: string[]; harvest_months: (string | number)[]; hectares: number | null;
-  annual_production_tm: number | null; province: string | null; district: string | null;
+
+interface ServiceRow {
+  id: string; title: string; description: string | null;
+  price_from: number | null; price_unit: string | null; currency: string;
+  photos: string[]; featured_until: string | null;
+  coverage_districts: string[]; works_remote: boolean;
+  service_categories: { name: string; slug: string } | null;
 }
-interface ExporterData {
-  razon_social: string | null; ruc: string | null; certifications: string[]; description: string | null;
-  destination_markets: string[]; incoterms: string[]; years_operating: number | null; annual_volume_tm: number | null;
-}
-interface ForwarderData { service_types: string[]; routes: string[]; cargo_types: string[]; }
-interface CatalogProduct {
-  id: string; name: string; variety: string | null; category: string;
-  ref_price_fob_usd: number | null; price_unit: string; photos: string[]; available_months: (string | number)[];
-}
-interface ExporterCatalogProduct {
-  id: string; product_name: string; variety: string | null; category: string;
-  ref_price_fob_usd: number | null; price_unit: string; photos: string[];
-  available_months: string[]; annual_volume_tm: number | null;
+
+interface RatingRow {
+  id: string; stars: number; comment: string | null; created_at: string; rater_id: string;
+  rater_name: string;
 }
 
 interface ProfileBundle {
   profile: Profile;
-  producer: ProducerData | null;
-  exporter: ExporterData | null;
-  forwarder: ForwarderData | null;
-  products: CatalogProduct[];
-  exporterProducts: ExporterCatalogProduct[];
+  services: ServiceRow[];
+  ratings: RatingRow[];
 }
 
 /* ─── Data ────────────────────────────────────────────────── */
+
 async function getProfileData(id: string): Promise<ProfileBundle | null> {
   const supabase = createServerSupabase();
+
   const { data: profile } = await supabase
     .from("profiles")
-    .select("user_id, name, business_name, role, region, country, rating, verified, operations_count")
-    .eq("user_id", id).maybeSingle();
-  if (!profile) return null;
+    .select("id, name, business_name, role, account_type, bio, avatar_url, region, province, district, country, rating, ratings_count, five_star_count, confirmed_jobs_count, verified, plan, level, points, created_at")
+    .eq("id", id)
+    .maybeSingle();
 
-  const role = (profile as Profile).role;
-  const [pp, ep, fp, prods, expProds] = await Promise.all([
-    role === "productor"
-      ? supabase.from("producer_profiles").select("farm_name, description, products, certifications, harvest_months, hectares, annual_production_tm, province, district").eq("user_id", id).maybeSingle()
+  if (!profile) return null;
+  const p = profile as Profile;
+
+  // Solo el Proveedor tiene catálogo. Las calificaciones que se
+  // muestran son las que dejó un Cliente: son las que cuentan.
+  const [servicesRes, ratingsRes] = await Promise.all([
+    p.role === "proveedor"
+      ? supabase
+          .from("provider_services")
+          .select("id, title, description, price_from, price_unit, currency, photos, featured_until, coverage_districts, works_remote, service_categories(name, slug)")
+          .eq("provider_id", id)
+          .eq("status", "activo")
+          .order("featured_until", { ascending: false, nullsFirst: false })
+          .order("created_at", { ascending: false })
       : Promise.resolve({ data: null }),
-    role === "exportador"
-      ? supabase.from("exporter_profiles").select("razon_social, ruc, certifications, description, destination_markets, incoterms, years_operating, annual_volume_tm").eq("user_id", id).maybeSingle()
-      : Promise.resolve({ data: null }),
-    role === "forwarder"
-      ? supabase.from("forwarder_profiles").select("service_types, routes, cargo_types").eq("user_id", id).maybeSingle()
-      : Promise.resolve({ data: null }),
-    role === "productor"
-      ? supabase.from("products").select("id, name, variety, category, ref_price_fob_usd, price_unit, photos, available_months").eq("producer_id", id).eq("status", "active").order("created_at", { ascending: false })
-      : Promise.resolve({ data: null }),
-    role === "exportador"
-      ? supabase.from("exporter_products").select("id, product_name, variety, category, ref_price_fob_usd, price_unit, photos, available_months, annual_volume_tm").eq("exporter_id", id).eq("status", "active").order("created_at", { ascending: false })
-      : Promise.resolve({ data: null }),
+    supabase
+      .from("ratings")
+      .select("id, stars, comment, created_at, rater_id")
+      .eq("rated_id", id)
+      .eq("direction", p.role === "proveedor" ? "cliente_a_proveedor" : "proveedor_a_cliente")
+      .order("created_at", { ascending: false })
+      .limit(12),
   ]);
 
+  const rawRatings = (ratingsRes.data as Omit<RatingRow, "rater_name">[] | null) ?? [];
+
+  // Nombre de quien calificó (una sola consulta para todas).
+  let raterNames: Record<string, string> = {};
+  if (rawRatings.length > 0) {
+    const ids = [...new Set(rawRatings.map(r => r.rater_id))];
+    const { data: raters } = await supabase
+      .from("profiles").select("id, name, business_name").in("id", ids);
+    raterNames = Object.fromEntries(
+      (raters ?? []).map((r: { id: string; name: string | null; business_name: string | null }) =>
+        [r.id, r.business_name || r.name || "Usuario"])
+    );
+  }
+
   return {
-    profile: profile as Profile,
-    producer: (pp.data as ProducerData | null) ?? null,
-    exporter: (ep.data as ExporterData | null) ?? null,
-    forwarder: (fp.data as ForwarderData | null) ?? null,
-    products: (prods.data as CatalogProduct[] | null) ?? [],
-    exporterProducts: (expProds.data as ExporterCatalogProduct[] | null) ?? [],
+    profile: p,
+    services: (servicesRes.data as unknown as ServiceRow[] | null) ?? [],
+    ratings: rawRatings.map(r => ({ ...r, rater_name: raterNames[r.rater_id] ?? "Usuario" })),
   };
 }
 
-function nameOf(b: ProfileBundle): string {
-  return b.producer?.farm_name ?? (b.exporter?.razon_social || b.profile.business_name) ?? b.profile.name ?? "Perfil";
+function nameOf(p: Profile): string {
+  return p.business_name || p.name || "Perfil";
 }
 
 /* ─── SEO ─────────────────────────────────────────────────── */
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const data = await getProfileData(id);
-  if (!data) return { title: "Perfil no encontrado · MARKARU" };
+  if (!data) return { title: "Perfil no encontrado · Apurape" };
 
-  const displayName = nameOf(data);
+  const displayName = nameOf(data.profile);
   const roleLabel = ROLE_CONFIG[data.profile.role]?.label ?? "";
-  const loc = [data.profile.region, data.profile.country].filter(Boolean).join(", ");
-  const description = `${displayName}${roleLabel ? ` — ${roleLabel}` : ""}${loc ? ` en ${loc}` : ""}. Conecta con ${displayName} en MARKARU, el hub agroexportador de LATAM.`;
+  const loc = [data.profile.district, data.profile.region].filter(Boolean).join(", ");
+  const cats = [...new Set(data.services.map(s => s.service_categories?.name).filter(Boolean))].join(", ");
+
+  const description = data.profile.role === "proveedor"
+    ? `${displayName}${loc ? ` en ${loc}` : ""}${cats ? ` — ${cats}` : ""}. Pide tu cotización en Apurape.`
+    : `${displayName}${loc ? ` en ${loc}` : ""} — ${roleLabel} en Apurape.`;
+
   const url = `${SITE_URL}/perfil/${id}`;
 
   return {
     metadataBase: new URL(SITE_URL),
-    title: `${displayName}${roleLabel ? ` · ${roleLabel}` : ""} | MARKARU`,
+    title: `${displayName}${roleLabel ? ` · ${roleLabel}` : ""} | Apurape`,
     description,
     alternates: { canonical: url },
     openGraph: { type: "profile", title: displayName, description, url },
@@ -135,52 +154,50 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 /* ─── Presentational helpers ──────────────────────────────── */
-function renderStars(rating: number) {
+
+function renderStars(rating: number, size = "h-4 w-4") {
   return Array.from({ length: 5 }).map((_, i) => (
-    <Star key={i} className={`h-4 w-4 ${i < Math.round(rating) ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`} />
+    <Star key={i} className={`${size} ${i < Math.round(rating) ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`} />
   ));
 }
-const inSeasonNum = (m: (string | number)[]) => m.map((x) => parseInt(String(x))).includes(new Date().getMonth());
-const inSeasonEs  = (m: string[]) => m.map((x) => MONTH_INDEX[x.toLowerCase()]).includes(new Date().getMonth());
 
-function MiniProductCard({ product }: { product: CatalogProduct }) {
-  const inSeason = inSeasonNum(product.available_months);
-  return (
-    <Link href={`/producto/${product.id}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all group flex flex-col">
-      <div className="relative aspect-[4/3] bg-[#E1F5EE] overflow-hidden">
-        {product.photos?.[0]
-          ? <img src={product.photos[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          : <div className="w-full h-full flex items-center justify-center"><Package className="h-10 w-10 text-[#1D9E75]/30" /></div>}
-        {inSeason && <span className="absolute top-2 left-2 bg-[#1D9E75] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">Temporada</span>}
-      </div>
-      <div className="p-3 flex flex-col flex-1">
-        <p className="text-xs font-bold text-[#085041] line-clamp-1 group-hover:text-[#1D9E75] transition-colors">{product.name}{product.variety ? ` · ${product.variety}` : ""}</p>
-        <p className="text-[10px] text-[#6B7280] mb-2">{CATEGORY_LABELS[product.category] ?? product.category}</p>
-        {product.ref_price_fob_usd != null && <p className="text-xs font-semibold text-[#085041] mt-auto">USD {product.ref_price_fob_usd}<span className="text-[#6B7280] font-normal">/{product.price_unit}</span></p>}
-      </div>
-    </Link>
-  );
+function priceLabel(s: ServiceRow): string | null {
+  if (s.price_from == null) return null;
+  const amount = `S/ ${Number(s.price_from).toLocaleString("es-PE")}`;
+  const unit = s.price_unit ? ` / ${PRICE_UNIT_LABEL[s.price_unit] ?? s.price_unit}` : "";
+  return `Desde ${amount}${unit}`;
 }
 
-function MiniExporterProductCard({ product }: { product: ExporterCatalogProduct }) {
-  const inSeason = inSeasonEs(product.available_months);
+function ServiceCard({ service }: { service: ServiceRow }) {
+  const featured = service.featured_until && new Date(service.featured_until) > new Date();
+  const price = priceLabel(service);
+
   return (
-    <Link href={`/producto/${product.id}?tipo=exportador`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all group flex flex-col">
-      <div className="relative aspect-[4/3] bg-blue-50 overflow-hidden">
-        {product.photos?.[0]
-          ? <img src={product.photos[0]} alt={product.product_name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          : <div className="w-full h-full flex items-center justify-center"><Package className="h-10 w-10 text-blue-300/50" /></div>}
-        {inSeason && <span className="absolute top-2 left-2 bg-[#1D9E75] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">Temporada</span>}
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col">
+      <div className="relative aspect-[4/3] bg-red-50 overflow-hidden">
+        {service.photos?.[0]
+          ? <img src={service.photos[0]} alt={service.title} className="w-full h-full object-cover" />
+          : <div className="w-full h-full flex items-center justify-center"><Wrench className="h-10 w-10 text-[#D92D20]/25" /></div>}
+        {featured && (
+          <span className="absolute top-2 left-2 inline-flex items-center gap-1 bg-[#D92D20] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+            <Trophy className="h-2.5 w-2.5" /> Destacado
+          </span>
+        )}
       </div>
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-xs font-bold text-[#085041] line-clamp-1 group-hover:text-[#1D9E75] transition-colors">{product.product_name}{product.variety ? ` · ${product.variety}` : ""}</p>
-        <p className="text-[10px] text-[#6B7280] mb-2">{CATEGORY_LABELS[product.category] ?? product.category}</p>
-        <div className="mt-auto space-y-0.5">
-          {product.ref_price_fob_usd != null && <p className="text-xs font-semibold text-[#085041]">USD {product.ref_price_fob_usd}<span className="text-[#6B7280] font-normal">/{product.price_unit}</span></p>}
-          {product.annual_volume_tm != null && <p className="text-[10px] text-[#6B7280]">{product.annual_volume_tm} TM/año</p>}
+        <p className="text-xs font-bold text-gray-900 line-clamp-2">{service.title}</p>
+        {service.service_categories && (
+          <p className="text-[10px] text-[#6B7280] mt-0.5">{service.service_categories.name}</p>
+        )}
+        {service.description && (
+          <p className="text-[11px] text-[#6B7280] mt-1.5 line-clamp-2 leading-relaxed">{service.description}</p>
+        )}
+        <div className="mt-auto pt-2 space-y-0.5">
+          {price && <p className="text-xs font-bold text-[#D92D20]">{price}</p>}
+          {service.works_remote && <p className="text-[10px] text-[#0E9384]">También a distancia</p>}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -188,8 +205,10 @@ function Section({ title, icon: Icon, children }: { title: string; icon: React.E
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
       <div className="flex items-center gap-2.5 px-5 py-4 border-b border-gray-100 bg-gray-50">
-        <div className="w-7 h-7 rounded-lg bg-[#E1F5EE] flex items-center justify-center"><Icon className="h-4 w-4 text-[#1D9E75]" /></div>
-        <h2 className="text-sm font-bold text-[#085041]">{title}</h2>
+        <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center">
+          <Icon className="h-4 w-4 text-[#D92D20]" />
+        </div>
+        <h2 className="text-sm font-bold text-gray-900">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
     </div>
@@ -197,187 +216,172 @@ function Section({ title, icon: Icon, children }: { title: string; icon: React.E
 }
 
 /* ─── Page (Server Component) ─────────────────────────────── */
+
 export default async function PerfilPublicoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = await getProfileData(id);
   if (!data) notFound();
 
-  const { profile, producer, exporter, forwarder, products, exporterProducts } = data;
-  const cfg = ROLE_CONFIG[profile.role] ?? ROLE_CONFIG["productor"];
+  const { profile, services, ratings } = data;
+  const cfg = ROLE_CONFIG[profile.role] ?? ROLE_CONFIG.cliente;
   const { Icon } = cfg;
-  const displayName = nameOf(data);
-  const allCerts = [...(producer?.certifications ?? []), ...(exporter?.certifications ?? [])];
+  const displayName = nameOf(profile);
+  const isProveedor = profile.role === "proveedor";
+  const location = [profile.district, profile.province, profile.region, profile.country].filter(Boolean).join(", ");
+  const memberSince = new Date(profile.created_at).toLocaleDateString("es-PE", { month: "long", year: "numeric" });
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-gray-900 hidden sm:block">MARKARU</span>
+            <span className="font-extrabold text-base text-[#D92D20]">Apurape</span>
+            <span className="hidden sm:block text-[11px] text-[#6B7280]">Tú me ayudas, yo te ayudo</span>
           </Link>
           <PublicNavAuthSection />
         </div>
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-[#6B7280] mb-5">
-          <Link href="/directorio" className="flex items-center gap-1 hover:text-[#1D9E75] transition-colors"><ArrowLeft className="h-3.5 w-3.5" /> Directorio</Link>
+          <Link href="/" className="flex items-center gap-1 hover:text-[#D92D20] transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5" /> Inicio
+          </Link>
           <ChevronRight className="h-3 w-3" />
-          <span className="text-[#085041] font-semibold truncate">{displayName}</span>
+          <span className="text-gray-900 font-semibold truncate">{displayName}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* LEFT sidebar */}
+          {/* Columna izquierda */}
           <div className="space-y-4">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex flex-col items-center text-center mb-5">
-                <div className={`w-20 h-20 rounded-2xl ${cfg.bg} flex items-center justify-center mb-3 shadow-sm`}>
-                  <span className={`text-3xl font-extrabold ${cfg.color}`}>{displayName.charAt(0).toUpperCase()}</span>
+                <div className={`w-20 h-20 rounded-2xl ${cfg.bg} flex items-center justify-center mb-3 shadow-sm overflow-hidden`}>
+                  {profile.avatar_url
+                    ? <img src={profile.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                    : <span className={`text-3xl font-extrabold ${cfg.color}`}>{displayName.charAt(0).toUpperCase()}</span>}
                 </div>
-                <h1 className="text-lg font-extrabold text-[#085041] mb-1">{displayName}</h1>
-                {profile.name && producer?.farm_name && <p className="text-xs text-[#6B7280] mb-1">{profile.name}</p>}
+                <h1 className="text-lg font-extrabold text-gray-900 mb-1">{displayName}</h1>
+                {profile.name && profile.business_name && (
+                  <p className="text-xs text-[#6B7280] mb-1">{profile.name}</p>
+                )}
                 <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full ${cfg.bg} ${cfg.color}`}>
                   <Icon className="h-3.5 w-3.5" /> {cfg.label}
+                  {profile.account_type === "negocio" && " · Negocio"}
                 </span>
-                {profile.verified && (
-                  <div className="flex items-center gap-1 text-xs font-semibold text-[#1D9E75] mt-2"><CheckCircle2 className="h-3.5 w-3.5" /> Verificado</div>
-                )}
+
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
+                  {profile.verified && (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#0E9384]">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
+                    </span>
+                  )}
+                  {isProveedor && profile.plan === "pro" && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#D92D20] text-white">
+                      <Award className="h-3 w-3" /> PRO
+                    </span>
+                  )}
+                  {!isProveedor && profile.level && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-[#0E9384]">
+                      <Trophy className="h-3 w-3" /> Nivel {LEVEL_LABEL[profile.level] ?? profile.level}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {(profile.region || profile.country) && (
-                <div className="flex items-center gap-2 text-sm text-[#6B7280] mb-3 justify-center">
-                  <MapPin className="h-4 w-4 text-[#1D9E75] flex-shrink-0" />
-                  {[producer?.district, producer?.province ?? profile.region, profile.country].filter(Boolean).join(", ")}
+              {location && (
+                <div className="flex items-center gap-2 text-sm text-[#6B7280] mb-3 justify-center text-center">
+                  <MapPin className="h-4 w-4 text-[#D92D20] flex-shrink-0" />
+                  {location}
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              {profile.bio && (
+                <p className="text-xs text-[#6B7280] leading-relaxed text-center mb-4">{profile.bio}</p>
+              )}
+
+              {/* Reputación */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
                 <div className="bg-gray-50 rounded-xl p-3 text-center">
                   <div className="flex items-center justify-center gap-0.5 mb-1">
-                    {profile.rating != null && profile.rating > 0 ? renderStars(profile.rating) : <span className="text-xs text-gray-400">—</span>}
+                    {renderStars(Number(profile.rating ?? 0), "h-3 w-3")}
                   </div>
-                  <p className="text-[10px] text-[#6B7280]">{profile.rating != null && profile.rating > 0 ? Number(profile.rating).toFixed(1) : "Sin rating"}</p>
+                  <p className="text-[10px] text-[#6B7280]">
+                    {profile.ratings_count && profile.ratings_count > 0
+                      ? `${Number(profile.rating).toFixed(1)} · ${profile.ratings_count} ${profile.ratings_count === 1 ? "reseña" : "reseñas"}`
+                      : "Sin reseñas aún"}
+                  </p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3 text-center">
-                  <p className="text-lg font-extrabold text-[#085041]">{profile.operations_count ?? 0}</p>
-                  <p className="text-[10px] text-[#6B7280]">Operaciones</p>
+                  <p className="text-lg font-extrabold text-gray-900">
+                    {isProveedor ? (profile.confirmed_jobs_count ?? 0) : (profile.points ?? 0)}
+                  </p>
+                  <p className="text-[10px] text-[#6B7280]">
+                    {isProveedor ? "Servicios confirmados" : "Puntos"}
+                  </p>
                 </div>
               </div>
 
-              {/* Contact + share (client) */}
-              <ProfileActions profileUserId={profile.user_id} />
+              {isProveedor && (profile.five_star_count ?? 0) > 0 && (
+                <p className="text-[11px] text-center text-[#6B7280] mb-4">
+                  <strong className="text-amber-500">{profile.five_star_count}</strong> calificaciones de 5 estrellas
+                </p>
+              )}
+
+              <ProfileActions profileUserId={profile.id} />
+
+              <p className="text-[10px] text-center text-[#6B7280] mt-4">
+                En Apurape desde {memberSince}
+              </p>
             </div>
-
-            {/* Extra info card */}
-            {(producer || exporter) && (
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-                <h3 className="text-xs font-bold text-[#085041] uppercase tracking-wider mb-3">Datos de la empresa</h3>
-                <div className="space-y-2 text-xs">
-                  {producer?.hectares != null && <div className="flex justify-between"><span className="text-[#6B7280]">Hectáreas</span><span className="font-semibold text-[#1E293B]">{producer.hectares} ha</span></div>}
-                  {producer?.annual_production_tm != null && <div className="flex justify-between"><span className="text-[#6B7280]">Producción anual</span><span className="font-semibold text-[#1E293B]">{producer.annual_production_tm} TM</span></div>}
-                  {exporter?.annual_volume_tm != null && <div className="flex justify-between"><span className="text-[#6B7280]">Volumen anual</span><span className="font-semibold text-[#1E293B]">{exporter.annual_volume_tm} TM</span></div>}
-                  {exporter?.years_operating != null && <div className="flex justify-between"><span className="text-[#6B7280]">Años operando</span><span className="font-semibold text-[#1E293B]">{exporter.years_operating} años</span></div>}
-                  {exporter?.ruc && <div className="flex justify-between"><span className="text-[#6B7280]">RUC</span><span className="font-semibold text-[#1E293B]">{exporter.ruc}</span></div>}
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* MAIN content */}
-          <div className="lg:col-span-2 space-y-5">
-            {(producer?.description ?? exporter?.description) && (
-              <Section title="Sobre nosotros" icon={Building2}>
-                <p className="text-sm text-[#4B5563] leading-relaxed">{producer?.description ?? exporter?.description}</p>
+          {/* Columna derecha */}
+          <div className="lg:col-span-2 space-y-6">
+            {isProveedor && (
+              <Section title={`Servicios que ofrece (${services.length})`} icon={Wrench}>
+                {services.length === 0 ? (
+                  <p className="text-xs text-[#6B7280] text-center py-6">
+                    Este proveedor todavía no publicó servicios.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {services.map(s => <ServiceCard key={s.id} service={s} />)}
+                  </div>
+                )}
               </Section>
             )}
 
-            {profile.role === "productor" && products.length > 0 && (
-              <Section title="Productos en catálogo" icon={Package}>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">{products.map((p) => <MiniProductCard key={p.id} product={p} />)}</div>
-                <Link href="/catalogo" className="mt-4 flex items-center justify-center gap-1 text-xs font-semibold text-[#1D9E75] hover:underline">Ver catálogo completo <ChevronRight className="h-3.5 w-3.5" /></Link>
-              </Section>
-            )}
-
-            {profile.role === "productor" && producer?.harvest_months && producer.harvest_months.length > 0 && (
-              <Section title="Meses de cosecha" icon={Calendar}>
-                <div className="grid grid-cols-6 sm:grid-cols-12 gap-1.5">
-                  {MONTHS.map((label, i) => {
-                    const active = producer.harvest_months.map((x) => parseInt(String(x))).includes(i);
-                    const current = i === new Date().getMonth() && active;
-                    return (
-                      <div key={label} className={`flex flex-col items-center py-2.5 rounded-xl text-[10px] font-bold select-none ${current ? "bg-[#1D9E75] text-white ring-2 ring-[#1D9E75] ring-offset-1" : active ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-300"}`}>
-                        <span className="text-[8px] opacity-60 mb-0.5">{i + 1}</span>{label}
+            <Section title={`Lo que dicen ${isProveedor ? "sus clientes" : "los proveedores"}`} icon={QuoteIcon}>
+              {ratings.length === 0 ? (
+                <p className="text-xs text-[#6B7280] text-center py-6">
+                  Todavía no hay calificaciones. Las calificaciones aparecen cuando
+                  {isProveedor ? " un cliente confirma un servicio." : " confirmas un servicio contratado."}
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {ratings.map(r => (
+                    <div key={r.id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600 flex-shrink-0">
+                            {r.rater_name.charAt(0).toUpperCase()}
+                          </div>
+                          <p className="text-xs font-bold text-gray-900">{r.rater_name}</p>
+                        </div>
+                        <div className="flex items-center gap-0.5 flex-shrink-0">{renderStars(r.stars, "h-3 w-3")}</div>
                       </div>
-                    );
-                  })}
+                      {r.comment && (
+                        <p className="text-xs text-[#6B7280] leading-relaxed ml-9">{r.comment}</p>
+                      )}
+                      <p className="text-[10px] text-gray-400 mt-1 ml-9">
+                        {new Date(r.created_at).toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" })}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              </Section>
-            )}
-
-            {profile.role === "productor" && producer?.products && producer.products.length > 0 && (
-              <Section title="Productos que cultiva" icon={Sprout}>
-                <div className="flex flex-wrap gap-2">{producer.products.map((p) => <span key={p} className="text-xs font-semibold bg-[#E1F5EE] text-[#085041] px-3 py-1.5 rounded-full border border-[#1D9E75]/20">{p}</span>)}</div>
-              </Section>
-            )}
-
-            {profile.role === "exportador" && exporterProducts.length > 0 && (
-              <Section title="Productos que exporta" icon={Package}>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">{exporterProducts.map((p) => <MiniExporterProductCard key={p.id} product={p} />)}</div>
-                <Link href="/catalogo?tipo=exportador" className="mt-4 flex items-center justify-center gap-1 text-xs font-semibold text-blue-600 hover:underline">Ver todos en catálogo <ChevronRight className="h-3.5 w-3.5" /></Link>
-              </Section>
-            )}
-
-            {profile.role === "exportador" && exporter && (
-              <>
-                {exporter.destination_markets?.length > 0 && (
-                  <Section title="Mercados destino" icon={Globe}>
-                    <div className="flex flex-wrap gap-2">{exporter.destination_markets.map((m) => <span key={m} className="text-xs font-semibold bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-200">{m}</span>)}</div>
-                  </Section>
-                )}
-                {exporter.incoterms?.length > 0 && (
-                  <Section title="Incoterms que maneja" icon={DollarSign}>
-                    <div className="flex flex-wrap gap-2">{exporter.incoterms.map((i) => <span key={i} className="text-xs font-bold bg-gray-100 text-[#1E293B] px-3 py-1.5 rounded-full">{i}</span>)}</div>
-                  </Section>
-                )}
-              </>
-            )}
-
-            {profile.role === "forwarder" && forwarder && (
-              <>
-                {forwarder.service_types?.length > 0 && (
-                  <Section title="Servicios" icon={Truck}>
-                    <div className="flex flex-wrap gap-2">{forwarder.service_types.map((s) => <span key={s} className="text-xs font-semibold bg-orange-50 text-orange-700 px-3 py-1.5 rounded-full border border-orange-200">{s}</span>)}</div>
-                  </Section>
-                )}
-                {forwarder.routes?.length > 0 && (
-                  <Section title="Rutas que opera" icon={Globe}>
-                    <div className="flex flex-wrap gap-2">{forwarder.routes.map((r) => <span key={r} className="text-xs font-semibold bg-gray-100 text-[#1E293B] px-3 py-1.5 rounded-full">{r}</span>)}</div>
-                  </Section>
-                )}
-                {forwarder.cargo_types?.length > 0 && (
-                  <Section title="Tipos de carga" icon={Package}>
-                    <div className="flex flex-wrap gap-2">{forwarder.cargo_types.map((c) => <span key={c} className="text-xs font-bold bg-gray-100 text-[#1E293B] px-3 py-1.5 rounded-full">{c.replace("_", " ")}</span>)}</div>
-                  </Section>
-                )}
-              </>
-            )}
-
-            {allCerts.length > 0 && (
-              <Section title="Certificaciones" icon={Award}>
-                <div className="flex flex-wrap gap-2">{allCerts.map((c) => <span key={c} className="inline-flex items-center gap-1.5 text-xs font-semibold bg-[#E1F5EE] text-[#085041] border border-[#1D9E75]/20 px-3 py-1.5 rounded-full"><Award className="h-3 w-3" /> {c}</span>)}</div>
-              </Section>
-            )}
-
-            {!producer && !exporter && !forwarder && products.length === 0 && exporterProducts.length === 0 && allCerts.length === 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm py-16 text-center">
-                <Users className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm font-semibold text-[#085041] mb-1">Perfil en construcción</p>
-                <p className="text-xs text-[#6B7280]">Este usuario aún no ha completado su perfil.</p>
-              </div>
-            )}
+              )}
+            </Section>
           </div>
         </div>
       </div>

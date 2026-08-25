@@ -20,34 +20,23 @@ interface PendingUser {
   created_at: string;
 }
 
-interface RecentOp {
+interface RecentJob {
   id: string;
-  product: string | null;
-  origin_port: string | null;
-  destination_country: string | null;
+  title: string;
+  amount: number;
   status: string;
-  fee_amount_usd: number | null;
   created_at: string;
-  buyer_id: string | null;
-  seller_id: string | null;
-  buyerName?: string;
-  sellerName?: string;
+  provider_id: string | null;
+  client_id: string | null;
+  providerName?: string;
+  clientName?: string;
 }
 
 /* ─── Constants ───────────────────────────────────────────── */
 
 const ROLE_LABELS: Record<string, string> = {
-  productor: "Productor", exportador: "Exportador",
-  forwarder: "Forwarder", certificadora: "Certificadora", comprador: "Comprador",
+  proveedor: "Proveedor", cliente: "Cliente", admin: "Administrador",
 };
-
-const INCOME_SOURCES = [
-  { label: "Fees logísticos",  amount: 8240, pct: 50 },
-  { label: "Membresías",       amount: 4200, pct: 26 },
-  { label: "Gestión asistida", amount: 2800, pct: 17 },
-  { label: "Certificaciones",  amount: 1100, pct:  7 },
-];
-const INCOME_COLORS = ["bg-[#1D9E75]", "bg-[#0C447C]", "bg-amber-500", "bg-purple-500"];
 
 /* ─── Sub-components ──────────────────────────────────────── */
 
@@ -180,38 +169,50 @@ function VerificationQueue({
 
 /* ─── Income by source ────────────────────────────────────── */
 
-function IncomeSection() {
-  const total = INCOME_SOURCES.reduce((s, i) => s + i.amount, 0);
+/* Ingresos reales de `payments`. Antes esto era una lista fija de cifras
+ * inventadas en USD ("fees logísticos", "certificaciones"). En Apurape la
+ * única fuente de ingresos es la suscripción Pro: 0% de comisión. */
+function IncomeSection({ persona, negocio }: { persona: number; negocio: number }) {
+  const total = persona + negocio;
+  const rows = [
+    { label: "Pro Persona · S/120", amount: persona, color: "bg-[#D92D20]" },
+    { label: "Pro Negocio · S/330", amount: negocio, color: "bg-[#0E9384]" },
+  ];
+
   return (
     <section>
-      <SectionHeader title="Ingresos por fuente" href="/dashboard/admin/cobros" />
+      <SectionHeader title="Ingresos por plan" href="/dashboard/admin/cobros" />
       <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-5">
-        <div className="flex items-end justify-between mb-2">
-          <div>
-            <p className="text-xs text-[#6B7280] uppercase tracking-wider font-semibold">Total del mes</p>
-            <p className="text-3xl font-extrabold text-[#085041]">USD {total.toLocaleString()}</p>
-          </div>
-          <span className="text-xs font-semibold text-[#1D9E75] bg-[#E1F5EE] px-3 py-1.5 rounded-full">
-            +18% vs mes anterior
-          </span>
+        <div>
+          <p className="text-xs text-[#6B7280] uppercase tracking-wider font-semibold">Cobrado en total</p>
+          <p className="text-3xl font-extrabold text-[#085041]">S/ {total.toLocaleString("es-PE")}</p>
+          <p className="text-xs text-[#6B7280] mt-0.5">Comisión sobre ventas: 0%</p>
         </div>
-        {INCOME_SOURCES.map((src, i) => (
-          <div key={src.label}>
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2">
-                <span className={`w-2.5 h-2.5 rounded-full ${INCOME_COLORS[i]}`} />
-                <span className="text-sm font-medium text-[#1E293B]">{src.label}</span>
+
+        {total === 0 ? (
+          <p className="text-xs text-[#6B7280]">Todavía no hay pagos registrados.</p>
+        ) : (
+          rows.map((r) => {
+            const pct = Math.round((r.amount / total) * 100);
+            return (
+              <div key={r.label}>
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${r.color}`} />
+                    <span className="text-sm font-medium text-[#1E293B]">{r.label}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-[#6B7280]">{pct}%</span>
+                    <span className="text-sm font-bold text-[#085041]">S/ {r.amount.toLocaleString("es-PE")}</span>
+                  </div>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`h-full ${r.color} rounded-full`} style={{ width: `${pct}%` }} />
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-[#6B7280]">{src.pct}%</span>
-                <span className="text-sm font-bold text-[#085041]">USD {src.amount.toLocaleString()}</span>
-              </div>
-            </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div className={`h-full ${INCOME_COLORS[i]} rounded-full`} style={{ width: `${src.pct}%` }} />
-            </div>
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </section>
   );
@@ -219,51 +220,49 @@ function IncomeSection() {
 
 /* ─── Recent operations ───────────────────────────────────── */
 
-const OP_STATUS_UI: Record<string, { label: string; dot: string; cls: string }> = {
-  confirmed: { label: "Activa",  dot: "bg-[#1D9E75]", cls: "bg-[#E1F5EE] text-[#085041]" },
-  active:    { label: "Activa",  dot: "bg-[#1D9E75]", cls: "bg-[#E1F5EE] text-[#085041]" },
-  closed:    { label: "Cerrada", dot: "bg-gray-400",  cls: "bg-gray-100 text-gray-500" },
-  cancelled: { label: "Cerrada", dot: "bg-gray-400",  cls: "bg-gray-100 text-gray-500" },
+const JOB_STATUS_UI: Record<string, { label: string; dot: string; cls: string }> = {
+  agendado:            { label: "Agendado",     dot: "bg-blue-500",  cls: "bg-blue-50 text-blue-700" },
+  pendiente_confirmar: { label: "Por confirmar",dot: "bg-amber-500", cls: "bg-amber-50 text-amber-700" },
+  confirmado:          { label: "Confirmado",   dot: "bg-[#1D9E75]", cls: "bg-[#E1F5EE] text-[#085041]" },
+  cancelado:           { label: "Cancelado",    dot: "bg-gray-400",  cls: "bg-gray-100 text-gray-500" },
+  disputa:             { label: "En disputa",   dot: "bg-red-500",   cls: "bg-red-50 text-red-700" },
 };
 
-function OperationsSection({ ops }: { ops: RecentOp[] }) {
-  if (ops.length === 0) {
+function JobsSection({ jobs }: { jobs: RecentJob[] }) {
+  if (jobs.length === 0) {
     return (
       <section>
-        <SectionHeader title="Operaciones recientes" href="/dashboard/admin/operaciones" />
+        <SectionHeader title="Trabajos recientes" href="/dashboard/admin/sorteos" />
         <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
           <TrendingUp className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-[#085041]">Sin operaciones</p>
+          <p className="text-sm font-semibold text-[#085041]">Sin trabajos todavía</p>
         </div>
       </section>
     );
   }
   return (
     <section>
-      <SectionHeader title="Operaciones recientes" href="/dashboard/admin/operaciones" />
+      <SectionHeader title="Trabajos recientes" href="/dashboard/admin/sorteos" />
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm overflow-x-auto">
         <table className="w-full text-sm min-w-[560px]">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-100">
-              {["Producto", "Vendedor → Comprador", "Ruta", "Estado", "Fee", ""].map((h) => (
+              {["Servicio", "Proveedor → Cliente", "Monto", "Estado", "Fecha"].map((h) => (
                 <th key={h} className="text-left text-[10px] font-bold text-[#6B7280] uppercase tracking-wider px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {ops.map((op) => {
-              const st = OP_STATUS_UI[op.status] ?? OP_STATUS_UI.confirmed;
+            {jobs.map((j) => {
+              const st = JOB_STATUS_UI[j.status] ?? JOB_STATUS_UI.agendado;
               return (
-                <tr key={op.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-3.5 font-semibold text-[#1E293B]">{op.product ?? "—"}</td>
-                  <td className="px-5 py-3.5 text-[#6B7280] text-xs truncate max-w-[180px]">
-                    {[op.sellerName, op.buyerName].filter(Boolean).join(" → ") || "—"}
+                <tr key={j.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3.5 font-semibold text-[#1E293B]">{j.title}</td>
+                  <td className="px-5 py-3.5 text-[#6B7280] text-xs truncate max-w-[200px]">
+                    {[j.providerName, j.clientName].filter(Boolean).join(" → ") || "—"}
                   </td>
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-1 text-xs text-[#6B7280]">
-                      <MapPin className="h-3 w-3" />
-                      {op.origin_port ?? "—"} → {op.destination_country ?? "—"}
-                    </div>
+                  <td className="px-5 py-3.5 font-bold text-[#085041]">
+                    S/ {Number(j.amount).toLocaleString("es-PE")}
                   </td>
                   <td className="px-5 py-3.5">
                     <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full ${st.cls}`}>
@@ -271,14 +270,8 @@ function OperationsSection({ ops }: { ops: RecentOp[] }) {
                       {st.label}
                     </span>
                   </td>
-                  <td className="px-5 py-3.5 font-bold text-[#1D9E75]">
-                    {op.fee_amount_usd ? `USD ${op.fee_amount_usd}` : "—"}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <Link href="/dashboard/admin/operaciones"
-                      className="text-xs font-semibold text-[#1D9E75] hover:text-[#085041] transition-colors">
-                      Ver →
-                    </Link>
+                  <td className="px-5 py-3.5 text-xs text-[#6B7280]">
+                    {new Date(j.created_at).toLocaleDateString("es-PE", { day: "numeric", month: "short" })}
                   </td>
                 </tr>
               );
@@ -295,11 +288,12 @@ function OperationsSection({ ops }: { ops: RecentOp[] }) {
 export default function AdminDashboard() {
   const [loading, setLoading]           = useState(true);
   const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
-  const [recentOps, setRecentOps]       = useState<RecentOp[]>([]);
+  const [recentJobs, setRecentJobs]     = useState<RecentJob[]>([]);
   const [totalUsers, setTotalUsers]     = useState(0);
-  const [activeOpsCount, setActiveOpsCount] = useState(0);
-  const [totalProducts, setTotalProducts]   = useState(0);
+  const [confirmedJobs, setConfirmedJobs]   = useState(0);
+  const [totalServices, setTotalServices]   = useState(0);
   const [pendingReclamaciones, setPendingReclamaciones] = useState(0);
+  const [income, setIncome] = useState({ persona: 0, negocio: 0 });
   const [decisions, setDecisions]       = useState<Record<string, "approved" | "rejected">>({});
   const [loadingId, setLoadingId]       = useState<string | null>(null);
 
@@ -307,51 +301,60 @@ export default function AdminDashboard() {
     async function load() {
       const supabase = createClient();
 
-      const [pendingRes, opsRes, totalRes, activeRes, productsRes, reclamRes] = await Promise.all([
+      const [pendingRes, jobsRes, totalRes, confirmedRes, servicesRes, reclamRes, paymentsRes] = await Promise.all([
         supabase
           .from("profiles")
-          .select("user_id, name, business_name, role, country, created_at")
+          // profiles.id ES el id de auth; se alias a user_id para el resto de la pantalla.
+          .select("user_id:id, name, business_name, role, country, created_at")
           .eq("verified", false)
           .neq("role", "admin")
           .order("created_at", { ascending: false })
           .limit(4),
         supabase
-          .from("operations")
-          .select("id, product, origin_port, destination_country, status, fee_amount_usd, created_at, buyer_id, seller_id")
+          .from("jobs")
+          .select("id, title, amount, status, created_at, provider_id, client_id")
           .order("created_at", { ascending: false })
-          .limit(4),
-        supabase.from("profiles").select("user_id", { count: "exact", head: true }),
-        supabase.from("operations").select("id", { count: "exact", head: true }).eq("status", "confirmed"),
-        supabase.from("products").select("id", { count: "exact", head: true }),
+          .limit(5),
+        supabase.from("profiles").select("id", { count: "exact", head: true }),
+        supabase.from("jobs").select("id", { count: "exact", head: true }).eq("status", "confirmado"),
+        supabase.from("provider_services").select("id", { count: "exact", head: true }).eq("status", "activo"),
         supabase.from("reclamaciones").select("id", { count: "exact", head: true }).eq("estado", "pendiente"),
+        supabase.from("payments").select("amount_cents, account_type").eq("status", "pagado"),
       ]);
 
-      const rawOps = opsRes.data ?? [];
+      const rawJobs = jobsRes.data ?? [];
       const allIds = [...new Set([
-        ...rawOps.map((o) => o.buyer_id),
-        ...rawOps.map((o) => o.seller_id),
+        ...rawJobs.map((j) => j.provider_id),
+        ...rawJobs.map((j) => j.client_id),
       ].filter(Boolean) as string[])];
 
       const profileMap: Record<string, string> = {};
       if (allIds.length > 0) {
         const { data: profiles } = await supabase
           .from("profiles")
-          .select("user_id, name, business_name")
-          .in("user_id", allIds);
+          .select("user_id:id, name, business_name")
+          .in("id", allIds);
         for (const p of (profiles ?? [])) {
           profileMap[p.user_id] = (p.business_name as string | null) ?? (p.name as string | null) ?? "—";
         }
       }
 
+      // Los importes se guardan en céntimos de sol.
+      const pagos = paymentsRes.data ?? [];
+      setIncome({
+        persona: pagos.filter((p) => p.account_type === "persona").reduce((s, p) => s + (p.amount_cents ?? 0), 0) / 100,
+        negocio: pagos.filter((p) => p.account_type === "negocio").reduce((s, p) => s + (p.amount_cents ?? 0), 0) / 100,
+      });
+
       setPendingUsers(pendingRes.data ?? []);
-      setRecentOps(rawOps.map((o) => ({
-        ...o,
-        buyerName:  o.buyer_id  ? profileMap[o.buyer_id]  : undefined,
-        sellerName: o.seller_id ? profileMap[o.seller_id] : undefined,
+      setRecentJobs(rawJobs.map((j) => ({
+        ...j,
+        providerName: j.provider_id ? profileMap[j.provider_id] : undefined,
+        clientName:   j.client_id   ? profileMap[j.client_id]   : undefined,
       })));
       setTotalUsers(totalRes.count ?? 0);
-      setActiveOpsCount(activeRes.count ?? 0);
-      setTotalProducts(productsRes.count ?? 0);
+      setConfirmedJobs(confirmedRes.count ?? 0);
+      setTotalServices(servicesRes.count ?? 0);
       setPendingReclamaciones(reclamRes.count ?? 0);
       setLoading(false);
     }
@@ -364,7 +367,7 @@ export default function AdminDashboard() {
     const { error } = await supabase
       .from("profiles")
       .update({ verified: true })
-      .eq("user_id", userId);
+      .eq("id", userId);
     if (error) console.error("[approve]", error);
     setDecisions((p) => ({ ...p, [userId]: "approved" }));
     setLoadingId(null);
@@ -398,7 +401,7 @@ export default function AdminDashboard() {
             </span>
           </div>
           <h1 className="text-2xl font-extrabold text-[#085041]">Centro de control</h1>
-          <p className="text-sm text-[#6B7280] mt-0.5">Vista global de MARKARU</p>
+          <p className="text-sm text-[#6B7280] mt-0.5">Vista global de Apurape</p>
         </div>
 
         {pendingCount > 0 && (
@@ -421,13 +424,13 @@ export default function AdminDashboard() {
             icon={Users} accent="bg-blue-50 text-blue-600"
           />
           <MetricCard
-            label="Productos publicados" value={totalProducts.toLocaleString()}
-            sub="Catálogo activo"
+            label="Servicios publicados" value={totalServices.toLocaleString()}
+            sub="Activos en el catálogo"
             icon={Package} accent="bg-[#E1F5EE] text-[#1D9E75]"
           />
           <MetricCard
-            label="Operaciones activas" value={String(activeOpsCount)}
-            sub="Estado: confirmed"
+            label="Servicios confirmados" value={String(confirmedJobs)}
+            sub="Confirmados por el cliente"
             icon={TrendingUp} accent="bg-purple-50 text-purple-600"
           />
           <MetricCard
@@ -450,11 +453,11 @@ export default function AdminDashboard() {
           />
         </div>
         <div className="xl:col-span-2">
-          <IncomeSection />
+          <IncomeSection persona={income.persona} negocio={income.negocio} />
         </div>
       </div>
 
-      <OperationsSection ops={recentOps} />
+      <JobsSection jobs={recentJobs} />
     </div>
   );
 }
