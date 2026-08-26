@@ -18,7 +18,7 @@ function Section({
   className?: string;
 }) {
   const bg = green
-    ? "bg-[#E1F5EE]"
+    ? "bg-[#FEF3F2]"
     : light
     ? "bg-gray-50"
     : "bg-white";
@@ -33,7 +33,7 @@ function Section({
 function SectionHeading({
   icon: Icon,
   title,
-  iconClass = "text-[#1D9E75]",
+  iconClass = "text-[#D92D20]",
 }: {
   icon: React.ElementType;
   title: string;
@@ -41,10 +41,10 @@ function SectionHeading({
 }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <div className="p-2 rounded-xl bg-[#1D9E75]/10 flex-shrink-0">
+      <div className="p-2 rounded-xl bg-[#D92D20]/10 flex-shrink-0">
         <Icon className={`h-5 w-5 ${iconClass}`} />
       </div>
-      <h2 className="text-2xl font-extrabold text-[#085041]">{title}</h2>
+      <h2 className="text-2xl font-extrabold text-[#B42318]">{title}</h2>
     </div>
   );
 }
@@ -60,18 +60,18 @@ export default function SobreNosotrosPage() {
       <main className="pt-16">
 
         {/* ── Hero ──────────────────────────────────────────── */}
-        <section className="bg-gradient-to-br from-[#0d6b4f] via-[#1D9E75] to-[#2dd4a0] py-24 text-center">
+        <section className="bg-gradient-to-br from-[#7A271A] via-[#D92D20] to-[#F97066] py-24 text-center">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="bg-white/20 p-2.5 rounded-xl">
                 <Leaf className="h-7 w-7 text-white" />
               </div>
-              <span className="text-2xl font-extrabold text-white tracking-wide">MARKARU</span>
+              <span className="text-2xl font-extrabold text-white tracking-wide">Apurape</span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
               {t("about.title")}
             </h1>
-            <p className="text-xl text-[#b8f5e1] font-medium italic mb-6">
+            <p className="text-xl text-[#FEE4E2] font-medium italic mb-6">
               {t("about.subtitle")}
             </p>
             <p className="text-lg text-white/80 max-w-xl mx-auto leading-relaxed">
@@ -80,7 +80,7 @@ export default function SobreNosotrosPage() {
           </div>
         </section>
 
-        {/* ── Qué significa MARKARU ─────────────────────────── */}
+        {/* ── Qué significa Apurape ─────────────────────────── */}
         <Section>
           <SectionHeading icon={Globe} title={t("about.meaning.title")} />
           <p className="text-gray-600 text-lg leading-relaxed">
@@ -113,10 +113,10 @@ export default function SobreNosotrosPage() {
         <Section green>
           <SectionHeading icon={History} title={t("about.story.title")} />
           <div className="space-y-5">
-            <p className="text-[#085041]/80 text-lg leading-relaxed">
+            <p className="text-[#B42318]/80 text-lg leading-relaxed">
               {t("about.story.p1")}
             </p>
-            <p className="text-[#085041]/80 text-lg leading-relaxed">
+            <p className="text-[#B42318]/80 text-lg leading-relaxed">
               {t("about.story.p2")}
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function SobreNosotrosPage() {
         </Section>
 
         {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="bg-[#085041] py-20">
+        <section className="bg-[#B42318] py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
               {t("about.cta.title")}
@@ -141,8 +141,8 @@ export default function SobreNosotrosPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/register?rol=productor"
-                className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-8 py-4 rounded-xl text-base font-bold hover:bg-[#2dd4a0] transition-colors shadow-lg"
+                href="/register?rol=proveedor"
+                className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-8 py-4 rounded-xl text-base font-bold hover:bg-[#F97066] transition-colors shadow-lg"
               >
                 <Sprout className="h-5 w-5" />
                 {t("about.cta.joinProducer")}
@@ -163,8 +163,8 @@ export default function SobreNosotrosPage() {
         <footer className="bg-gray-900 py-8">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-              <span className="font-bold text-sm text-white">MARKARU</span>
+              <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+              <span className="font-bold text-sm text-white">Apurape</span>
               <span className="text-gray-500 text-xs italic ml-1">{t("landing.slogan")}</span>
             </div>
             <p className="text-xs text-gray-600">

@@ -18,7 +18,7 @@ import { createClient } from "@/lib/supabase";
 const REUSABLE_BLOCKS: { label: string; html: string }[] = [
   {
     label: "Llamado a la acción (CTA)",
-    html: `<blockquote><p><strong>¿Listo para exportar con MARKARU?</strong> Crea tu cuenta gratis y conecta con compradores internacionales verificados.</p></blockquote>`,
+    html: `<blockquote><p><strong>¿Listo para exportar con Apurape?</strong> Crea tu cuenta gratis y conecta con compradores internacionales verificados.</p></blockquote>`,
   },
   {
     label: "Nota destacada",
@@ -38,7 +38,7 @@ function TB({ onClick, active, disabled, title, children }: {
     <button
       type="button" onClick={onClick} disabled={disabled} title={title}
       className={`p-2 rounded-lg transition-colors disabled:opacity-30 ${
-        active ? "bg-[#085041] text-white" : "text-gray-600 hover:bg-gray-100"
+        active ? "bg-[#B42318] text-white" : "text-gray-600 hover:bg-gray-100"
       }`}
     >
       {children}
@@ -96,7 +96,7 @@ export function RichTextEditor({ value, onChange, folder = "blog" }: Props) {
   if (!editor) {
     return (
       <div className="border border-gray-200 rounded-xl h-80 flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-5 w-5 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-5 w-5 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -161,7 +161,7 @@ export function RichTextEditor({ value, onChange, folder = "blog" }: Props) {
             <div className="absolute z-20 mt-1 w-56 bg-white rounded-xl border border-gray-200 shadow-lg py-1">
               {REUSABLE_BLOCKS.map((b) => (
                 <button key={b.label} type="button" onClick={() => insertBlock(b.html)}
-                  className="w-full text-left px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors">
+                  className="w-full text-left px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors">
                   {b.label}
                 </button>
               ))}
@@ -192,7 +192,7 @@ function ImageDialog({ editor, folder, onClose }: { editor: Editor; folder: stri
   const [uploading, setUploading] = useState(false);
   const [error, setError]       = useState<string | null>(null);
 
-  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 transition";
+  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 transition";
 
   const upload = async (file: File) => {
     setError(null);
@@ -218,14 +218,14 @@ function ImageDialog({ editor, folder, onClose }: { editor: Editor; folder: stri
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h3 className="text-base font-extrabold text-[#085041]">Insertar imagen</h3>
+          <h3 className="text-base font-extrabold text-[#B42318]">Insertar imagen</h3>
           <button type="button" onClick={onClose}><X className="h-5 w-5 text-gray-400" /></button>
         </div>
         <div className="px-5 py-4 space-y-4">
           <div className="flex gap-2">
             <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://... o sube un archivo" className={inputCls} />
             <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
-              className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:border-[#1D9E75] hover:text-[#1D9E75] disabled:opacity-50 transition-all whitespace-nowrap">
+              className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:border-[#D92D20] hover:text-[#D92D20] disabled:opacity-50 transition-all whitespace-nowrap">
               {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Subir"}
             </button>
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden"
@@ -245,7 +245,7 @@ function ImageDialog({ editor, folder, onClose }: { editor: Editor; folder: stri
         <div className="flex gap-2 px-5 pb-5">
           <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#6B7280]">Cancelar</button>
           <button type="button" onClick={insert} disabled={!url}
-            className="flex-1 py-2.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] disabled:opacity-50">Insertar imagen</button>
+            className="flex-1 py-2.5 rounded-xl bg-[#B42318] text-white text-xs font-bold hover:bg-[#D92D20] disabled:opacity-50">Insertar imagen</button>
         </div>
       </div>
     </div>

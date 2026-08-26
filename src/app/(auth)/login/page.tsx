@@ -16,7 +16,7 @@ export default function LoginPage() {
   const { t } = useTranslation();
 
   const inputClass =
-    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition";
+    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,9 +37,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 justify-center mb-8">
-          <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain" />
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain" />
           <span className="font-bold text-lg text-gray-900">
-            MARKARU
+            Apurape
           </span>
         </Link>
 
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-gray-700">
                   {t("auth.login.password")}
                 </label>
-                <Link href="/forgot-password" className="text-xs text-[#1D9E75] hover:underline">
+                <Link href="/forgot-password" className="text-xs text-[#D92D20] hover:underline">
                   {t("auth.login.forgotPassword")}
                 </Link>
               </div>
@@ -99,7 +99,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#167a5a] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#912018] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> {t("auth.login.signingIn")}</>
@@ -114,7 +114,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-600">
               {t("auth.login.noAccount")}{" "}
-              <Link href="/register" className="text-[#1D9E75] font-semibold hover:underline">
+              <Link href="/register" className="text-[#D92D20] font-semibold hover:underline">
                 {t("auth.login.createAccount")}
               </Link>
             </p>
@@ -122,7 +122,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          © {new Date().getFullYear()} MARKARU
+          © {new Date().getFullYear()} Apurape
         </p>
       </div>
     </div>

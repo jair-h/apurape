@@ -32,7 +32,7 @@ export function CurrencySelector({ className = "" }: SelectorProps) {
             const found = CURRENCY_TABLE.find(c => c.countryCode === e.target.value);
             if (found) setCurrency(found);
           }}
-          className="appearance-none pl-2 pr-6 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-[#1D9E75] focus:outline-none focus:border-[#1D9E75] text-gray-700 transition-colors"
+          className="appearance-none pl-2 pr-6 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-[#D92D20] focus:outline-none focus:border-[#D92D20] text-gray-700 transition-colors"
         >
           {CURRENCY_TABLE.map(e => (
             <option key={e.countryCode} value={e.countryCode}>
@@ -76,7 +76,7 @@ export function CurrencyHint({ className = "" }: HintProps) {
         <button
           type="button"
           onClick={() => setOpen(v => !v)}
-          className="ml-1 text-[#1D9E75] hover:underline transition-colors"
+          className="ml-1 text-[#D92D20] hover:underline transition-colors"
         >
           {open ? "✕" : t("plans.changeCurrency")}
         </button>

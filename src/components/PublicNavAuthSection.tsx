@@ -72,14 +72,14 @@ export default function PublicNavAuthSection({ mobile, onNavigate }: Props) {
           <Link
             href="/login"
             onClick={onNavigate}
-            className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors"
+            className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors"
           >
             {t("nav.signIn")}
           </Link>
           <Link
             href="/register"
             onClick={onNavigate}
-            className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors"
+            className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors"
           >
             {t("nav.register")}
           </Link>
@@ -90,13 +90,13 @@ export default function PublicNavAuthSection({ mobile, onNavigate }: Props) {
       <div className="flex items-center gap-2">
         <Link
           href="/login"
-          className="text-xs font-medium text-gray-600 hover:text-[#1D9E75] transition-colors"
+          className="text-xs font-medium text-gray-600 hover:text-[#D92D20] transition-colors"
         >
           {t("nav.signIn")}
         </Link>
         <Link
           href="/register"
-          className="bg-[#1D9E75] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#085041] transition-colors"
+          className="bg-[#D92D20] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#B42318] transition-colors"
         >
           {t("nav.register")}
         </Link>
@@ -113,9 +113,9 @@ export default function PublicNavAuthSection({ mobile, onNavigate }: Props) {
         <Link
           href="/dashboard"
           onClick={onNavigate}
-          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors"
+          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors"
         >
-          <div className="w-6 h-6 rounded-full bg-[#1D9E75] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+          <div className="w-6 h-6 rounded-full bg-[#D92D20] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
             {initial}
           </div>
           <span className="truncate">{user.name}</span>
@@ -137,7 +137,7 @@ export default function PublicNavAuthSection({ mobile, onNavigate }: Props) {
         onClick={() => setMenuOpen((v) => !v)}
         className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div className="w-7 h-7 rounded-full bg-[#1D9E75] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+        <div className="w-7 h-7 rounded-full bg-[#D92D20] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
           {initial}
         </div>
         <span className="text-xs font-medium text-gray-700 max-w-[80px] truncate hidden sm:block">
@@ -153,7 +153,7 @@ export default function PublicNavAuthSection({ mobile, onNavigate }: Props) {
           <Link
             href="/dashboard"
             onClick={() => setMenuOpen(false)}
-            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors"
           >
             <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
             {t("nav.myPanel")}

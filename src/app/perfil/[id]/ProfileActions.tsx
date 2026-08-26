@@ -42,13 +42,13 @@ export default function ProfileActions({ profileUserId }: { profileUserId: strin
     <>
       {isLoggedIn ? (
         <button type="button" onClick={handleContact} disabled={contactLoading}
-          className="w-full flex items-center justify-center gap-2 bg-[#085041] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#1D9E75] transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+          className="w-full flex items-center justify-center gap-2 bg-[#B42318] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#D92D20] transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
           {contactLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4" />}
           Enviar mensaje
         </button>
       ) : (
         <Link href={`/login?next=/perfil/${profileUserId}`}
-          className="w-full flex items-center justify-center gap-2 bg-[#085041] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#1D9E75] transition-colors shadow-sm">
+          className="w-full flex items-center justify-center gap-2 bg-[#B42318] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#D92D20] transition-colors shadow-sm">
           <MessageCircle className="h-4 w-4" /> Contactar
         </Link>
       )}
@@ -57,14 +57,14 @@ export default function ProfileActions({ profileUserId }: { profileUserId: strin
       {/* Share */}
       <div className="mt-3">
         <button type="button" onClick={() => setShareOpen((s) => !s)}
-          className="w-full flex items-center justify-center gap-2 border border-gray-200 text-[#6B7280] py-2 rounded-xl text-xs font-bold hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors">
+          className="w-full flex items-center justify-center gap-2 border border-gray-200 text-[#6B7280] py-2 rounded-xl text-xs font-bold hover:border-[#D92D20] hover:text-[#D92D20] transition-colors">
           <Share2 className="h-3.5 w-3.5" /> Compartir perfil
         </button>
         {shareOpen && (
           <div className="mt-2 p-3 bg-gray-50 rounded-xl space-y-2">
             <button type="button" onClick={handleCopy}
-              className="w-full flex items-center justify-center gap-2 border border-gray-200 bg-white text-[#374151] py-1.5 rounded-lg text-xs font-semibold hover:border-[#1D9E75] transition-colors">
-              {copied ? <Check className="h-3.5 w-3.5 text-[#1D9E75]" /> : <Copy className="h-3.5 w-3.5" />}
+              className="w-full flex items-center justify-center gap-2 border border-gray-200 bg-white text-[#374151] py-1.5 rounded-lg text-xs font-semibold hover:border-[#D92D20] transition-colors">
+              {copied ? <Check className="h-3.5 w-3.5 text-[#D92D20]" /> : <Copy className="h-3.5 w-3.5" />}
               {copied ? "¡Copiado!" : "Copiar link"}
             </button>
             <a href={`https://wa.me/?text=${encodeURIComponent("Mira este perfil en Apurape: " + profileUrl)}`} target="_blank" rel="noopener noreferrer"

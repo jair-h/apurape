@@ -27,7 +27,7 @@ export default function CookiesPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#1D9E75] text-sm mb-10 transition-colors"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#D92D20] text-sm mb-10 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver al inicio
@@ -52,11 +52,11 @@ export default function CookiesPage() {
       <footer className="bg-gray-900 py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-white">MARKARU</span>
+            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+            <span className="font-bold text-sm text-white">Apurape</span>
           </div>
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} MARKARU. Todos los derechos reservados.
+            © {new Date().getFullYear()} Apurape. Todos los derechos reservados.
           </p>
         </div>
       </footer>

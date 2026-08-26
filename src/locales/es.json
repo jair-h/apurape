@@ -1,7 +1,7 @@
 {
   "checkout": {
     "title": "Activa tu plan",
-    "subtitle": "Estás a un paso de activar tu membresía en MARKARU.",
+    "subtitle": "Estás a un paso de activar tu membresía en Apurape.",
     "planLabel": "Plan seleccionado",
     "annual": "/ año",
     "cardNumber": "Número de tarjeta",
@@ -27,36 +27,36 @@
   },
   "planesPage": {
     "heroBadge": "Precios simples y transparentes",
-    "heroTitle": "Elige tu rol. Empieza gratis.",
-    "heroSubtitle": "Sin comisiones por tus ventas. Sin contratos. Cancela cuando quieras.",
-    "trust1": "Sin comisión por transacción",
-    "trust2": "Acceso a compradores internacionales",
+    "heroTitle": "Gratis para clientes. Barato para proveedores.",
+    "heroSubtitle": "0% de comisión por tus ventas. Sin contratos. Cancela cuando quieras.",
+    "trust1": "Sin comisión por venta",
+    "trust2": "Clientes de tu propio distrito",
     "trust3": "Soporte en español",
-    "whyTitle": "¿Por qué MARKARU?",
-    "whySubtitle": "Compara lo que pagarías en otras plataformas frente a MARKARU.",
-    "compAlibabaName": "Alibaba",
-    "compAlibabaPrice": "USD 299/año + 3% de comisión",
-    "compAlibabaExample": "Para un exportador que vende USD 100,000/año: pagas USD 3,299 solo en comisiones.",
-    "compMarkaruPrice": "USD 120–360/año. Sin comisión por tus ventas.",
-    "compMarkaruExample": "Para el mismo exportador: pagas solo USD 360/año.",
-    "compMarkaruSaving": "Ahorras más de USD 3,000",
+    "whyTitle": "¿Por qué Apurape?",
+    "whySubtitle": "Lo que te queda del bolsillo después de cada trabajo, comparado.",
+    "compAlibabaName": "Apps de delivery y servicios",
+    "compAlibabaPrice": "Entre 15% y 30% de comisión por servicio",
+    "compAlibabaExample": "Si facturas S/2,000 al mes, te quedas sin S/300 a S/600 solo en comisiones.",
+    "compMarkaruPrice": "S/120 a S/330 al año. 0% de comisión.",
+    "compMarkaruExample": "Con esa misma facturación pagas S/27 al mes como máximo, y el resto es tuyo.",
+    "compMarkaruSaving": "Te quedas con todo lo que cobras",
     "compMarkaruBadge": "Recomendado",
-    "compOtherName": "Otros marketplaces",
-    "compOtherPrice": "USD 99/mes (USD 1,188/año) + comisiones",
-    "compOtherExample": "Con MARKARU pagas hasta 10× menos.",
+    "compOtherName": "Anuncios clasificados",
+    "compOtherPrice": "Pagas por destacar, sin saber si sirve",
+    "compOtherExample": "Sin perfil, sin reputación y sin forma de que te vuelvan a encontrar.",
     "faqTitle": "Preguntas frecuentes",
     "faq1q": "¿Puedo cancelar cuando quiera?",
     "faq1a": "Sí, no hay contratos. Cancelas en cualquier momento desde tu cuenta.",
     "faq2q": "¿Cobran comisión por mis ventas?",
-    "faq2a": "No. A diferencia de Alibaba y otros, MARKARU no cobra comisión por tus transacciones. Solo pagas tu membresía anual.",
-    "faq3q": "¿Puedo probar antes de pagar?",
-    "faq3a": "Sí. Productor tiene 30 días gratis. Exportador, Forwarder y Certificadora tienen 3 días de prueba.",
-    "faq4q": "¿Qué pasa cuando termina mi prueba?",
-    "faq4a": "Te avisamos antes de que venza. Si decides continuar, activas tu plan. Si no, tu cuenta queda en modo gratuito limitado.",
-    "faq5q": "¿Puedo cambiar de plan?",
-    "faq5a": "Sí, puedes cambiar de plan en cualquier momento desde tu panel de cuenta.",
-    "ctaTitle": "¿Listo para llevar tu negocio al mundo?",
-    "ctaSubtitle": "Únete a los primeros productores y exportadores de LATAM en MARKARU. Empieza gratis hoy.",
+    "faq2a": "No. Apurape no toca lo que cobras: acuerdas el precio con tu cliente y te queda completo. Lo único que pagas es la membresía anual, y solo si eres proveedor.",
+    "faq3q": "¿Cuánto cuesta para el cliente?",
+    "faq3a": "Nada. Publicar solicitudes, recibir cotizaciones, contratar y calificar es gratis siempre.",
+    "faq4q": "¿Puedo probar antes de pagar?",
+    "faq4a": "Sí. Como proveedor tienes el primer mes gratis, y al suscribirte te regalamos un mes más. Si no continúas, tu cuenta queda en el plan Básico con cotizaciones limitadas.",
+    "faq5q": "¿Qué diferencia hay entre Persona y Negocio?",
+    "faq5a": "Solo el precio y el sorteo: S/120 al año si eres una persona, S/330 si eres un negocio. Los sorteos mensuales se separan entre ambos para que compitas con los tuyos.",
+    "ctaTitle": "¿Listo para conseguir más clientes?",
+    "ctaSubtitle": "Súmate a los primeros proveedores de Apurape. Empieza gratis hoy.",
     "ctaButton": "Crear cuenta gratis"
   },
   "reclamos": {
@@ -170,7 +170,7 @@
   },
 
   "cookieBanner": {
-    "text": "Usamos cookies para mejorar tu experiencia en MARKARU.",
+    "text": "Usamos cookies para mejorar tu experiencia en Apurape.",
     "learnMore": "Política de cookies",
     "accept": "Aceptar",
     "reject": "Rechazar"
@@ -191,7 +191,7 @@
     },
     "info": {
       "emailLabel": "Correo electrónico",
-      "email": "contacto@markaru.com",
+      "email": "contacto@apurape.com",
       "response": "Respondemos en 24–48 horas hábiles.",
       "socialsLabel": "Redes sociales",
       "comingSoon": "Próximamente en LinkedIn, Instagram y WhatsApp."
@@ -215,15 +215,15 @@
         "9. Contacto"
       ],
       "sectionBodies": [
-        "Al acceder o usar la plataforma MARKARU, aceptas quedar vinculado por estos Términos de uso. Si no estás de acuerdo con alguna parte, no debes usar el servicio. [PENDIENTE — reemplazar con texto final]",
-        "MARKARU es una plataforma B2B de agroexportación que conecta productores agrícolas, exportadores, freight forwarders y compradores internacionales de América Latina. [PENDIENTE — reemplazar con texto final]",
+        "Al acceder o usar la plataforma Apurape, aceptas quedar vinculado por estos Términos de uso. Si no estás de acuerdo con alguna parte, no debes usar el servicio. [PENDIENTE — reemplazar con texto final]",
+        "Apurape es una plataforma B2B de agroexportación que conecta productores agrícolas, exportadores, freight forwarders y compradores internacionales de América Latina. [PENDIENTE — reemplazar con texto final]",
         "Para usar ciertas funciones debes crear una cuenta. Eres responsable de mantener la confidencialidad de tus credenciales y de toda la actividad que ocurra bajo tu cuenta. [PENDIENTE — reemplazar con texto final]",
-        "Te comprometes a usar MARKARU únicamente para fines lícitos y de acuerdo con estos términos. Está prohibido usar la plataforma para actividades fraudulentas, spam o cualquier actividad ilegal. [PENDIENTE — reemplazar con texto final]",
-        "Todo el contenido de la plataforma, incluyendo textos, gráficos, logotipos y software, es propiedad de MARKARU o sus licenciantes y está protegido por las leyes de propiedad intelectual aplicables. [PENDIENTE — reemplazar con texto final]",
-        "En la medida máxima permitida por la ley, MARKARU no será responsable por daños indirectos, incidentales, especiales o consecuentes derivados del uso o la imposibilidad de usar el servicio. [PENDIENTE — reemplazar con texto final]",
+        "Te comprometes a usar Apurape únicamente para fines lícitos y de acuerdo con estos términos. Está prohibido usar la plataforma para actividades fraudulentas, spam o cualquier actividad ilegal. [PENDIENTE — reemplazar con texto final]",
+        "Todo el contenido de la plataforma, incluyendo textos, gráficos, logotipos y software, es propiedad de Apurape o sus licenciantes y está protegido por las leyes de propiedad intelectual aplicables. [PENDIENTE — reemplazar con texto final]",
+        "En la medida máxima permitida por la ley, Apurape no será responsable por daños indirectos, incidentales, especiales o consecuentes derivados del uso o la imposibilidad de usar el servicio. [PENDIENTE — reemplazar con texto final]",
         "Nos reservamos el derecho de modificar estos términos en cualquier momento. Notificaremos cambios importantes mediante aviso en la plataforma o por correo electrónico. [PENDIENTE — reemplazar con texto final]",
         "Estos términos se rigen por las leyes de la República del Perú. Cualquier disputa será sometida a la jurisdicción de los tribunales de Lima. [PENDIENTE — reemplazar con texto final]",
-        "Si tienes preguntas sobre estos términos, contáctanos en contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+        "Si tienes preguntas sobre estos términos, contáctanos en contacto@apurape.com. [PENDIENTE — reemplazar con texto final]"
       ]
     },
     "privacy": {
@@ -243,10 +243,10 @@
         "Usamos tu información para operar y mejorar la plataforma, personalizar tu experiencia, enviarte comunicaciones relevantes y cumplir con obligaciones legales. [PENDIENTE — reemplazar con texto final]",
         "No vendemos tu información a terceros. Podemos compartirla con proveedores de servicios que nos ayudan a operar la plataforma, siempre bajo acuerdos de confidencialidad. [PENDIENTE — reemplazar con texto final]",
         "Implementamos medidas técnicas y organizativas para proteger tu información contra accesos no autorizados, pérdida o divulgación. [PENDIENTE — reemplazar con texto final]",
-        "Tienes derecho a acceder, corregir o eliminar tu información personal. Para ejercer estos derechos, contáctanos en contacto@markaru.com. [PENDIENTE — reemplazar con texto final]",
+        "Tienes derecho a acceder, corregir o eliminar tu información personal. Para ejercer estos derechos, contáctanos en contacto@apurape.com. [PENDIENTE — reemplazar con texto final]",
         "Usamos cookies y tecnologías similares. Consulta nuestra Política de cookies para más información. [PENDIENTE — reemplazar con texto final]",
         "Podemos actualizar esta política periódicamente. Notificaremos cambios importantes por correo o mediante aviso en la plataforma. [PENDIENTE — reemplazar con texto final]",
-        "Para consultas sobre privacidad, escríbenos a contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+        "Para consultas sobre privacidad, escríbenos a contacto@apurape.com. [PENDIENTE — reemplazar con texto final]"
       ]
     },
     "cookies": {
@@ -263,7 +263,7 @@
         "Usamos cookies esenciales (necesarias para el funcionamiento), de preferencias (guardan tu idioma y moneda) y analíticas (nos ayudan a entender cómo se usa la plataforma). [PENDIENTE — reemplazar con texto final]",
         "Algunos de nuestros servicios de terceros (como Supabase) también pueden establecer cookies. Consulta sus políticas para más información. [PENDIENTE — reemplazar con texto final]",
         "Puedes controlar las cookies desde la configuración de tu navegador. Rechazar ciertas cookies puede afectar el funcionamiento de algunas partes de la plataforma. [PENDIENTE — reemplazar con texto final]",
-        "Si tienes preguntas sobre nuestro uso de cookies, escríbenos a contacto@markaru.com. [PENDIENTE — reemplazar con texto final]"
+        "Si tienes preguntas sobre nuestro uso de cookies, escríbenos a contacto@apurape.com. [PENDIENTE — reemplazar con texto final]"
       ]
     }
   },
@@ -379,12 +379,12 @@
       "continue": "Continuar con Google",
       "orLogin": "o continúa con",
       "orRegister": "o regístrate con",
-      "chooseRoleTitle": "¿Cómo usarás MARKARU?",
+      "chooseRoleTitle": "¿Cómo usarás Apurape?",
       "chooseRoleSubtitle": "Elige tu rol para completar tu registro."
     },
     "register": {
       "title": "Crea tu cuenta",
-      "subtitle": "Únete al marketplace B2B de agroexportación más grande de LATAM.",
+      "subtitle": "Crea tu cuenta gratis y empieza hoy.",
       "step1": "Paso 1 de 2 — Datos básicos",
       "step2": "Paso 2 de 2 — Tu rol",
       "fullName": "Nombre completo",
@@ -395,7 +395,7 @@
       "passwordPlaceholder": "Mínimo 8 caracteres",
       "country": "País de origen",
       "countryPlaceholder": "Escribe para buscar...",
-      "roleTitle": "¿Cuál es tu rol en la cadena agroexportadora?",
+      "roleTitle": "¿Qué te trae por Apurape?",
       "next": "Continuar →",
       "back": "← Atrás",
       "createAccount": "Crear cuenta",
@@ -421,112 +421,94 @@
   },
 
   "landing": {
-    "slogan": "De nuestra tierra al mundo",
+    "slogan": "Tú me ayudas, yo te ayudo",
     "hero": {
-      "badge": "El hub agroexportador digital de LATAM",
-      "title1": "Exporta tus productos",
-      "title2": "al mundo desde LATAM",
-      "subtitle": "Conectamos productores agrícolas, exportadores y freight forwarders en una sola plataforma. Más negocio, menos intermediarios.",
+      "badge": "El marketplace de servicios del Perú",
+      "title1": "Encuentra a quien te ayude,",
+      "title2": "aquí cerca y de confianza",
+      "subtitle": "Gasfiteros, fotógrafos, profesores, estilistas y más, en tu distrito. Cuenta qué necesitas y recibe cotizaciones sin costo.",
       "ctaPrimary": "Crear cuenta gratis",
-      "ctaHelper": "Elige tu rol: productor, exportador, forwarder o comprador",
-      "ctaProducer": "Soy Productor",
-      "ctaExporter": "Soy Exportador"
+      "ctaHelper": "Gratis para clientes. Sin comisión por tus ventas.",
+      "ctaProducer": "Ofrezco servicios",
+      "ctaExporter": "Busco un servicio"
     },
     "stats": {
-      "digital": "Digital",
-      "commission": "Comisión por venta",
-      "countries": "Países"
+      "digital": "De comisión por tus ventas",
+      "commission": "Cuesta para el cliente",
+      "countries": "Categorías de servicios"
     },
     "roles": {
-      "title": "Una plataforma para toda la cadena",
-      "subtitle": "Cada actor tiene su espacio en MARKARU",
-      "productor": {
-        "title": "Productor Agrícola",
-        "description": "Publica tu catálogo, recibe RFQs de exportadores verificados y accede a logística integrada."
+      "title": "Dos formas de estar en Apurape",
+      "subtitle": "Y puedes ser las dos: el gasfitero también contrata un fotógrafo.",
+      "proveedor": {
+        "title": "Proveedor",
+        "description": "Publica tus servicios, recibe solicitudes de tu zona y cotiza por chat. Cobras el 100% de lo que acuerdas."
       },
-      "exportador": {
-        "title": "Exportador",
-        "description": "Encuentra proveedores verificados, gestiona operaciones y conecta con compradores internacionales."
-      },
-      "forwarder": {
-        "title": "Freight Forwarder",
-        "description": "Recibe RFQs logísticos del sector agro y gestiona tus operaciones desde un solo panel."
-      },
-      "comprador": {
-        "title": "Comprador Internacional",
-        "description": "Accede al catálogo de exportadores latinoamericanos verificados con certificaciones internacionales."
-      },
-      "certificadora": {
-        "title": "Certificadora",
-        "description": "Emite y gestiona certificaciones para productores dentro de la plataforma."
-      },
-      "banco": {
-        "title": "Banco / Financiera",
-        "description": "Ofrece financiamiento y servicios financieros integrados al flujo de operaciones agro."
+      "cliente": {
+        "title": "Cliente",
+        "description": "Cuenta qué necesitas, compara cotizaciones y elige. Contratar en Apurape no te cuesta nada."
       }
     },
     "soy": {
-      "title": "¿Quién eres en el ecosistema?",
-      "subtitle": "MARKARU tiene una solución específica para cada actor de la cadena agroexportadora.",
+      "title": "¿Qué te trae por aquí?",
+      "subtitle": "Empieza por donde estés hoy. Puedes cambiar de lado cuando quieras.",
       "start": "Empezar",
-      "iAm": "Soy",
+      "iAm": "",
       "cards": {
-        "productor": { "title": "Productor", "description": "Vende tus cosechas directamente a exportadores certificados. Sin intermediarios, mayor margen." },
-        "exportador": { "title": "Exportador", "description": "Encuentra proveedores confiables, gestiona RFQs y cierra operaciones desde una sola plataforma." },
-        "forwarder": { "title": "Freight Forwarder", "description": "Cotiza fletes, gestiona documentación y conecta con exportadores que necesitan logística confiable." },
-        "comprador": { "title": "Comprador", "description": "Accede a productos frescos directamente desde origen. Trazabilidad completa y certificaciones incluidas." }
+        "proveedor": { "title": "Ofrezco mis servicios", "description": "Consigue más clientes en tu distrito. Tu reputación se construye con cada trabajo confirmado." },
+        "cliente": { "title": "Busco quien me ayude", "description": "Publica lo que necesitas y deja que los proveedores te coticen. Gratis y sin límite." }
       }
     },
     "howItWorks": {
       "title": "Cómo funciona",
-      "subtitle": "De la finca al mercado internacional en 4 pasos simples.",
+      "subtitle": "De la necesidad al trabajo hecho, en cuatro pasos.",
       "stepLabel": "Paso",
       "steps": {
-        "01": { "title": "Regístrate según tu rol", "description": "Crea tu perfil como productor, exportador, freight forwarder o comprador en menos de 5 minutos." },
-        "02": { "title": "Publica o explora", "description": "Publica tus productos con certificaciones o explora RFQs de exportadores buscando proveedores." },
-        "03": { "title": "Conecta y negocia", "description": "Chatea directamente, envía cotizaciones y cierra acuerdos con contratos digitales seguros." },
-        "04": { "title": "Exporta con confianza", "description": "Gestiona solicitudes logísticas, compara cotizaciones y da seguimiento al estado de tu operación desde la plataforma." }
+        "01": { "title": "Cuenta qué necesitas", "description": "Publica tu solicitud en un minuto, o busca directamente entre los proveedores de tu distrito." },
+        "02": { "title": "Recibe cotizaciones", "description": "Los proveedores te escriben por el chat con su precio, qué incluye y en cuánto tiempo lo hacen." },
+        "03": { "title": "Elige y acuerda", "description": "Comparas, preguntas lo que haga falta y aceptas la que te convenga. El servicio queda agendado." },
+        "04": { "title": "Confirma y califica", "description": "Cuando el trabajo esté hecho, lo confirmas y dejas tu calificación. Esa confirmación es la que cuenta." }
       }
     },
     "products": {
-      "title": "Productos del agro peruano con demanda mundial",
-      "subtitle": "Conectamos lo mejor de nuestra tierra con compradores en más de 15 países",
-      "badgeDemand": "Alta demanda",
-      "badgeExport": "Exportación",
-      "cta": "Ver catálogo completo",
+      "title": "Todo lo que puedes resolver en Apurape",
+      "subtitle": "Ocho categorías y contando. Busca por la tuya.",
+      "badgeDemand": "Popular",
+      "badgeExport": "Nuevo",
+      "cta": "Ver todos los servicios",
       "items": {
-        "avocado": "Palta Hass",
-        "coffee": "Café Premium",
-        "cacao": "Cacao Fino",
-        "maca": "Maca Andina"
+        "avocado": "Hogar",
+        "coffee": "Reparaciones",
+        "cacao": "Eventos",
+        "maca": "Belleza"
       }
     },
     "producerStory": {
-      "badge": "¿Por qué MARKARU?",
-      "title": "Los productores merecen llegar directo al mundo",
-      "body": "Durante años, los productores agrícolas de LATAM perdieron margen en cadenas de intermediarios. MARKARU los conecta directamente con exportadores y compradores internacionales, con trazabilidad y confianza en cada operación.",
-      "point1": "Sin intermediarios innecesarios",
-      "point2": "Operaciones verificadas y documentadas",
-      "point3": "Acceso a compradores de 15+ países",
-      "cta": "Únete como productor"
+      "badge": "¿Por qué Apurape?",
+      "title": "Tu reputación se construye trabajo a trabajo",
+      "body": "En Apurape no compites por precio contra desconocidos. Cada servicio que un cliente confirma queda en tu perfil, y solo la confirmación del cliente cuenta. Eso vuelve la reputación difícil de inflar y fácil de creer.",
+      "point1": "0% de comisión: cobras todo lo que acuerdas",
+      "point2": "Solo el cliente confirma el trabajo, nadie más",
+      "point3": "Sorteo mensual entre los proveedores mejor calificados",
+      "cta": "Empieza a ofrecer tus servicios"
     },
     "export": {
-      "badge": "Logística integrada",
-      "title": "De la cosecha al contenedor, todo en MARKARU",
-      "body": "Conecta con agentes de carga verificados, cotiza fletes en tiempo real, gestiona Incoterms y haz seguimiento de cada etapa de tu operación desde un solo lugar.",
-      "point1": "Cotizador de flete integrado",
-      "point2": "Seguimiento por etapas en tiempo real",
-      "point3": "Forwarders verificados",
-      "point4": "Gestión de documentos de exportación",
+      "badge": "Nuestro diferencial",
+      "title": "El sorteo mensual: trabajar bien tiene premio",
+      "body": "Cada mes sorteamos entre los proveedores con ventas confirmadas y al menos tres calificaciones de cinco estrellas, separado por categoría y por tipo de cuenta. El ganador sale por ranking automático, no por votación ni por dedo.",
+      "point1": "Entras con tus ventas confirmadas del mes",
+      "point2": "Mínimo 3 calificaciones de 5 estrellas",
+      "point3": "Separado por categoría: compites con los tuyos",
+      "point4": "Los clientes también tienen su propio sorteo",
       "cta": "Ver cómo funciona"
     },
     "footer": {
-      "tagline": "El marketplace B2B que conecta a toda la cadena agroexportadora de América Latina.",
+      "tagline": "El marketplace donde encuentras a quien te ayude, y donde tu trabajo bien hecho se nota.",
       "platform": "Plataforma",
       "company": "Empresa",
       "legal": "Legal",
       "madeIn": "Hecho en América Latina",
-      "allRights": "© {{year}} MARKARU. Todos los derechos reservados.",
+      "allRights": "© {{year}} Apurape. Todos los derechos reservados.",
       "aboutUs": "Sobre nosotros",
       "contact": "Contacto",
       "terms": "Términos de uso",
@@ -616,7 +598,7 @@
       "pro": {
         "name": "Pro",
         "period": "al año",
-        "description": "Primer mes gratis + un mes adicional al suscribirte.",
+        "description": "S/120 al año si eres persona, S/330 si eres negocio. Primer mes gratis + un mes adicional al suscribirte.",
         "features": [
           "Cotizaciones ilimitadas",
           "Acceso al sorteo mensual de tu categoría",
@@ -653,6 +635,8 @@
       "description": "Los pagos se procesan de forma segura con Culqi. Activa tu plan directamente desde la página de planes."
     },
     "tabs": {
+      "proveedores": "Proveedores",
+      "clientes": "Clientes",
       "productores": "Productores",
       "exportadores": "Exportadores",
       "forwarders": "Forwarders",
@@ -694,9 +678,9 @@
           "Cotizador logístico completo",
           "Certificaciones grupales",
           "Prioridad en búsqueda",
-          "Sello MARKARU Verified",
+          "Sello Apurape Verified",
           "Ferias nacionales y virtuales incluidas",
-          "Participación en ferias internacionales MARKARU",
+          "Participación en ferias internacionales Apurape",
           "Gestión asistida disponible (comisión 5%, opcional)",
           "Soporte preferente"
         ]
@@ -714,9 +698,9 @@
           "Cotizador logístico integrado",
           "Acceso a perfiles con certificaciones",
           "Mensajería: hasta 5 chats",
-          "Sello MARKARU Verified",
+          "Sello Apurape Verified",
           "Ferias nacionales y virtuales incluidas",
-          "Participación en ferias internacionales MARKARU",
+          "Participación en ferias internacionales Apurape",
           "Soporte por email"
         ]
       },
@@ -762,7 +746,7 @@
           "Recepción ilimitada de RFQs + los recibe primero",
           "Mensajería ilimitada",
           "Prioridad por rutas negociadas",
-          "Participación en ferias internacionales MARKARU",
+          "Participación en ferias internacionales Apurape",
           "Panel de analytics de operaciones",
           "Gestor de cuenta dedicado",
           "Soporte prioritario 24/7"
@@ -795,7 +779,7 @@
           "Posición destacada en directorio",
           "Certificaciones grupales ilimitadas",
           "Reportes de cumplimiento por cliente",
-          "Participación en ferias internacionales MARKARU",
+          "Participación en ferias internacionales Apurape",
           "Gestor de cuenta dedicado",
           "Soporte prioritario"
         ]
@@ -821,13 +805,13 @@
 
   "myPlan": {
     "title": "Mi plan",
-    "subtitleFree": "Tu acceso a MARKARU es siempre gratuito.",
+    "subtitleFree": "Tu acceso a Apurape es siempre gratuito.",
     "subtitleRole": "Planes disponibles para {{role}}.",
     "mostPopular": "Más popular",
     "approxPerDay": "{{amount}} al día",
     "trialBadge": "{{n}} días gratis",
     "trialEnded": "Tu prueba gratuita terminó",
-    "trialEndedDesc": "Activa tu plan para seguir usando todas las funciones de MARKARU.",
+    "trialEndedDesc": "Activa tu plan para seguir usando todas las funciones de Apurape.",
     "trialActive": "Prueba gratuita — {{remaining}}",
     "trialLastDay": "último día",
     "trialDaysLeft": "te quedan {{n}} día{{s}}",
@@ -972,7 +956,7 @@
         "Tu perfil verificado llega a compradores en más de 15 países de forma directa.",
         "Accede a guías y cursos de exportación pensados para el sector agro."
       ],
-      "benefits": ["Sin comisiones sobre ventas", "Perfil verificado con sello MARKARU", "Soporte en español", "Empieza gratis", "Más de 380 exportadores activos"],
+      "benefits": ["Sin comisiones sobre ventas", "Perfil verificado con sello Apurape", "Soporte en español", "Empieza gratis", "Más de 380 exportadores activos"],
       "whoFor": ["Eres productor agrícola en LATAM", "Quieres vender directamente sin intermediarios", "Buscas escalar tu producción hacia mercados internacionales", "Tienes o puedes obtener certificaciones de exportación"]
     },
     "exportador": {
@@ -1038,35 +1022,35 @@
   },
 
   "about": {
-    "title": "Sobre MARKARU",
-    "subtitle": "De nuestra tierra al mundo",
-    "intro": "Conectamos el agro de Latinoamérica con compradores del mundo, sin intermediarios.",
+    "title": "Sobre Apurape",
+    "subtitle": "Tú me ayudas, yo te ayudo",
+    "intro": "Un lugar donde encontrar a quien te resuelva algo, y donde el trabajo bien hecho se nota.",
     "meaning": {
-      "title": "¿Qué significa MARKARU?",
-      "body": "MARKARU nace de la palabra quechua y aimara 'marka', que significa pueblo, comunidad y tierra. Es un homenaje a las raíces de quienes trabajan el campo en Latinoamérica, y a nuestra misión: llevar el fruto de su esfuerzo al mundo entero."
+      "title": "Qué significa Apurape",
+      "body": "[PENDIENTE — falta el origen real del nombre. Escribir aquí de dónde viene 'Apurape' y por qué se eligió.] Mientras tanto, lo que sí define a la plataforma es su slogan: tú me ayudas, yo te ayudo. Una red donde todos son, en algún momento, las dos cosas."
     },
     "mission": {
       "title": "Nuestra misión",
-      "body": "Damos visibilidad y herramientas a los productores agrícolas de Latinoamérica para que conecten directamente con compradores del mundo, sin tantos intermediarios. Creemos que quienes alimentan al país y al mundo merecen crecer, ser vistos y vender en condiciones justas."
+      "body": "Que cualquier persona en el Perú pueda encontrar rápido a alguien de confianza para lo que necesita, y que quien ofrece un servicio pueda vivir de su oficio sin regalar una parte de cada trabajo en comisiones. Por eso cobramos 0% sobre tus ventas."
     },
     "problem": {
       "title": "El problema que resolvemos",
-      "body": "El agro de LATAM produce alimentos de clase mundial, pero conectar con los productores es difícil: hay pocos canales, mucha informalidad y demasiados intermediarios que reducen su margen. MARKARU reúne en un solo lugar a productores, exportadores, agentes de carga, certificadoras y compradores, con perfiles verificados y seguimiento de cada operación. Hacemos visible a quien antes era difícil de encontrar."
+      "body": "Conseguir un buen gasfitero, un fotógrafo o un profesor particular todavía depende de a quién conozcas. Los grupos de vecinos y los clasificados no dejan rastro: no hay perfil, no hay reputación y no hay forma de volver a encontrar a alguien que trabajó bien. Apurape reúne servicios, cotizaciones y calificaciones en un solo lugar, con una regla clara: la reputación se construye solo con trabajos que el cliente confirmó."
     },
     "story": {
       "title": "Nuestra historia",
-      "p1": "MARKARU nació de una experiencia real. Durante años, su fundador quiso comprar directamente a los agricultores, pero encontrarlos era casi imposible: no había forma fácil de contactarlos, ni canales que los hicieran visibles. Y sin embargo, hacían —y hacen— uno de los trabajos más importantes del mundo: alimentar a todo un país, y a buena parte del planeta.",
-      "p2": "De esa frustración nació una convicción: si esos productores fueran más visibles y tuvieran las herramientas correctas, podrían crecer sin límites. MARKARU existe para eso. Para que el esfuerzo de cada agricultor deje de quedarse en la sombra y llegue, por fin, de nuestra tierra al mundo."
+      "p1": "[PENDIENTE — falta la historia real detrás de Apurape. Este texto es un marcador de posición: reemplázalo por cómo y por qué nació el proyecto.]",
+      "p2": "[PENDIENTE — segundo párrafo de la historia.]"
     },
     "vision": {
       "title": "Nuestra visión",
-      "body": "Convertirnos en la plataforma líder de agroexportación de Latinoamérica: expandirnos por toda la región, integrar financiamiento, insumos y certificación, y ser el puente digital que lleve el agro latinoamericano al mundo."
+      "body": "Empezar en el Perú y crecer a toda América Latina: que buscar ayuda para algo concreto sea tan normal como pedir un taxi, y que el proveedor que trabaja bien tenga por fin un lugar donde eso quede registrado y le sirva."
     },
     "cta": {
       "title": "¿Listo para unirte?",
-      "subtitle": "Forma parte de la comunidad que está transformando el agro de Latinoamérica.",
-      "joinProducer": "Únete como productor",
-      "explore": "Explora la plataforma"
+      "subtitle": "Súmate a la comunidad que se ayuda para sacar las cosas adelante.",
+      "joinProducer": "Ofrecer mis servicios",
+      "explore": "Explorar servicios"
     }
   }
 }

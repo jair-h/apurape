@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase";
  * Returns the conversation id, or null on error.
  *
  * `subject` es de dónde nació la conversación: un servicio publicado por el
- * proveedor o una solicitud publicada por el cliente. (En MARKARU esto se
+ * proveedor o una solicitud publicada por el cliente. (En Apurape esto se
  * llamaba product_id / product_type y apuntaba a productos agro.)
  */
 export async function findOrCreateConversation(

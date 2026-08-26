@@ -3,7 +3,7 @@
 /* Formulario de perfil, compartido por Proveedor y Cliente.
  *
  * Escribe en dos tablas: los datos públicos van a `profiles` y los de
- * contacto/identidad a `profile_private`, que solo lee su dueño (en MARKARU
+ * contacto/identidad a `profile_private`, que solo lee su dueño (en Apurape
  * el teléfono estaba en profiles con SELECT abierto a cualquiera).
  *
  * Las columnas sensibles (rol, plan, verificado, contadores) no se mandan:

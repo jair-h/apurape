@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
   }, []);
 
   const inputClass =
-    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition";
+    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,19 +50,19 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 justify-center mb-8">
-          <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain" />
-          <span className="font-bold text-lg text-gray-900">MARKARU</span>
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain" />
+          <span className="font-bold text-lg text-gray-900">Apurape</span>
         </Link>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           {done ? (
             <div className="text-center">
-              <div className="inline-flex items-center justify-center bg-[#E1F5EE] p-5 rounded-2xl mb-5">
-                <CheckCircle2 className="h-9 w-9 text-[#1D9E75]" />
+              <div className="inline-flex items-center justify-center bg-[#FEF3F2] p-5 rounded-2xl mb-5">
+                <CheckCircle2 className="h-9 w-9 text-[#D92D20]" />
               </div>
-              <h1 className="text-xl font-extrabold text-[#085041] mb-2">{t("auth.reset.successTitle")}</h1>
+              <h1 className="text-xl font-extrabold text-[#B42318] mb-2">{t("auth.reset.successTitle")}</h1>
               <p className="text-sm text-gray-600 leading-relaxed mb-6">{t("auth.reset.success")}</p>
-              <Link href="/login" className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#167a5a] transition-colors">
+              <Link href="/login" className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#912018] transition-colors">
                 {t("auth.reset.goToLogin")}
               </Link>
             </div>
@@ -98,7 +98,7 @@ export default function ResetPasswordPage() {
                     value={confirm} onChange={(e) => setConfirm(e.target.value)} className={inputClass} />
                 </div>
                 <button type="submit" disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#167a5a] transition-colors disabled:opacity-60">
+                  className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#912018] transition-colors disabled:opacity-60">
                   {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> {t("auth.reset.saving")}</> : t("auth.reset.submit")}
                 </button>
               </form>

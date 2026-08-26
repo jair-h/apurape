@@ -138,7 +138,7 @@ function PreviewModal({ post, onClose }: { post: Partial<BlogPost>; onClose: () 
             <img src={post.image_url} alt={post.title} className="w-full aspect-video object-cover rounded-2xl mb-6" />
           )}
           {post.category && (
-            <span className="inline-block bg-[#E1F5EE] text-[#085041] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
+            <span className="inline-block bg-[#FEF3F2] text-[#B42318] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
               {CAT_LABELS[post.category] ?? post.category}
             </span>
           )}
@@ -148,7 +148,7 @@ function PreviewModal({ post, onClose }: { post: Partial<BlogPost>; onClose: () 
             <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {words.toLocaleString("es")} palabras · {mins} min de lectura</span>
           </div>
           {post.summary && (
-            <p className="text-lg text-gray-500 mb-6 border-l-4 border-[#1D9E75] pl-4 leading-relaxed">{post.summary}</p>
+            <p className="text-lg text-gray-500 mb-6 border-l-4 border-[#D92D20] pl-4 leading-relaxed">{post.summary}</p>
           )}
           <div className="rich-content" dangerouslySetInnerHTML={{ __html: post.content || "<p style='color:#9ca3af'>Sin contenido…</p>" }} />
         </div>
@@ -163,19 +163,19 @@ function TemplatePicker({ onPick, onClose }: { onPick: (tpl: typeof TEMPLATES[nu
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h3 className="flex items-center gap-2 text-base font-extrabold text-[#085041]"><LayoutTemplate className="h-4 w-4" /> Elige una plantilla</h3>
+          <h3 className="flex items-center gap-2 text-base font-extrabold text-[#B42318]"><LayoutTemplate className="h-4 w-4" /> Elige una plantilla</h3>
           <button type="button" onClick={onClose}><X className="h-5 w-5 text-gray-400" /></button>
         </div>
         <div className="px-5 py-4">
           <button type="button" onClick={() => onPick(null)}
-            className="w-full mb-3 flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold text-gray-600 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all">
+            className="w-full mb-3 flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold text-gray-600 hover:border-[#D92D20] hover:text-[#D92D20] transition-all">
             <FileText className="h-4 w-4" /> Documento en blanco
           </button>
           <div className="grid grid-cols-2 gap-2">
             {TEMPLATES.map((tpl) => (
               <button key={tpl.key} type="button" onClick={() => onPick(tpl)}
-                className="text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#1D9E75] hover:bg-[#E1F5EE] transition-all">
-                <p className="text-sm font-bold text-[#085041]">{tpl.label}</p>
+                className="text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#D92D20] hover:bg-[#FEF3F2] transition-all">
+                <p className="text-sm font-bold text-[#B42318]">{tpl.label}</p>
                 <p className="text-[10px] text-gray-400 mt-0.5">{tpl.headings.length} secciones</p>
               </button>
             ))}
@@ -188,7 +188,7 @@ function TemplatePicker({ onPick, onClose }: { onPick: (tpl: typeof TEMPLATES[nu
 
 /* ─── Social share preview ────────────────────────────────── */
 function SocialPreview({ post }: { post: Partial<BlogPost> }) {
-  const [origin, setOrigin] = useState("https://markaru.com");
+  const [origin, setOrigin] = useState("https://apurape.com");
   useEffect(() => { if (typeof window !== "undefined") setOrigin(window.location.origin); }, []);
 
   const title = post.meta_title || post.title || "Título del artículo";
@@ -199,7 +199,7 @@ function SocialPreview({ post }: { post: Partial<BlogPost> }) {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-5">
-      <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><Share2 className="h-4 w-4" /> Vista previa social</h3>
+      <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><Share2 className="h-4 w-4" /> Vista previa social</h3>
 
       {/* Google */}
       <div>
@@ -355,7 +355,7 @@ function PostEditor({
 
   const { words, mins } = useMemo(() => contentStats(form.content ?? ""), [form.content]);
 
-  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 transition";
+  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 transition";
   const labelCls = "block text-xs font-semibold text-gray-700 mb-1.5";
 
   return (
@@ -363,33 +363,33 @@ function PostEditor({
       {/* Header */}
       <div className="flex items-center gap-3 mb-2 flex-wrap">
         <button type="button" onClick={onBack}
-          className="p-2 rounded-xl border border-gray-200 text-gray-500 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all bg-white">
+          className="p-2 rounded-xl border border-gray-200 text-gray-500 hover:border-[#D92D20] hover:text-[#D92D20] transition-all bg-white">
           <ChevronLeft className="h-4 w-4" />
         </button>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-extrabold text-[#085041]">
+          <h1 className="text-xl font-extrabold text-[#B42318]">
             {post.id ? "Editar artículo" : "Nuevo artículo"}
           </h1>
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-            form.status === "published" ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-500"
+            form.status === "published" ? "bg-[#FEF3F2] text-[#B42318]" : "bg-gray-100 text-gray-500"
           }`}>
             {form.status === "published" ? "Publicado" : "Borrador"}
           </span>
         </div>
         <div className="flex gap-2 flex-wrap">
           <button type="button" onClick={() => setPreview(true)} disabled={!form.title}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-600 hover:border-[#1D9E75] hover:text-[#1D9E75] bg-white disabled:opacity-50 transition-all">
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-600 hover:border-[#D92D20] hover:text-[#D92D20] bg-white disabled:opacity-50 transition-all">
             <Eye className="h-3.5 w-3.5" /> Vista previa
           </button>
           <button type="button" onClick={() => handleSubmit(false)}
             disabled={saving || !form.title}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-600 hover:border-[#1D9E75] hover:text-[#1D9E75] bg-white disabled:opacity-50 transition-all">
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-600 hover:border-[#D92D20] hover:text-[#D92D20] bg-white disabled:opacity-50 transition-all">
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FileText className="h-3.5 w-3.5" />}
             Guardar borrador
           </button>
           <button type="button" onClick={() => handleSubmit(true)}
             disabled={saving || !form.title}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] disabled:opacity-50 transition-all">
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] disabled:opacity-50 transition-all">
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Globe className="h-3.5 w-3.5" />}
             Publicar
           </button>
@@ -405,7 +405,7 @@ function PostEditor({
         ) : dirty ? (
           <span className="inline-flex items-center gap-1.5 text-xs text-amber-600"><Cloud className="h-3.5 w-3.5" /> Cambios pendientes</span>
         ) : lastSaved ? (
-          <span className="inline-flex items-center gap-1.5 text-xs text-[#1D9E75]"><CloudCheck className="h-3.5 w-3.5" /> Guardado automáticamente {relTime(lastSaved)}</span>
+          <span className="inline-flex items-center gap-1.5 text-xs text-[#D92D20]"><CloudCheck className="h-3.5 w-3.5" /> Guardado automáticamente {relTime(lastSaved)}</span>
         ) : (
           <span className="inline-flex items-center gap-1.5 text-xs text-gray-400"><Cloud className="h-3.5 w-3.5" /> El autoguardado se activa al escribir</span>
         )}
@@ -447,7 +447,7 @@ function PostEditor({
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-semibold text-gray-700">Contenido</label>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1D9E75]">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#D92D20]">
                   <Clock className="h-3 w-3" /> {words.toLocaleString("es")} palabras · {mins} min de lectura
                 </span>
               </div>
@@ -458,9 +458,9 @@ function PostEditor({
           {/* FAQ editor */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><MessageCircleQuestion className="h-4 w-4" /> Preguntas frecuentes (FAQ)</h3>
+              <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><MessageCircleQuestion className="h-4 w-4" /> Preguntas frecuentes (FAQ)</h3>
               <button type="button" onClick={addFaq}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#E1F5EE] text-[#085041] text-xs font-bold hover:bg-[#1D9E75] hover:text-white transition-all">
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FEF3F2] text-[#B42318] text-xs font-bold hover:bg-[#D92D20] hover:text-white transition-all">
                 <Plus className="h-3.5 w-3.5" /> Añadir pregunta
               </button>
             </div>
@@ -496,7 +496,7 @@ function PostEditor({
         <div className="space-y-5">
           {/* Featured image */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-[#085041]">Imagen destacada</h3>
+            <h3 className="text-sm font-bold text-[#B42318]">Imagen destacada</h3>
             <div>
               <label className={labelCls}>URL de la imagen</label>
               <ImageUpload value={form.image_url ?? ""} onChange={(url) => set("image_url", url)} inputClassName={inputCls} folder="blog" />
@@ -508,13 +508,13 @@ function PostEditor({
 
           {/* Author */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-[#085041]">Autor</h3>
+            <h3 className="text-sm font-bold text-[#B42318]">Autor</h3>
             <input value={form.author} onChange={(e) => set("author", e.target.value)} placeholder="Markaru Insights" className={inputCls} />
           </div>
 
           {/* Category & tags */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-[#085041]">Categoría y tags</h3>
+            <h3 className="text-sm font-bold text-[#B42318]">Categoría y tags</h3>
             <div>
               <label className={labelCls}>Categoría</label>
               <select value={form.category ?? ""} onChange={(e) => set("category", e.target.value || null)} className={inputCls}>
@@ -531,7 +531,7 @@ function PostEditor({
 
           {/* SEO */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
-            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><Search className="h-4 w-4" /> SEO</h3>
+            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><Search className="h-4 w-4" /> SEO</h3>
             <div>
               <label className={labelCls}>Meta Title <span className="text-gray-400 font-normal">(si vacío usa el título)</span></label>
               <input value={form.meta_title ?? ""} onChange={(e) => set("meta_title", e.target.value)}
@@ -561,7 +561,7 @@ function PostEditor({
 
           {/* CTA */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
-            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><Megaphone className="h-4 w-4" /> CTA al final del artículo</h3>
+            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><Megaphone className="h-4 w-4" /> CTA al final del artículo</h3>
             <div>
               <label className={labelCls}>Tipo de CTA</label>
               <select value={form.cta_type ?? ""} onChange={(e) => set("cta_type", e.target.value || null)} className={inputCls}>
@@ -571,10 +571,10 @@ function PostEditor({
             </div>
             {form.cta_type && CTA_PRESETS[form.cta_type as keyof typeof CTA_PRESETS] && (
               <>
-                <div className="rounded-xl bg-[#085041] p-4 text-center">
+                <div className="rounded-xl bg-[#B42318] p-4 text-center">
                   <p className="text-sm font-extrabold text-white">{CTA_PRESETS[form.cta_type as keyof typeof CTA_PRESETS].title}</p>
                   <p className="text-[11px] text-white/80 mt-1">{CTA_PRESETS[form.cta_type as keyof typeof CTA_PRESETS].description}</p>
-                  <span className="inline-block mt-2 bg-white text-[#085041] text-[11px] font-bold px-3 py-1.5 rounded-lg">
+                  <span className="inline-block mt-2 bg-white text-[#B42318] text-[11px] font-bold px-3 py-1.5 rounded-lg">
                     {CTA_PRESETS[form.cta_type as keyof typeof CTA_PRESETS].button}
                   </span>
                 </div>
@@ -589,7 +589,7 @@ function PostEditor({
 
           {/* Related tools */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-3">
-            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><Wrench className="h-4 w-4" /> Herramientas relacionadas</h3>
+            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><Wrench className="h-4 w-4" /> Herramientas relacionadas</h3>
             <p className="text-[11px] text-gray-400">Se muestran como tarjetas en el artículo.</p>
             <div className="space-y-1.5">
               {BLOG_TOOLS.map((tool) => {
@@ -597,9 +597,9 @@ function PostEditor({
                 return (
                   <button key={tool.key} type="button" onClick={() => toggleTool(tool.key)}
                     className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-all ${
-                      on ? "border-[#1D9E75] bg-[#E1F5EE] text-[#085041]" : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      on ? "border-[#D92D20] bg-[#FEF3F2] text-[#B42318]" : "border-gray-200 text-gray-600 hover:border-gray-300"
                     }`}>
-                    <span className={`h-4 w-4 rounded border flex items-center justify-center flex-shrink-0 ${on ? "bg-[#1D9E75] border-[#1D9E75]" : "border-gray-300"}`}>
+                    <span className={`h-4 w-4 rounded border flex items-center justify-center flex-shrink-0 ${on ? "bg-[#D92D20] border-[#D92D20]" : "border-gray-300"}`}>
                       {on && <CloudCheck className="h-3 w-3 text-white" />}
                     </span>
                     {tool.label}
@@ -611,7 +611,7 @@ function PostEditor({
 
           {/* Manual related articles */}
           <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-3">
-            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><ListChecks className="h-4 w-4" /> Artículos relacionados</h3>
+            <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><ListChecks className="h-4 w-4" /> Artículos relacionados</h3>
             <p className="text-[11px] text-gray-400">Opcional · elige hasta 3. Si no eliges, se muestran automáticos por categoría y tags.</p>
             <div className="space-y-1.5 max-h-56 overflow-y-auto">
               {allPosts.filter((p) => p.id !== post.id).length === 0 ? (
@@ -622,9 +622,9 @@ function PostEditor({
                 return (
                   <button key={p.id} type="button" onClick={() => toggleRelated(p.id)} disabled={disabled}
                     className={`w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-all disabled:opacity-40 ${
-                      on ? "border-[#1D9E75] bg-[#E1F5EE] text-[#085041]" : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      on ? "border-[#D92D20] bg-[#FEF3F2] text-[#B42318]" : "border-gray-200 text-gray-600 hover:border-gray-300"
                     }`}>
-                    <span className={`h-4 w-4 rounded border flex items-center justify-center flex-shrink-0 ${on ? "bg-[#1D9E75] border-[#1D9E75]" : "border-gray-300"}`}>
+                    <span className={`h-4 w-4 rounded border flex items-center justify-center flex-shrink-0 ${on ? "bg-[#D92D20] border-[#D92D20]" : "border-gray-300"}`}>
                       {on && <CloudCheck className="h-3 w-3 text-white" />}
                     </span>
                     <span className="truncate">{p.title}</span>
@@ -637,7 +637,7 @@ function PostEditor({
           {/* Dates */}
           {post.id && (
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-2">
-              <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#085041]"><Calendar className="h-4 w-4" /> Fechas</h3>
+              <h3 className="flex items-center gap-1.5 text-sm font-bold text-[#B42318]"><Calendar className="h-4 w-4" /> Fechas</h3>
               <p className="text-xs text-gray-600">Publicado el: <span className="font-semibold text-gray-800">{fmtDateTime(form.published_at ?? null)}</span></p>
               <p className="text-xs text-gray-600">Última actualización: <span className="font-semibold text-gray-800">{fmtDateTime(post.updated_at ?? null)}</span></p>
             </div>
@@ -808,11 +808,11 @@ export default function AdminBlogPage() {
       <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-extrabold text-[#085041]">Blog</h1>
+            <h1 className="text-2xl font-extrabold text-[#B42318]">Blog</h1>
             <p className="text-sm text-[#6B7280] mt-0.5">Escribe y publica artículos sin tocar código.</p>
           </div>
           <button type="button" onClick={() => setPicker(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] transition-colors shadow-sm">
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] transition-colors shadow-sm">
             <Plus className="h-4 w-4" /> Nuevo artículo
           </button>
         </div>
@@ -820,8 +820,8 @@ export default function AdminBlogPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: "Total", value: posts.length, cls: "text-[#085041]" },
-            { label: "Publicados", value: posts.filter((p) => p.status === "published").length, cls: "text-[#1D9E75]" },
+            { label: "Total", value: posts.length, cls: "text-[#B42318]" },
+            { label: "Publicados", value: posts.filter((p) => p.status === "published").length, cls: "text-[#D92D20]" },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm text-center">
               <p className={`text-2xl font-extrabold ${s.cls}`}>{s.value}</p>
@@ -832,15 +832,15 @@ export default function AdminBlogPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+            <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
           </div>
         ) : posts.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
             <FileText className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-            <p className="text-base font-bold text-[#085041] mb-1">Aún no hay artículos</p>
+            <p className="text-base font-bold text-[#B42318] mb-1">Aún no hay artículos</p>
             <p className="text-sm text-[#6B7280] mb-6">Crea tu primer artículo para empezar a publicar en el blog.</p>
             <button type="button" onClick={() => setPicker(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] transition-colors">
               <Plus className="h-4 w-4" /> Crear artículo
             </button>
           </div>
@@ -857,7 +857,7 @@ export default function AdminBlogPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      post.status === "published" ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-500"
+                      post.status === "published" ? "bg-[#FEF3F2] text-[#B42318]" : "bg-gray-100 text-gray-500"
                     }`}>
                       {post.status === "published" ? "Publicado" : "Borrador"}
                     </span>
@@ -881,17 +881,17 @@ export default function AdminBlogPage() {
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button type="button" onClick={() => handleDuplicate(post)} disabled={duplicating === post.id}
-                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all disabled:opacity-50"
+                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#D92D20] hover:text-[#D92D20] transition-all disabled:opacity-50"
                     title="Duplicar (crea un borrador)">
                     {duplicating === post.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Copy className="h-4 w-4" />}
                   </button>
                   <button type="button" onClick={() => toggleStatus(post)}
-                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all"
+                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#D92D20] hover:text-[#D92D20] transition-all"
                     title={post.status === "published" ? "Despublicar" : "Publicar"}>
                     {post.status === "published" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                   <button type="button" onClick={() => setEditing(post)}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#E1F5EE] text-[#085041] text-xs font-bold hover:bg-[#1D9E75] hover:text-white transition-all">
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#FEF3F2] text-[#B42318] text-xs font-bold hover:bg-[#D92D20] hover:text-white transition-all">
                     <Edit2 className="h-3.5 w-3.5" /> Editar
                   </button>
                   <button type="button" onClick={() => setDeleteConfirm(post)}

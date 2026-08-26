@@ -7,11 +7,11 @@ import LandingNavbar from "@/components/landing/LandingNavbar";
 const SECTIONS = [
   {
     title: "1. Quiénes somos",
-    body: "MARKARU es una plataforma digital de comercio agrícola. Esta política explica qué datos recopilamos, cómo los usamos y cómo los protegemos.",
+    body: "Apurape es una plataforma digital de comercio agrícola. Esta política explica qué datos recopilamos, cómo los usamos y cómo los protegemos.",
   },
   {
     title: "2. Datos que recopilamos",
-    body: "Al registrarte y usar MARKARU recopilamos: nombre, email, país, región, empresa, productos que publicas, mensajes dentro de la plataforma, datos de operaciones y calificaciones. Los datos de pago los procesa Culqi directamente, no MARKARU.",
+    body: "Al registrarte y usar Apurape recopilamos: nombre, email, país, región, empresa, productos que publicas, mensajes dentro de la plataforma, datos de operaciones y calificaciones. Los datos de pago los procesa Culqi directamente, no Apurape.",
   },
   {
     title: "3. Para qué usamos tus datos",
@@ -47,7 +47,7 @@ export default function PrivacidadPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#1D9E75] text-sm mb-10 transition-colors"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#D92D20] text-sm mb-10 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver al inicio
@@ -72,11 +72,11 @@ export default function PrivacidadPage() {
       <footer className="bg-gray-900 py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-white">MARKARU</span>
+            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+            <span className="font-bold text-sm text-white">Apurape</span>
           </div>
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} MARKARU. Todos los derechos reservados.
+            © {new Date().getFullYear()} Apurape. Todos los derechos reservados.
           </p>
         </div>
       </footer>

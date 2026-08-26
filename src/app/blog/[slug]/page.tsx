@@ -13,7 +13,7 @@ import { CAT_LABEL, CTA_PRESETS, BLOG_TOOLS_MAP, contentStats, type Faq } from "
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://markaru.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://apurape.com";
 
 interface Post {
   id: string;
@@ -85,7 +85,7 @@ async function getPost(slug: string): Promise<Post | null> {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return { title: "Artículo no encontrado · MARKARU Blog" };
+  if (!post) return { title: "Artículo no encontrado · Apurape Blog" };
 
   const title = post.meta_title || post.title;
   const description = post.meta_description || post.summary || post.title;
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     metadataBase: new URL(SITE_URL),
-    title: `${title} · MARKARU Blog`,
+    title: `${title} · Apurape Blog`,
     description,
     alternates: { canonical: url },
     openGraph: {
@@ -111,17 +111,17 @@ function RelatedCard({ p }: { p: CardPost }) {
   return (
     <Link href={`/blog/${p.slug}`}
       className="group bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
-      <div className="relative aspect-video overflow-hidden bg-[#E1F5EE]">
+      <div className="relative aspect-video overflow-hidden bg-[#FEF3F2]">
         {p.image_url
           ? <img src={p.image_url} alt={p.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          : <div className="w-full h-full flex items-center justify-center"><Leaf className="h-8 w-8 text-[#1D9E75]" /></div>}
+          : <div className="w-full h-full flex items-center justify-center"><Leaf className="h-8 w-8 text-[#D92D20]" /></div>}
       </div>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-1 text-[10px] font-bold">
-          {p.category && <span className="text-[#1D9E75]">{CAT_LABEL[p.category] ?? p.category}</span>}
+          {p.category && <span className="text-[#D92D20]">{CAT_LABEL[p.category] ?? p.category}</span>}
           <span className="inline-flex items-center gap-1 text-gray-400"><Clock className="h-3 w-3" /> {contentStats(p.content ?? "").mins} min</span>
         </div>
-        <h4 className="text-sm font-bold text-[#1E293B] line-clamp-2 group-hover:text-[#085041] transition-colors">{p.title}</h4>
+        <h4 className="text-sm font-bold text-[#1E293B] line-clamp-2 group-hover:text-[#B42318] transition-colors">{p.title}</h4>
       </div>
     </Link>
   );
@@ -188,11 +188,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       author: { "@type": "Organization", name: post.author || "Markaru Insights" },
       datePublished: post.published_at,
       dateModified: post.updated_at || post.published_at,
-      publisher: { "@type": "Organization", name: "MARKARU", logo: { "@type": "ImageObject", url: logo } },
+      publisher: { "@type": "Organization", name: "Apurape", logo: { "@type": "ImageObject", url: logo } },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
     },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs },
-    { "@context": "https://schema.org", "@type": "Organization", name: "MARKARU", url: SITE_URL, logo },
+    { "@context": "https://schema.org", "@type": "Organization", name: "Apurape", url: SITE_URL, logo },
   ];
   if (faqs.length) {
     jsonLd.push({
@@ -211,14 +211,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <main className="pt-16 min-h-screen bg-gray-50">
 
         {/* Featured image */}
-        <div className="relative aspect-video max-h-[420px] w-full overflow-hidden bg-[#085041]">
+        <div className="relative aspect-video max-h-[420px] w-full overflow-hidden bg-[#B42318]">
           {post.image_url ? (
             <>
               <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#085041] to-[#1D9E75]" />
+            <div className="w-full h-full bg-gradient-to-br from-[#B42318] to-[#D92D20]" />
           )}
         </div>
 
@@ -228,17 +228,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <article className="min-w-0">
             {/* Breadcrumb */}
             <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-500 mb-5">
-              <Link href="/" className="hover:text-[#1D9E75] transition-colors">Inicio</Link>
+              <Link href="/" className="hover:text-[#D92D20] transition-colors">Inicio</Link>
               <span className="text-gray-300">›</span>
-              <Link href="/blog" className="hover:text-[#1D9E75] transition-colors">Blog</Link>
-              {catLabel && (<><span className="text-gray-300">›</span><Link href="/blog" className="hover:text-[#1D9E75] transition-colors">{catLabel}</Link></>)}
+              <Link href="/blog" className="hover:text-[#D92D20] transition-colors">Blog</Link>
+              {catLabel && (<><span className="text-gray-300">›</span><Link href="/blog" className="hover:text-[#D92D20] transition-colors">{catLabel}</Link></>)}
               <span className="text-gray-300">›</span>
               <span className="text-gray-700 truncate max-w-[40ch]">{post.title}</span>
             </nav>
 
             <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-[#6B7280]">
               {catLabel && (
-                <span className="inline-flex items-center gap-1 bg-[#E1F5EE] text-[#085041] font-bold px-2.5 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 bg-[#FEF3F2] text-[#B42318] font-bold px-2.5 py-1 rounded-full">
                   <Tag className="h-3 w-3" /> {catLabel}
                 </span>
               )}
@@ -256,7 +256,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
 
             {post.summary && (
-              <p className="text-lg text-[#6B7280] mb-6 leading-relaxed border-l-4 border-[#1D9E75] pl-4">{post.summary}</p>
+              <p className="text-lg text-[#6B7280] mb-6 leading-relaxed border-l-4 border-[#D92D20] pl-4">{post.summary}</p>
             )}
 
             {/* Share */}
@@ -267,11 +267,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* TOC (mobile) */}
             {toc.length > 1 && (
               <div className="lg:hidden bg-white rounded-2xl border border-gray-200 p-5 mb-8">
-                <p className="flex items-center gap-2 text-sm font-bold text-[#085041] mb-3"><List className="h-4 w-4" /> Contenido</p>
+                <p className="flex items-center gap-2 text-sm font-bold text-[#B42318] mb-3"><List className="h-4 w-4" /> Contenido</p>
                 <ul className="space-y-1.5">
                   {toc.map((h) => (
                     <li key={h.id} className={h.level === 3 ? "pl-3" : ""}>
-                      <a href={`#${h.id}`} className="text-sm text-gray-600 hover:text-[#1D9E75] transition-colors">{h.text}</a>
+                      <a href={`#${h.id}`} className="text-sm text-gray-600 hover:text-[#D92D20] transition-colors">{h.text}</a>
                     </li>
                   ))}
                 </ul>
@@ -293,16 +293,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* Related tools */}
             {tools.length > 0 && (
               <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="flex items-center gap-2 text-xl font-extrabold text-[#085041] mb-5"><Wrench className="h-5 w-5" /> Herramientas relacionadas</h3>
+                <h3 className="flex items-center gap-2 text-xl font-extrabold text-[#B42318] mb-5"><Wrench className="h-5 w-5" /> Herramientas relacionadas</h3>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {tools.map((tool) => {
                     const Icon = TOOL_ICON[tool.icon] ?? Wrench;
                     return (
                       <Link key={tool.key} href={tool.href}
-                        className="group flex items-center gap-3 p-4 rounded-2xl border border-gray-200 bg-white hover:border-[#1D9E75] hover:shadow-md transition-all">
-                        <span className="p-2.5 rounded-xl bg-[#E1F5EE] text-[#1D9E75]"><Icon className="h-5 w-5" /></span>
+                        className="group flex items-center gap-3 p-4 rounded-2xl border border-gray-200 bg-white hover:border-[#D92D20] hover:shadow-md transition-all">
+                        <span className="p-2.5 rounded-xl bg-[#FEF3F2] text-[#D92D20]"><Icon className="h-5 w-5" /></span>
                         <span className="text-sm font-bold text-gray-800 flex-1">{tool.label}</span>
-                        <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#1D9E75] transition-colors" />
+                        <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#D92D20] transition-colors" />
                       </Link>
                     );
                   })}
@@ -313,13 +313,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* FAQ */}
             {faqs.length > 0 && (
               <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="flex items-center gap-2 text-xl font-extrabold text-[#085041] mb-5"><HelpCircle className="h-5 w-5" /> Preguntas frecuentes</h3>
+                <h3 className="flex items-center gap-2 text-xl font-extrabold text-[#B42318] mb-5"><HelpCircle className="h-5 w-5" /> Preguntas frecuentes</h3>
                 <div className="space-y-3">
                   {faqs.map((f, i) => (
                     <details key={i} className="group bg-white rounded-2xl border border-gray-200 p-4">
                       <summary className="flex items-center justify-between gap-3 cursor-pointer list-none font-bold text-[#1E293B]">
                         {f.question}
-                        <ArrowRight className="h-4 w-4 text-[#1D9E75] flex-shrink-0 transition-transform group-open:rotate-90" />
+                        <ArrowRight className="h-4 w-4 text-[#D92D20] flex-shrink-0 transition-transform group-open:rotate-90" />
                       </summary>
                       <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{f.answer}</p>
                     </details>
@@ -330,11 +330,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             {/* CTA */}
             {cta && (
-              <div className="mt-12 rounded-3xl bg-gradient-to-br from-[#0d6b4f] via-[#1D9E75] to-[#2dd4a0] p-8 sm:p-10 text-center">
+              <div className="mt-12 rounded-3xl bg-gradient-to-br from-[#7A271A] via-[#D92D20] to-[#F97066] p-8 sm:p-10 text-center">
                 <h3 className="text-2xl font-extrabold text-white mb-2">{cta.title}</h3>
                 <p className="text-white/90 mb-6 max-w-lg mx-auto">{cta.description}</p>
                 <Link href={post.cta_link || cta.link}
-                  className="inline-flex items-center gap-2 bg-white text-[#085041] px-7 py-3.5 rounded-xl text-sm font-extrabold hover:bg-gray-100 transition-colors shadow-lg">
+                  className="inline-flex items-center gap-2 bg-white text-[#B42318] px-7 py-3.5 rounded-xl text-sm font-extrabold hover:bg-gray-100 transition-colors shadow-lg">
                   {cta.button} <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -343,7 +343,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* Related articles */}
             {related.length > 0 && (
               <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="text-xl font-extrabold text-[#085041] mb-6">Artículos relacionados</h3>
+                <h3 className="text-xl font-extrabold text-[#B42318] mb-6">Artículos relacionados</h3>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {related.map((p) => <RelatedCard key={p.id} p={p} />)}
                 </div>
@@ -351,7 +351,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
 
             <div className="mt-10">
-              <Link href="/blog" className="inline-flex items-center gap-1 text-[#1D9E75] text-sm font-semibold hover:text-[#085041] transition-colors">
+              <Link href="/blog" className="inline-flex items-center gap-1 text-[#D92D20] text-sm font-semibold hover:text-[#B42318] transition-colors">
                 <ChevronLeft className="h-4 w-4" /> Volver al Blog
               </Link>
             </div>
@@ -362,11 +362,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             {toc.length > 1 && (
               <div className="hidden lg:block bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-                <p className="flex items-center gap-2 text-sm font-bold text-[#085041] mb-3"><List className="h-4 w-4" /> Tabla de contenidos</p>
+                <p className="flex items-center gap-2 text-sm font-bold text-[#B42318] mb-3"><List className="h-4 w-4" /> Tabla de contenidos</p>
                 <ul className="space-y-2 max-h-[40vh] overflow-y-auto">
                   {toc.map((h) => (
                     <li key={h.id} className={h.level === 3 ? "pl-3" : ""}>
-                      <a href={`#${h.id}`} className="text-sm text-gray-600 hover:text-[#1D9E75] transition-colors block">{h.text}</a>
+                      <a href={`#${h.id}`} className="text-sm text-gray-600 hover:text-[#D92D20] transition-colors block">{h.text}</a>
                     </li>
                   ))}
                 </ul>
@@ -374,7 +374,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
 
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-              <p className="text-sm font-bold text-[#085041] mb-4">Accesos rápidos</p>
+              <p className="text-sm font-bold text-[#B42318] mb-4">Accesos rápidos</p>
               <div className="space-y-2">
                 {[
                   { href: "/servicios", icon: Package, label: "Buscar servicios" },
@@ -382,37 +382,37 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   { href: "/register?rol=proveedor", icon: Ship, label: "Ofrecer mis servicios" },
                 ].map((tool) => (
                   <Link key={tool.href} href={tool.href}
-                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#E1F5EE] text-gray-700 hover:text-[#085041] transition-colors group">
-                    <span className="p-2 rounded-lg bg-[#E1F5EE] text-[#1D9E75]"><tool.icon className="h-4 w-4" /></span>
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#FEF3F2] text-gray-700 hover:text-[#B42318] transition-colors group">
+                    <span className="p-2 rounded-lg bg-[#FEF3F2] text-[#D92D20]"><tool.icon className="h-4 w-4" /></span>
                     <span className="text-sm font-semibold flex-1">{tool.label}</span>
-                    <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#1D9E75] transition-colors" />
+                    <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#D92D20] transition-colors" />
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="bg-[#085041] rounded-2xl p-6 text-center shadow-sm">
+            <div className="bg-[#B42318] rounded-2xl p-6 text-center shadow-sm">
               <h4 className="text-base font-extrabold text-white mb-2">Crea tu cuenta gratis</h4>
               <p className="text-xs text-white/75 mb-4">Únete a la red agroexportadora de LATAM.</p>
               <Link href="/register"
-                className="inline-flex items-center justify-center gap-2 w-full bg-white text-[#085041] px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors">
+                className="inline-flex items-center justify-center gap-2 w-full bg-white text-[#B42318] px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors">
                 Crear cuenta gratis <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
             {recent.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-                <p className="text-sm font-bold text-[#085041] mb-4">Artículos recientes</p>
+                <p className="text-sm font-bold text-[#B42318] mb-4">Artículos recientes</p>
                 <div className="space-y-4">
                   {recent.map((p) => (
                     <Link key={p.id} href={`/blog/${p.slug}`} className="flex gap-3 group">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-[#E1F5EE] flex-shrink-0">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-[#FEF3F2] flex-shrink-0">
                         {p.image_url
                           ? <img src={p.image_url} alt={p.title} loading="lazy" className="w-full h-full object-cover" />
-                          : <div className="w-full h-full flex items-center justify-center"><Leaf className="h-5 w-5 text-[#1D9E75]" /></div>}
+                          : <div className="w-full h-full flex items-center justify-center"><Leaf className="h-5 w-5 text-[#D92D20]" /></div>}
                       </div>
                       <div className="min-w-0">
-                        <h5 className="text-xs font-bold text-[#1E293B] line-clamp-2 group-hover:text-[#085041] transition-colors">{p.title}</h5>
+                        <h5 className="text-xs font-bold text-[#1E293B] line-clamp-2 group-hover:text-[#B42318] transition-colors">{p.title}</h5>
                         <span className="text-[10px] text-gray-400">{fmtDate(p.published_at)}</span>
                       </div>
                     </Link>

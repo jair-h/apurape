@@ -123,7 +123,7 @@ export function CountryCombobox({
               onMouseDown={() => select(c)}
               className={`px-3 py-2 text-sm cursor-pointer transition-colors ${
                 i === highlighted
-                  ? "bg-[#E1F5EE] text-[#085041] font-semibold"
+                  ? "bg-[#FEF3F2] text-[#B42318] font-semibold"
                   : "text-[#1E293B] hover:bg-gray-50"
               }`}
             >

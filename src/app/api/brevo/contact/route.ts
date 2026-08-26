@@ -74,8 +74,8 @@ export async function POST(request: NextRequest) {
     fechaRegistro: pick(body.fechaRegistro as string, profile?.created_at as string),
     fechaFinTrial: pick(body.fechaFinTrial as string, profile?.trial_ends_at as string), // trial_ends_at REAL
     fechaVencimiento: pick(body.fechaVencimiento as string, profile?.plan_expires_at as string),
-    // Idioma: body si viene; si no, la cookie que espeja i18n (markaru_lang).
-    idioma: body.idioma ?? request.cookies.get("markaru_lang")?.value ?? null,
+    // Idioma: body si viene; si no, la cookie que espeja i18n (apurape_lang).
+    idioma: body.idioma ?? request.cookies.get("apurape_lang")?.value ?? null,
   };
 
   const result = await syncBrevoContact(merged);

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -21,7 +21,7 @@ interface Member {
 
 const PLAN_STATUS: Record<string, { label: string; cls: string }> = {
   trial:   { label: "Trial",   cls: "bg-amber-100 text-amber-700" },
-  active:  { label: "Activo",  cls: "bg-[#E1F5EE] text-[#085041]" },
+  active:  { label: "Activo",  cls: "bg-[#FEF3F2] text-[#B42318]" },
   expired: { label: "Expirado",cls: "bg-red-100 text-red-600" },
   free:    { label: "Gratis",  cls: "bg-gray-100 text-gray-500" },
 };
@@ -61,7 +61,7 @@ export default function CobrosPage() {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -77,28 +77,28 @@ export default function CobrosPage() {
     <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-[#085041]">Cobros e ingresos</h1>
+        <h1 className="text-2xl font-extrabold text-[#B42318]">Cobros e ingresos</h1>
         <p className="text-sm text-[#6B7280] mt-0.5">Ingresos por membresías anuales.</p>
       </div>
 
       {/* Metric cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="md:col-span-2 bg-[#085041] rounded-2xl p-5 text-white">
-          <p className="text-xs font-semibold text-green-300 uppercase tracking-wider mb-1">MRR estimado</p>
+        <div className="md:col-span-2 bg-[#B42318] rounded-2xl p-5 text-white">
+          <p className="text-xs font-semibold text-red-200 uppercase tracking-wider mb-1">MRR estimado</p>
           <p className="text-4xl font-extrabold">USD {totalMRR.toLocaleString()}</p>
-          <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-300">
+          <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-red-200">
             <TrendingUp className="h-4 w-4" /> Membresías activas
           </div>
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-lg bg-[#E1F5EE] flex items-center justify-center">
-              <Users className="h-4 w-4 text-[#1D9E75]" />
+            <div className="w-7 h-7 rounded-lg bg-[#FEF3F2] flex items-center justify-center">
+              <Users className="h-4 w-4 text-[#D92D20]" />
             </div>
-            <p className="text-xs font-bold text-[#085041]">Activos</p>
+            <p className="text-xs font-bold text-[#B42318]">Activos</p>
           </div>
-          <p className="text-2xl font-extrabold text-[#085041]">{paid.length}</p>
+          <p className="text-2xl font-extrabold text-[#B42318]">{paid.length}</p>
           <p className="text-[10px] text-[#6B7280] mt-0.5">membresías pagas</p>
         </div>
 
@@ -107,7 +107,7 @@ export default function CobrosPage() {
             <div className="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center">
               <CreditCard className="h-4 w-4 text-amber-600" />
             </div>
-            <p className="text-xs font-bold text-[#085041]">En prueba</p>
+            <p className="text-xs font-bold text-[#B42318]">En prueba</p>
           </div>
           <p className="text-2xl font-extrabold text-amber-600">{inTrial.length}</p>
           <p className="text-[10px] text-[#6B7280] mt-0.5">{expired.length} expirados</p>
@@ -123,8 +123,8 @@ export default function CobrosPage() {
           <button key={t.key} type="button" onClick={() => setTab(t.key)}
             className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
               tab === t.key
-                ? "bg-[#085041] text-white shadow-sm"
-                : "bg-white border border-gray-200 text-[#6B7280] hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                ? "bg-[#B42318] text-white shadow-sm"
+                : "bg-white border border-gray-200 text-[#6B7280] hover:border-[#D92D20] hover:text-[#D92D20]"
             }`}>
             {t.label}
           </button>
@@ -136,7 +136,7 @@ export default function CobrosPage() {
         {displayed.length === 0 ? (
           <div className="py-12 text-center">
             <Users className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-sm font-semibold text-[#085041]">Sin usuarios en esta categoría</p>
+            <p className="text-sm font-semibold text-[#B42318]">Sin usuarios en esta categoría</p>
           </div>
         ) : (
           <>
@@ -180,7 +180,7 @@ export default function CobrosPage() {
             <div className="flex items-center justify-between px-4 pt-4">
               <p className="text-xs text-[#6B7280]">{displayed.length} usuarios</p>
               {tab === "memberships" && (
-                <p className="text-sm font-extrabold text-[#085041]">Total estimado: USD {totalMRR.toLocaleString()}/año</p>
+                <p className="text-sm font-extrabold text-[#B42318]">Total estimado: USD {totalMRR.toLocaleString()}/año</p>
               )}
             </div>
           </>

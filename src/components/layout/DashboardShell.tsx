@@ -37,7 +37,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
       {/* Main content column */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile top bar */}
-        <header className="md:hidden flex-shrink-0 flex items-center gap-3 h-12 px-4 bg-[#085041] border-b border-white/10">
+        <header className="md:hidden flex-shrink-0 flex items-center gap-3 h-12 px-4 bg-[#B42318] border-b border-white/10">
           <button
             onClick={() => setOpen(true)}
             className="text-white/80 hover:text-white p-1 -ml-1 rounded-lg transition-colors"
@@ -46,8 +46,8 @@ export default function DashboardShell({ children }: { children: React.ReactNode
             <Menu className="h-5 w-5" />
           </button>
           <Link href="/" className="flex items-center gap-1.5 flex-1">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain flex-shrink-0" />
-            <span className="font-bold text-sm text-white">MARKARU</span>
+            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain flex-shrink-0" />
+            <span className="font-bold text-sm text-white">Apurape</span>
           </Link>
           {/* Lang toggle mobile */}
           <div className="flex items-center gap-1">
@@ -58,7 +58,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                 <button
                   onClick={() => setLang(l)}
                   className={`text-xs font-bold px-0.5 transition-colors ${
-                    lang === l ? "text-[#4CD9A4]" : "text-white/40 hover:text-white"
+                    lang === l ? "text-[#FDA29B]" : "text-white/40 hover:text-white"
                   }`}
                 >
                   {l.toUpperCase()}

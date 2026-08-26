@@ -9,13 +9,16 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://markaru.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://apurape.com";
+
+const TITLE = "Apurape — Tú me ayudas, yo te ayudo";
+const DESCRIPTION =
+  "Encuentra a quien te ayude, o consigue más clientes para tus servicios. Gasfitería, eventos, belleza, clases y más, en tu distrito. Sin comisión por tus ventas.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "MARKARU - El hub agroexportador de LATAM",
-  description:
-    "Conectamos productores, exportadores y compradores del agro latinoamericano con el mundo. Sin intermediarios, más negocio.",
+  title: TITLE,
+  description: DESCRIPTION,
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -26,19 +29,17 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "MARKARU",
-    title: "MARKARU - El hub agroexportador de LATAM",
-    description:
-      "Conectamos productores, exportadores y compradores del agro latinoamericano con el mundo. Sin intermediarios, más negocio.",
+    siteName: "Apurape",
+    title: TITLE,
+    description: DESCRIPTION,
     url: SITE_URL,
-    images: [{ url: "/images/markaru-logo.png", width: 500, height: 500, alt: "MARKARU" }],
+    images: [{ url: "/images/apurape-mark.svg", width: 500, height: 500, alt: "Apurape" }],
   },
   twitter: {
     card: "summary",
-    title: "MARKARU - El hub agroexportador de LATAM",
-    description:
-      "Conectamos productores, exportadores y compradores del agro latinoamericano con el mundo. Sin intermediarios, más negocio.",
-    images: ["/images/markaru-logo.png"],
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/apurape-mark.svg"],
   },
 };
 

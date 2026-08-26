@@ -51,7 +51,7 @@ function MetricCard({ label, value, sub, icon: Icon, accent }: {
       </div>
       <div>
         <p className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">{label}</p>
-        <p className="text-2xl font-extrabold text-[#085041] leading-tight">{value}</p>
+        <p className="text-2xl font-extrabold text-[#B42318] leading-tight">{value}</p>
         <p className="text-xs text-[#6B7280] mt-0.5">{sub}</p>
       </div>
     </div>
@@ -61,9 +61,9 @@ function MetricCard({ label, value, sub, icon: Icon, accent }: {
 function SectionHeader({ title, href }: { title: string; href?: string }) {
   return (
     <div className="flex items-center justify-between mb-4">
-      <h2 className="text-base font-bold text-[#085041]">{title}</h2>
+      <h2 className="text-base font-bold text-[#B42318]">{title}</h2>
       {href && (
-        <Link href={href} className="text-xs font-semibold text-[#1D9E75] hover:text-[#085041] flex items-center gap-1 transition-colors">
+        <Link href={href} className="text-xs font-semibold text-[#D92D20] hover:text-[#B42318] flex items-center gap-1 transition-colors">
           Ver todo <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       )}
@@ -91,8 +91,8 @@ function VerificationQueue({
       <div className="space-y-3">
         {pending.length === 0 && resolved.length === 0 && (
           <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
-            <CheckCircle2 className="h-8 w-8 text-[#1D9E75] mx-auto mb-2" />
-            <p className="text-sm font-semibold text-[#085041]">Cola vacía</p>
+            <CheckCircle2 className="h-8 w-8 text-[#D92D20] mx-auto mb-2" />
+            <p className="text-sm font-semibold text-[#B42318]">Cola vacía</p>
             <p className="text-xs text-[#6B7280] mt-1">No hay usuarios esperando verificación.</p>
           </div>
         )}
@@ -102,13 +102,13 @@ function VerificationQueue({
           const initial     = displayName.charAt(0).toUpperCase();
           return (
             <div key={u.user_id} className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm flex items-center gap-4 flex-wrap">
-              <div className="w-10 h-10 rounded-xl bg-[#085041] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#B42318] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                 {initial}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="text-sm font-bold text-[#1E293B]">{displayName}</p>
-                  <span className="text-[10px] font-bold bg-[#E1F5EE] text-[#085041] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold bg-[#FEF3F2] text-[#B42318] px-2 py-0.5 rounded-full">
                     {ROLE_LABELS[u.role] ?? u.role}
                   </span>
                 </div>
@@ -128,7 +128,7 @@ function VerificationQueue({
                 <button type="button"
                   onClick={() => onApprove(u.user_id)}
                   disabled={loadingId === u.user_id}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors disabled:opacity-50">
                   {loadingId === u.user_id
                     ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     : <><CheckCircle2 className="h-3.5 w-3.5" /> Aprobar</>}
@@ -146,7 +146,7 @@ function VerificationQueue({
               approved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
             }`}>
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
-                approved ? "bg-[#1D9E75]" : "bg-red-500"
+                approved ? "bg-[#D92D20]" : "bg-red-500"
               }`}>
                 {displayName.charAt(0).toUpperCase()}
               </div>
@@ -155,7 +155,7 @@ function VerificationQueue({
                 {" · "}{ROLE_LABELS[u.role] ?? u.role}
               </p>
               <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                approved ? "bg-[#1D9E75] text-white" : "bg-red-500 text-white"
+                approved ? "bg-[#D92D20] text-white" : "bg-red-500 text-white"
               }`}>
                 {approved ? "Aprobado" : "Rechazado"}
               </span>
@@ -185,7 +185,7 @@ function IncomeSection({ persona, negocio }: { persona: number; negocio: number 
       <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-5">
         <div>
           <p className="text-xs text-[#6B7280] uppercase tracking-wider font-semibold">Cobrado en total</p>
-          <p className="text-3xl font-extrabold text-[#085041]">S/ {total.toLocaleString("es-PE")}</p>
+          <p className="text-3xl font-extrabold text-[#B42318]">S/ {total.toLocaleString("es-PE")}</p>
           <p className="text-xs text-[#6B7280] mt-0.5">Comisión sobre ventas: 0%</p>
         </div>
 
@@ -203,7 +203,7 @@ function IncomeSection({ persona, negocio }: { persona: number; negocio: number 
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-[#6B7280]">{pct}%</span>
-                    <span className="text-sm font-bold text-[#085041]">S/ {r.amount.toLocaleString("es-PE")}</span>
+                    <span className="text-sm font-bold text-[#B42318]">S/ {r.amount.toLocaleString("es-PE")}</span>
                   </div>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -223,7 +223,7 @@ function IncomeSection({ persona, negocio }: { persona: number; negocio: number 
 const JOB_STATUS_UI: Record<string, { label: string; dot: string; cls: string }> = {
   agendado:            { label: "Agendado",     dot: "bg-blue-500",  cls: "bg-blue-50 text-blue-700" },
   pendiente_confirmar: { label: "Por confirmar",dot: "bg-amber-500", cls: "bg-amber-50 text-amber-700" },
-  confirmado:          { label: "Confirmado",   dot: "bg-[#1D9E75]", cls: "bg-[#E1F5EE] text-[#085041]" },
+  confirmado:          { label: "Confirmado",   dot: "bg-[#D92D20]", cls: "bg-[#FEF3F2] text-[#B42318]" },
   cancelado:           { label: "Cancelado",    dot: "bg-gray-400",  cls: "bg-gray-100 text-gray-500" },
   disputa:             { label: "En disputa",   dot: "bg-red-500",   cls: "bg-red-50 text-red-700" },
 };
@@ -235,7 +235,7 @@ function JobsSection({ jobs }: { jobs: RecentJob[] }) {
         <SectionHeader title="Trabajos recientes" href="/dashboard/admin/sorteos" />
         <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
           <TrendingUp className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-[#085041]">Sin trabajos todavía</p>
+          <p className="text-sm font-semibold text-[#B42318]">Sin trabajos todavía</p>
         </div>
       </section>
     );
@@ -261,7 +261,7 @@ function JobsSection({ jobs }: { jobs: RecentJob[] }) {
                   <td className="px-5 py-3.5 text-[#6B7280] text-xs truncate max-w-[200px]">
                     {[j.providerName, j.clientName].filter(Boolean).join(" → ") || "—"}
                   </td>
-                  <td className="px-5 py-3.5 font-bold text-[#085041]">
+                  <td className="px-5 py-3.5 font-bold text-[#B42318]">
                     S/ {Number(j.amount).toLocaleString("es-PE")}
                   </td>
                   <td className="px-5 py-3.5">
@@ -382,7 +382,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -393,14 +393,14 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="bg-[#0D2B1F] p-1 rounded-lg">
-              <Leaf className="h-4 w-4 text-[#1D9E75]" />
+            <div className="bg-[#7A271A] p-1 rounded-lg">
+              <Leaf className="h-4 w-4 text-[#D92D20]" />
             </div>
             <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
               Panel de administración
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#085041]">Centro de control</h1>
+          <h1 className="text-2xl font-extrabold text-[#B42318]">Centro de control</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">Vista global de Apurape</p>
         </div>
 
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
           <MetricCard
             label="Servicios publicados" value={totalServices.toLocaleString()}
             sub="Activos en el catálogo"
-            icon={Package} accent="bg-[#E1F5EE] text-[#1D9E75]"
+            icon={Package} accent="bg-[#FEF3F2] text-[#D92D20]"
           />
           <MetricCard
             label="Servicios confirmados" value={String(confirmedJobs)}

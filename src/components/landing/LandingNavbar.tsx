@@ -20,7 +20,7 @@ function LangToggle({ dark = false }: { dark?: boolean }) {
             onClick={() => setLang(l)}
             className={`text-xs font-bold transition-colors px-0.5 ${
               lang === l
-                ? dark ? "text-[#4CD9A4]" : "text-[#1D9E75]"
+                ? dark ? "text-[#FDA29B]" : "text-[#D92D20]"
                 : dark ? "text-white/40 hover:text-white" : "text-gray-400 hover:text-gray-700"
             }`}
           >
@@ -51,10 +51,10 @@ export default function LandingNavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" onClick={close} className="flex items-center gap-2">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain flex-shrink-0" />
+            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain flex-shrink-0" />
             <div className="flex flex-col leading-none">
-              <span className="font-bold text-lg text-gray-900 leading-none">MARKARU</span>
-              <span className="text-[10px] text-[#1D9E75] font-medium italic leading-none mt-0.5 hidden sm:block">
+              <span className="font-bold text-lg text-gray-900 leading-none">Apurape</span>
+              <span className="text-[10px] text-[#D92D20] font-medium italic leading-none mt-0.5 hidden sm:block">
                 {t("landing.slogan")}
               </span>
             </div>
@@ -66,7 +66,7 @@ export default function LandingNavbar() {
               <Link
                 key={href}
                 href={href}
-                className="text-gray-600 hover:text-[#1D9E75] text-sm font-medium transition-colors"
+                className="text-gray-600 hover:text-[#D92D20] text-sm font-medium transition-colors"
               >
                 {label}
               </Link>
@@ -100,7 +100,7 @@ export default function LandingNavbar() {
               key={href}
               href={href}
               onClick={close}
-              className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#E1F5EE] hover:text-[#085041] transition-colors"
+              className="block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#FEF3F2] hover:text-[#B42318] transition-colors"
             >
               {label}
             </Link>

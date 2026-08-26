@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -23,17 +23,13 @@ interface PendingUser {
 }
 
 const ROLE_LABELS: Record<string, string> = {
-  productor: "Productor", exportador: "Exportador", forwarder: "Forwarder",
-  certificadora: "Certificadora", comprador: "Comprador", banco: "Banco",
+  proveedor: "Proveedor", cliente: "Cliente", admin: "Admin",
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  productor:    "bg-green-100 text-green-700",
-  exportador:   "bg-blue-100 text-blue-700",
-  forwarder:    "bg-purple-100 text-purple-700",
-  certificadora:"bg-amber-100 text-amber-700",
-  comprador:    "bg-pink-100 text-pink-700",
-  banco:        "bg-gray-100 text-gray-700",
+  proveedor: "bg-red-100 text-[#B42318]",
+  cliente:   "bg-teal-100 text-[#0E9384]",
+  admin:     "bg-gray-100 text-gray-700",
 };
 
 /* ─── User verification card ──────────────────────────────── */
@@ -53,19 +49,19 @@ function UserCard({
 
   return (
     <div className={`bg-white rounded-2xl border shadow-sm overflow-hidden transition-all ${
-      decision === "aprobado"  ? "border-[#1D9E75]/50 opacity-80" :
+      decision === "aprobado"  ? "border-[#D92D20]/50 opacity-80" :
       decision === "rechazado" ? "border-red-200 opacity-60"      :
                                  "border-gray-200 hover:shadow-md"
     }`}>
       {/* Header */}
       <div className="px-5 py-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-[#E1F5EE] flex items-center justify-center flex-shrink-0 text-base font-extrabold text-[#085041]">
+          <div className="w-10 h-10 rounded-xl bg-[#FEF3F2] flex items-center justify-center flex-shrink-0 text-base font-extrabold text-[#B42318]">
             {displayName.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-sm font-extrabold text-[#085041] truncate">{displayName}</h3>
+              <h3 className="text-sm font-extrabold text-[#B42318] truncate">{displayName}</h3>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ROLE_COLORS[user.role] ?? "bg-gray-100 text-gray-600"}`}>
                 {ROLE_LABELS[user.role] ?? user.role}
               </span>
@@ -85,7 +81,7 @@ function UserCard({
       <div className="px-5 pb-4 flex items-center gap-4 text-xs text-[#6B7280]">
         {user.business_name || user.name ? (
           <span className="flex items-center gap-1.5">
-            <Building2 className="h-3.5 w-3.5 text-[#1D9E75]" />
+            <Building2 className="h-3.5 w-3.5 text-[#D92D20]" />
             <span className="font-semibold text-[#1E293B]">{user.business_name ?? user.name}</span>
           </span>
         ) : null}
@@ -96,12 +92,12 @@ function UserCard({
       {/* Decision result */}
       {decision && (
         <div className={`mx-5 mb-4 rounded-xl px-4 py-3 flex items-center gap-2.5 ${
-          decision === "aprobado" ? "bg-[#E1F5EE]" : "bg-red-50"
+          decision === "aprobado" ? "bg-[#FEF3F2]" : "bg-red-50"
         }`}>
           {decision === "aprobado"
-            ? <CheckCircle2 className="h-4 w-4 text-[#1D9E75] flex-shrink-0" />
+            ? <CheckCircle2 className="h-4 w-4 text-[#D92D20] flex-shrink-0" />
             : <XCircle className="h-4 w-4 text-red-500 flex-shrink-0" />}
-          <p className={`text-xs font-bold ${decision === "aprobado" ? "text-[#085041]" : "text-red-700"}`}>
+          <p className={`text-xs font-bold ${decision === "aprobado" ? "text-[#B42318]" : "text-red-700"}`}>
             {decision === "aprobado"
               ? "Usuario aprobado — cuenta verificada activada"
               : "Usuario rechazado — acceso denegado"}
@@ -117,7 +113,7 @@ function UserCard({
             <XCircle className="h-4 w-4" /> Rechazar
           </button>
           <button type="button" onClick={() => onApprove(user.user_id)} disabled={loading}
-            className="flex-1 py-2.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
+            className="flex-1 py-2.5 rounded-xl bg-[#B42318] text-white text-xs font-bold hover:bg-[#D92D20] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
             {loading
               ? <Loader2 className="h-4 w-4 animate-spin" />
               : <><CheckCircle2 className="h-4 w-4" /> Aprobar</>}
@@ -176,7 +172,7 @@ export default function VerificacionPage() {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -186,7 +182,7 @@ export default function VerificacionPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#085041]">Cola de verificación</h1>
+          <h1 className="text-2xl font-extrabold text-[#B42318]">Cola de verificación</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">
             Revisa y aprueba o rechaza cada cuenta nueva sin verificar.
           </p>
@@ -203,7 +199,7 @@ export default function VerificacionPage() {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: "Pendientes",  value: pending.length,                                              cls: "text-amber-600" },
-          { label: "Aprobados",   value: Object.values(decisions).filter((d) => d === "aprobado").length,  cls: "text-[#1D9E75]" },
+          { label: "Aprobados",   value: Object.values(decisions).filter((d) => d === "aprobado").length,  cls: "text-[#D92D20]" },
           { label: "Rechazados",  value: Object.values(decisions).filter((d) => d === "rechazado").length, cls: "text-red-500" },
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-xl border border-gray-200 px-4 py-3 shadow-sm text-center">
@@ -216,15 +212,15 @@ export default function VerificacionPage() {
       {/* Pending section */}
       {pending.length === 0 && resolved.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
-          <CheckCircle2 className="h-10 w-10 text-[#1D9E75] mx-auto mb-3" />
-          <p className="text-sm font-semibold text-[#085041]">Cola vacía</p>
+          <CheckCircle2 className="h-10 w-10 text-[#D92D20] mx-auto mb-3" />
+          <p className="text-sm font-semibold text-[#B42318]">Cola vacía</p>
           <p className="text-xs text-[#6B7280] mt-1">No hay usuarios sin verificar en este momento.</p>
         </div>
       ) : (
         <>
           {pending.length > 0 && (
             <section className="space-y-4">
-              <h2 className="text-sm font-bold text-[#085041] flex items-center gap-2">
+              <h2 className="text-sm font-bold text-[#B42318] flex items-center gap-2">
                 <Clock className="h-4 w-4 text-amber-500" /> Pendientes de revisión
               </h2>
               {pending.map((u) => (
@@ -241,8 +237,8 @@ export default function VerificacionPage() {
 
           {resolved.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-bold text-[#085041] flex items-center gap-2">
-                <Shield className="h-4 w-4 text-[#1D9E75]" /> Resueltos esta sesión
+              <h2 className="text-sm font-bold text-[#B42318] flex items-center gap-2">
+                <Shield className="h-4 w-4 text-[#D92D20]" /> Resueltos esta sesión
               </h2>
               {resolved.map((u) => {
                 const approved = decisions[u.user_id] === "aprobado";
@@ -252,7 +248,7 @@ export default function VerificacionPage() {
                     approved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
                   }`}>
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
-                      approved ? "bg-[#1D9E75]" : "bg-red-500"
+                      approved ? "bg-[#D92D20]" : "bg-red-500"
                     }`}>
                       {displayName.charAt(0).toUpperCase()}
                     </div>
@@ -261,7 +257,7 @@ export default function VerificacionPage() {
                       {" · "}{ROLE_LABELS[u.role] ?? u.role}
                     </p>
                     <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                      approved ? "bg-[#1D9E75] text-white" : "bg-red-500 text-white"
+                      approved ? "bg-[#D92D20] text-white" : "bg-red-500 text-white"
                     }`}>
                       {approved ? "Aprobado" : "Rechazado"}
                     </span>

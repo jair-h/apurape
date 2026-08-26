@@ -82,7 +82,7 @@ export default function AdminConfigPage() {
   const [saved, setSaved]     = useState(false);
   const [newCurrency, setNewCurrency] = useState("");
 
-  const inputCls  = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 transition";
+  const inputCls  = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 transition";
   const labelCls  = "block text-xs font-semibold text-gray-700 mb-1.5";
   const sectionHd = "flex items-center gap-2 pb-3 border-b border-gray-100 mb-4";
 
@@ -142,7 +142,7 @@ export default function AdminConfigPage() {
 
   if (loading) return (
     <div className="flex flex-1 items-center justify-center">
-      <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+      <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
     </div>
   );
 
@@ -150,8 +150,8 @@ export default function AdminConfigPage() {
   const Card = ({ title, children }: { title: string; children: ReactNode }) => (
     <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
       <div className={sectionHd}>
-        <Settings className="h-4 w-4 text-[#1D9E75]" />
-        <h2 className="text-sm font-extrabold text-[#085041]">{title}</h2>
+        <Settings className="h-4 w-4 text-[#D92D20]" />
+        <h2 className="text-sm font-extrabold text-[#B42318]">{title}</h2>
       </div>
       {children}
     </div>
@@ -162,7 +162,7 @@ export default function AdminConfigPage() {
     <div className="flex items-center gap-2 pt-1">
       <button type="button" onClick={() => setSection(sec, "active", !cfg.landing_sections[sec].active)}>
         {cfg.landing_sections[sec].active
-          ? <ToggleRight className="h-7 w-7 text-[#1D9E75]" />
+          ? <ToggleRight className="h-7 w-7 text-[#D92D20]" />
           : <ToggleLeft  className="h-7 w-7 text-gray-300" />}
       </button>
       <span className="text-xs font-semibold text-gray-600">
@@ -177,11 +177,11 @@ export default function AdminConfigPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#085041]">Configuración</h1>
+          <h1 className="text-2xl font-extrabold text-[#B42318]">Configuración</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">Ajustes globales y contenido editable de la landing.</p>
         </div>
         <button type="button" onClick={handleSave} disabled={saving}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] disabled:opacity-50 transition-colors shadow-sm">
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] disabled:opacity-50 transition-colors shadow-sm">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {saving ? "Guardando..." : saved ? "¡Guardado!" : "Guardar cambios"}
         </button>
@@ -237,7 +237,7 @@ export default function AdminConfigPage() {
             <div className="mt-2 relative rounded-xl overflow-hidden h-28 bg-gray-100">
               <img src={cfg.hero_content.bg_image_url} alt=""
                 className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-[#085041]/60 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[#B42318]/60 flex items-center justify-center">
                 <p className="text-white text-xs font-bold">Preview con overlay verde</p>
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function AdminConfigPage() {
           <label className={labelCls}>Título</label>
           <input value={cfg.landing_sections.export.title}
             onChange={(e) => setSection("export", "title", e.target.value)}
-            placeholder="De la cosecha al contenedor, todo en MARKARU" className={inputCls} />
+            placeholder="De la cosecha al contenedor, todo en Apurape" className={inputCls} />
         </div>
         <div>
           <label className={labelCls}>Párrafo / descripción</label>
@@ -374,7 +374,7 @@ export default function AdminConfigPage() {
           <label className={labelCls}>Email público de contacto</label>
           <input type="email" value={cfg.contact_email}
             onChange={(e) => setCfg((p) => ({ ...p, contact_email: e.target.value }))}
-            placeholder="contacto@markaru.com" className={inputCls} />
+            placeholder="contacto@apurape.com" className={inputCls} />
           <p className="text-xs text-[#6B7280] mt-1.5">Este email aparece en la página de Contacto.</p>
         </div>
       </Card>
@@ -404,10 +404,10 @@ export default function AdminConfigPage() {
       <Card title="Divisas activas">
         <div className="flex flex-wrap gap-2">
           {cfg.currencies.map((c) => (
-            <div key={c} className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[#E1F5EE] text-xs font-bold text-[#085041]">
+            <div key={c} className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[#FEF3F2] text-xs font-bold text-[#B42318]">
               {c}
               <button type="button" onClick={() => removeCurrency(c)}
-                className="ml-1 text-[#085041] hover:text-red-500">
+                className="ml-1 text-[#B42318] hover:text-red-500">
                 <Trash2 className="h-3 w-3" />
               </button>
             </div>
@@ -418,7 +418,7 @@ export default function AdminConfigPage() {
             onKeyDown={(e) => e.key === "Enter" && addCurrency()}
             maxLength={3} placeholder="Ej: CLP" className={`flex-1 ${inputCls}`} />
           <button type="button" onClick={addCurrency}
-            className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] transition-colors">
+            className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-[#B42318] text-white text-xs font-bold hover:bg-[#D92D20] transition-colors">
             <Plus className="h-3.5 w-3.5" /> Añadir
           </button>
         </div>

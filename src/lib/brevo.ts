@@ -1,7 +1,7 @@
 /**
  * Integración centralizada con Brevo (email transaccional).
  *
- * Regla de oro de MARKARU: NO dependemos de contactos/atributos de Brevo.
+ * Regla de oro de Apurape: NO dependemos de contactos/atributos de Brevo.
  * Todas las variables dinámicas viajan como `params` en cada envío.
  * Las plantillas se administran manualmente en Brevo — el código solo manda templateId + params.
  *
@@ -45,7 +45,7 @@ export function accionSiguiente(rol?: string | null): string {
   return (rol && ACCION_SIGUIENTE[rol]) || ACCION_SIGUIENTE_DEFAULT;
 }
 
-/** URL absoluta y real de checkout de MARKARU para un rol/plan. Nunca vacía. */
+/** URL absoluta y real de checkout de Apurape para un rol/plan. Nunca vacía. */
 export function checkoutUrl(rol: string, planKey?: string): string {
   return planKey
     ? `${SITE_URL}/activar-plan?rol=${encodeURIComponent(rol)}&plan=${encodeURIComponent(planKey)}`
@@ -144,9 +144,9 @@ export async function sendBrevoTemplate({
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
- * CONTACTOS (CRM) — sincronización de usuarios de MARKARU con contactos de Brevo.
+ * CONTACTOS (CRM) — sincronización de usuarios de Apurape con contactos de Brevo.
  *
- * Supabase/MARKARU es la ÚNICA fuente de verdad de usuarios. Brevo es solo para
+ * Supabase/Apurape es la ÚNICA fuente de verdad de usuarios. Brevo es solo para
  * CRM/segmentación/campañas. Crear/actualizar el contacto NO implica consentimiento
  * de marketing: NO se añade a ninguna lista (no se envía `listIds`), así que el
  * contacto queda fuera de campañas hasta que exista un opt-in explícito.

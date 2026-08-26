@@ -30,8 +30,8 @@ export default function LanguageSelector({
             className={`text-xs font-semibold transition-colors ${
               lang === l
                 ? dark
-                  ? "text-[#4CD9A4]"
-                  : "text-[#1D9E75]"
+                  ? "text-[#FDA29B]"
+                  : "text-[#D92D20]"
                 : dark
                 ? "text-white/40 hover:text-white/70"
                 : "text-gray-400 hover:text-gray-700"

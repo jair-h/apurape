@@ -102,7 +102,7 @@ export default function RegisterRolePage() {
   if (!ready) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -111,8 +111,8 @@ export default function RegisterRolePage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
         <Link href="/" className="flex items-center gap-2 justify-center mb-8">
-          <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain" />
-          <span className="font-bold text-lg text-gray-900">MARKARU</span>
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain" />
+          <span className="font-bold text-lg text-gray-900">Apurape</span>
         </Link>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">

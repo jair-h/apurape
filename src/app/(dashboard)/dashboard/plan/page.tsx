@@ -121,25 +121,25 @@ function TrialBanner({
           ? "bg-red-50 border-red-200"
           : daysLeft <= 7
           ? "bg-amber-50 border-amber-200"
-          : "bg-[#E1F5EE] border-[#1D9E75]/30"
+          : "bg-[#FEF3F2] border-[#D92D20]/30"
       }`}
     >
       <Clock
         className={`h-5 w-5 flex-shrink-0 mt-0.5 ${
-          daysLeft <= 3 ? "text-red-500" : daysLeft <= 7 ? "text-amber-500" : "text-[#1D9E75]"
+          daysLeft <= 3 ? "text-red-500" : daysLeft <= 7 ? "text-amber-500" : "text-[#D92D20]"
         }`}
       />
       <div>
         <p
           className={`text-sm font-bold ${
-            daysLeft <= 3 ? "text-red-900" : daysLeft <= 7 ? "text-amber-900" : "text-[#085041]"
+            daysLeft <= 3 ? "text-red-900" : daysLeft <= 7 ? "text-amber-900" : "text-[#B42318]"
           }`}
         >
           {t("myPlan.trialActive", { remaining: remainingText })}
         </p>
         <p
           className={`text-xs mt-1 leading-relaxed ${
-            daysLeft <= 3 ? "text-red-700" : daysLeft <= 7 ? "text-amber-700" : "text-[#085041]/70"
+            daysLeft <= 3 ? "text-red-700" : daysLeft <= 7 ? "text-amber-700" : "text-[#B42318]/70"
           }`}
         >
           {daysLeft <= 3
@@ -178,33 +178,33 @@ function PlanCard({
   return (
     <div
       className={`relative flex flex-col rounded-2xl overflow-hidden border-2 h-full ${
-        dark ? "bg-[#085041] border-[#1D9E75]" : "bg-white border-gray-200"
+        dark ? "bg-[#B42318] border-[#D92D20]" : "bg-white border-gray-200"
       } shadow-md`}
     >
       {plan.recommended && (
-        <span className="absolute top-0 right-4 bg-[#1D9E75] text-white text-[10px] font-bold px-3 py-1 rounded-b-lg shadow">
+        <span className="absolute top-0 right-4 bg-[#D92D20] text-white text-[10px] font-bold px-3 py-1 rounded-b-lg shadow">
           {t("myPlan.mostPopular")}
         </span>
       )}
 
       {/* Header */}
-      <div className={`px-6 pt-7 pb-5 ${dark ? "bg-[#0a3d2e]" : "bg-gray-50"}`}>
-        <h3 className={`text-lg font-extrabold mb-0.5 ${dark ? "text-white" : "text-[#085041]"}`}>
+      <div className={`px-6 pt-7 pb-5 ${dark ? "bg-[#7A271A]" : "bg-gray-50"}`}>
+        <h3 className={`text-lg font-extrabold mb-0.5 ${dark ? "text-white" : "text-[#B42318]"}`}>
           {t(plan.nameKey)}
         </h3>
-        <p className={`text-xs leading-relaxed ${dark ? "text-green-300" : "text-gray-500"}`}>
+        <p className={`text-xs leading-relaxed ${dark ? "text-red-200" : "text-gray-500"}`}>
           {t(plan.descKey)}
         </p>
 
         <div className="mt-4">
-          <span className={`text-3xl font-extrabold ${dark ? "text-white" : "text-[#085041]"}`}>
+          <span className={`text-3xl font-extrabold ${dark ? "text-white" : "text-[#B42318]"}`}>
             {plan.price}
           </span>
-          <span className={`text-sm ml-1 ${dark ? "text-green-300" : "text-gray-400"}`}>
+          <span className={`text-sm ml-1 ${dark ? "text-red-200" : "text-gray-400"}`}>
             {t(plan.periodKey)}
           </span>
           {localDailyText && (
-            <p className={`mt-1 text-xs font-semibold ${dark ? "text-white" : "text-[#1D9E75]"}`}>
+            <p className={`mt-1 text-xs font-semibold ${dark ? "text-white" : "text-[#D92D20]"}`}>
               {t("myPlan.approxPerDay", { amount: localDailyText })}
               {plan.trialDays && (
                 <span className="ml-1.5 opacity-75">
@@ -221,8 +221,8 @@ function PlanCard({
         <ul className="space-y-2.5">
           {features.map((f) => (
             <li key={f} className="flex items-start gap-2.5 text-sm">
-              <Check className={`h-4 w-4 mt-0.5 flex-shrink-0 ${dark ? "text-[#4CD9A4]" : "text-[#1D9E75]"}`} />
-              <span className={dark ? "text-green-50" : "text-[#1E293B]"}>{f}</span>
+              <Check className={`h-4 w-4 mt-0.5 flex-shrink-0 ${dark ? "text-[#FDA29B]" : "text-[#D92D20]"}`} />
+              <span className={dark ? "text-red-50" : "text-[#1E293B]"}>{f}</span>
             </li>
           ))}
         </ul>
@@ -241,7 +241,7 @@ function PlanCard({
           </div>
         )}
         {!plan.isFree && isActive && (
-          <div className={`text-center py-2.5 rounded-xl text-xs font-semibold ${dark ? "bg-white/20 text-white border border-white/20" : "bg-[#E1F5EE] text-[#085041] border border-[#1D9E75]/30"}`}>
+          <div className={`text-center py-2.5 rounded-xl text-xs font-semibold ${dark ? "bg-white/20 text-white border border-white/20" : "bg-[#FEF3F2] text-[#B42318] border border-[#D92D20]/30"}`}>
             {t("myPlan.cta.planActive")}
           </div>
         )}
@@ -250,8 +250,8 @@ function PlanCard({
             href={ACTIVATE_HREF[plan.id] ?? "/planes"}
             className={`w-full py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${
               dark
-                ? "bg-[#1D9E75] text-white hover:bg-[#167a5a]"
-                : "bg-[#E1F5EE] text-[#085041] hover:bg-[#1D9E75] hover:text-white"
+                ? "bg-[#D92D20] text-white hover:bg-[#912018]"
+                : "bg-[#FEF3F2] text-[#B42318] hover:bg-[#D92D20] hover:text-white"
             }`}
           >
             <Zap className="h-4 w-4" />
@@ -306,7 +306,7 @@ export default function MiPlanPage() {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     );
   }
@@ -324,7 +324,7 @@ export default function MiPlanPage() {
     <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-[#085041]">{t("myPlan.title")}</h1>
+        <h1 className="text-2xl font-extrabold text-[#B42318]">{t("myPlan.title")}</h1>
         <p className="text-sm text-[#6B7280] mt-0.5">
           {isComprador
             ? t("myPlan.subtitleFree")
@@ -356,11 +356,11 @@ export default function MiPlanPage() {
       {/* FAQ */}
       {!isComprador && (
         <section className="max-w-lg">
-          <h2 className="text-base font-bold text-[#085041] mb-4">{t("myPlan.faq.title")}</h2>
+          <h2 className="text-base font-bold text-[#B42318] mb-4">{t("myPlan.faq.title")}</h2>
           <div className="space-y-3">
             {faqItems.map((item) => (
               <div key={item.q} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-                <p className="text-sm font-bold text-[#085041] mb-1">{item.q}</p>
+                <p className="text-sm font-bold text-[#B42318] mb-1">{item.q}</p>
                 <p className="text-xs text-[#6B7280] leading-relaxed">{item.a}</p>
               </div>
             ))}
@@ -372,7 +372,7 @@ export default function MiPlanPage() {
       {!isComprador && (
         <section className="max-w-lg pb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold text-[#085041]">{t("myPlan.paymentHistory.title")}</h2>
+            <h2 className="text-base font-bold text-[#B42318]">{t("myPlan.paymentHistory.title")}</h2>
             <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
               <Lock className="h-3.5 w-3.5" /> {t("myPlan.paymentHistory.processedBy")}
             </div>
@@ -382,7 +382,7 @@ export default function MiPlanPage() {
               <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
                 <Receipt className="h-6 w-6 text-gray-400" />
               </div>
-              <p className="text-sm font-semibold text-[#085041]">{t("myPlan.paymentHistory.noPayments")}</p>
+              <p className="text-sm font-semibold text-[#B42318]">{t("myPlan.paymentHistory.noPayments")}</p>
               <p className="text-xs text-[#6B7280] mt-1 max-w-xs leading-relaxed">
                 {t("myPlan.paymentHistory.noPaymentsDesc")}
               </p>

@@ -46,7 +46,7 @@ export default function DashboardIndexPage() {
   return (
     <div className="flex flex-1 items-center justify-center bg-gray-50">
       <div className="flex flex-col items-center gap-3">
-        <Loader2 className="h-10 w-10 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-10 w-10 text-[#D92D20] animate-spin" />
         <p className="text-sm text-gray-500">Cargando tu dashboard...</p>
       </div>
     </div>

@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Blog · Centro de Conocimiento Agroexportador · MARKARU",
+  title: "Blog · Centro de Conocimiento Agroexportador · Apurape",
   description: "Guías y novedades sobre agroexportación, logística, mercados internacionales, certificaciones y oportunidades de negocio en LATAM.",
 };
 

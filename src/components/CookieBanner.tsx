@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Cookie } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 
-const LS_KEY = "markaru_cookie_consent";
+const LS_KEY = "apurape_cookie_consent";
 
 export default function CookieBanner() {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export default function CookieBanner() {
   function accept() {
     localStorage.setItem(LS_KEY, "accepted");
     // Notify listeners (e.g. Google Analytics) so they can load without a reload
-    window.dispatchEvent(new Event("markaru-cookie-consent"));
+    window.dispatchEvent(new Event("apurape-cookie-consent"));
     setVisible(false);
   }
 
@@ -33,10 +33,10 @@ export default function CookieBanner() {
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
       <div className="max-w-4xl mx-auto bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          <Cookie className="h-5 w-5 text-[#1D9E75] flex-shrink-0 mt-0.5" />
+          <Cookie className="h-5 w-5 text-[#D92D20] flex-shrink-0 mt-0.5" />
           <p className="text-sm text-gray-300 leading-relaxed">
             {t("cookieBanner.text")}{" "}
-            <Link href="/cookies" className="text-[#1D9E75] hover:underline font-medium">
+            <Link href="/cookies" className="text-[#D92D20] hover:underline font-medium">
               {t("cookieBanner.learnMore")}
             </Link>
           </p>
@@ -50,7 +50,7 @@ export default function CookieBanner() {
           </button>
           <button
             onClick={accept}
-            className="px-4 py-2 text-sm font-bold text-white bg-[#1D9E75] hover:bg-[#17876a] rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-bold text-white bg-[#D92D20] hover:bg-[#912018] rounded-lg transition-colors"
           >
             {t("cookieBanner.accept")}
           </button>

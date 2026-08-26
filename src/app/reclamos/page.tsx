@@ -26,7 +26,7 @@ export default function ReclamosPage() {
 
   const labelClass = "block text-sm font-semibold text-gray-700 mb-1.5";
   const inputClass =
-    "w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition";
+    "w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition";
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,13 +60,13 @@ export default function ReclamosPage() {
       <LandingNavbar />
       <main className="pt-16 min-h-screen bg-gray-50">
         {/* Header */}
-        <section className="bg-[#085041] py-14 sm:py-16">
+        <section className="bg-[#B42318] py-14 sm:py-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center justify-center bg-white/10 p-4 rounded-2xl mb-5">
               <BookText className="h-9 w-9 text-white" />
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white mb-3">{t("reclamos.title")}</h1>
-            <p className="text-sm text-[#b8f5e1] font-medium mb-3">{t("reclamos.legalRef")}</p>
+            <p className="text-sm text-[#FEE4E2] font-medium mb-3">{t("reclamos.legalRef")}</p>
             <p className="text-sm sm:text-base text-white/80 max-w-2xl mx-auto">{t("reclamos.intro")}</p>
           </div>
         </section>
@@ -75,13 +75,13 @@ export default function ReclamosPage() {
           {done ? (
             /* Confirmation */
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
-              <div className="inline-flex items-center justify-center bg-[#E1F5EE] p-5 rounded-2xl mb-5">
-                <CheckCircle2 className="h-10 w-10 text-[#1D9E75]" />
+              <div className="inline-flex items-center justify-center bg-[#FEF3F2] p-5 rounded-2xl mb-5">
+                <CheckCircle2 className="h-10 w-10 text-[#D92D20]" />
               </div>
-              <h2 className="text-xl font-extrabold text-[#085041] mb-2">{t("reclamos.successTitle")}</h2>
+              <h2 className="text-xl font-extrabold text-[#B42318] mb-2">{t("reclamos.successTitle")}</h2>
               <div className="inline-block bg-gray-100 rounded-xl px-5 py-2 my-3">
                 <span className="text-xs text-gray-500">Código / Ticket</span>
-                <p className="text-lg font-extrabold tracking-wider text-[#085041]">{done.code}</p>
+                <p className="text-lg font-extrabold tracking-wider text-[#B42318]">{done.code}</p>
               </div>
               <p className="text-gray-600 leading-relaxed max-w-md mx-auto mb-7">
                 {t("reclamos.successBody", {
@@ -90,7 +90,7 @@ export default function ReclamosPage() {
                   email: done.email,
                 })}
               </p>
-              <Link href="/" className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#167a5a] transition-colors">
+              <Link href="/" className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#912018] transition-colors">
                 {t("reclamos.backHome")}
               </Link>
             </div>
@@ -100,15 +100,15 @@ export default function ReclamosPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 <div className="rounded-xl border border-gray-200 p-4">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <MessageSquareWarning className="h-4 w-4 text-[#1D9E75]" />
-                    <p className="text-sm font-bold text-[#085041]">{t("reclamos.reclamoTitle")}</p>
+                    <MessageSquareWarning className="h-4 w-4 text-[#D92D20]" />
+                    <p className="text-sm font-bold text-[#B42318]">{t("reclamos.reclamoTitle")}</p>
                   </div>
                   <p className="text-xs text-gray-600 leading-relaxed">{t("reclamos.reclamoDesc")}</p>
                 </div>
                 <div className="rounded-xl border border-gray-200 p-4">
                   <div className="flex items-center gap-2 mb-1.5">
                     <ClipboardList className="h-4 w-4 text-amber-500" />
-                    <p className="text-sm font-bold text-[#085041]">{t("reclamos.quejaTitle")}</p>
+                    <p className="text-sm font-bold text-[#B42318]">{t("reclamos.quejaTitle")}</p>
                   </div>
                   <p className="text-xs text-gray-600 leading-relaxed">{t("reclamos.quejaDesc")}</p>
                 </div>
@@ -153,7 +153,7 @@ export default function ReclamosPage() {
                         <button key={op} type="button"
                           onClick={() => setForm((p) => ({ ...p, tipo: op }))}
                           className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all ${
-                            active ? "border-[#1D9E75] bg-[#E1F5EE] text-[#085041]" : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                            active ? "border-[#D92D20] bg-[#FEF3F2] text-[#B42318]" : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
                           }`}>
                           {op === "reclamo" ? t("reclamos.reclamoTitle") : t("reclamos.quejaTitle")}
                         </button>
@@ -178,7 +178,7 @@ export default function ReclamosPage() {
                 </div>
 
                 <button type="submit" disabled={loading || !form.tipo}
-                  className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] text-white py-3 rounded-xl text-sm font-bold hover:bg-[#167a5a] transition-colors disabled:opacity-60">
+                  className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3 rounded-xl text-sm font-bold hover:bg-[#912018] transition-colors disabled:opacity-60">
                   {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> {t("reclamos.sending")}</> : t("reclamos.submit")}
                 </button>
               </form>

@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import {
-  Package, Truck, Globe, ArrowRight, Sprout, Ship,
-  FileCheck, TrendingUp, Users, Building2, Star,
-  ChevronRight, ChevronLeft as ChevronLeftIcon, Check,
+  ArrowRight, Star, Check, Users, ChevronRight,
+  ChevronLeft as ChevronLeftIcon,
+  Home, Wrench, PartyPopper, Sparkles, Laptop,
+  GraduationCap, ChefHat, Ellipsis,
+  Search as SearchIcon, MessageCircle, Handshake, CheckCircle2,
 } from "lucide-react";
 import Pricing from "@/components/landing/pricing";
 import LandingNavbar from "@/components/landing/LandingNavbar";
@@ -47,13 +49,13 @@ function StaticHero({ content }: { content?: HeroContent }) {
   return (
     <section
       className={`relative pt-16 min-h-screen flex items-center ${
-        !bgImg ? "bg-gradient-to-br from-[#0d6b4f] via-[#1D9E75] to-[#2dd4a0]" : "bg-[#085041]"
+        !bgImg ? "bg-gradient-to-br from-[#7A271A] via-[#D92D20] to-[#F97066]" : "bg-[#B42318]"
       }`}
     >
       {bgImg && (
         <>
           <img src={bgImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[#085041]/75" />
+          <div className="absolute inset-0 bg-[#B42318]/75" />
         </>
       )}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center w-full">
@@ -63,14 +65,14 @@ function StaticHero({ content }: { content?: HeroContent }) {
         </span>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
           {title1}<br />
-          <span className="text-[#b8f5e1]">{title2}</span>
+          <span className="text-[#FEE4E2]">{title2}</span>
         </h1>
         <p className="text-lg sm:text-xl text-white/85 max-w-2xl mx-auto mb-10">{subtitle}</p>
 
         {/* Primary CTA */}
         <div className="flex flex-col items-center gap-4">
           <Link href="/register"
-            className="inline-flex items-center gap-2 bg-white text-[#085041] px-10 py-4 rounded-xl text-lg font-extrabold hover:bg-gray-50 transition-colors shadow-xl">
+            className="inline-flex items-center gap-2 bg-white text-[#B42318] px-10 py-4 rounded-xl text-lg font-extrabold hover:bg-gray-50 transition-colors shadow-xl">
             {t("landing.hero.ctaPrimary")}<ArrowRight className="h-5 w-5" />
           </Link>
           <p className="text-sm text-white/75">{t("landing.hero.ctaHelper")}</p>
@@ -79,21 +81,20 @@ function StaticHero({ content }: { content?: HeroContent }) {
           <div className="flex flex-col sm:flex-row gap-3 justify-center mt-2">
             <Link href="/register?rol=proveedor"
               className="inline-flex items-center gap-2 bg-transparent border border-white/60 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-white/10 transition-colors">
-              <Sprout className="h-4 w-4" />{ctaProducer}
+              <Wrench className="h-4 w-4" />{ctaProducer}
             </Link>
             <Link href="/servicios"
               className="inline-flex items-center gap-2 bg-transparent border border-white/60 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-white/10 transition-colors">
-              <Globe className="h-4 w-4" />{ctaExporter}
+              <SearchIcon className="h-4 w-4" />{ctaExporter}
             </Link>
           </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-3xl mx-auto">
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
           {[
-            { value: "100%",      labelKey: "landing.stats.digital" },
-            { value: "0%",        labelKey: "landing.stats.commission" },
-            { value: "15+",       labelKey: "landing.stats.countries" },
-            { value: "Multi-rol", labelKey: null },
+            { value: "0%",   labelKey: "landing.stats.digital" },
+            { value: "S/ 0", labelKey: "landing.stats.commission" },
+            { value: "8",    labelKey: "landing.stats.countries" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <p className="text-2xl sm:text-3xl font-extrabold text-white">{stat.value}</p>
@@ -147,7 +148,7 @@ function HeroSection({ heroContent }: { heroContent?: HeroContent }) {
     <section
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="relative pt-16 min-h-[85vh] flex items-center bg-[#085041] overflow-hidden">
+      className="relative pt-16 min-h-[85vh] flex items-center bg-[#B42318] overflow-hidden">
       {/* Stacked images — fade between them */}
       {banners.map((b, i) => (
         <div
@@ -178,7 +179,7 @@ function HeroSection({ heroContent }: { heroContent?: HeroContent }) {
         {current.link_url && current.button_text && (
           <Link
             href={current.link_url}
-            className="inline-flex items-center gap-2 bg-white text-[#085041] px-8 py-4 rounded-xl text-base font-bold hover:bg-gray-100 transition-colors shadow-xl"
+            className="inline-flex items-center gap-2 bg-white text-[#B42318] px-8 py-4 rounded-xl text-base font-bold hover:bg-gray-100 transition-colors shadow-xl"
           >
             {current.button_text} <ArrowRight className="h-5 w-5" />
           </Link>
@@ -223,12 +224,20 @@ function HeroSection({ heroContent }: { heroContent?: HeroContent }) {
   );
 }
 
-/* ─── Sección A — Productos del agro ─────────────────────── */
-const AGRO_PRODUCTS = [
-  { key: "avocado", img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600", badge: "demand" },
-  { key: "coffee",  img: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600", badge: "demand" },
-  { key: "cacao",   img: "https://images.unsplash.com/photo-1511381939415-e44015466834?w=600", badge: "export" },
-  { key: "maca",    img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600",   badge: "export" },
+/* ─── Sección A — Categorías de servicios ────────────────────
+ * Antes eran cuatro fotos de Unsplash de palta, café, cacao y maca.
+ * Ahora son las 8 categorías reales, con icono en vez de foto: no
+ * dependemos de imágenes externas y cada tarjeta enlaza al buscador
+ * ya filtrado. Los slugs coinciden con service_categories.slug. */
+const CATEGORIAS = [
+  { slug: "hogar",        label: "Hogar",                  icon: Home },
+  { slug: "reparaciones", label: "Reparaciones",           icon: Wrench },
+  { slug: "eventos",      label: "Eventos",                icon: PartyPopper },
+  { slug: "belleza",      label: "Belleza",                icon: Sparkles },
+  { slug: "tecnologia",   label: "Tecnología",             icon: Laptop },
+  { slug: "educacion",    label: "Educación",              icon: GraduationCap },
+  { slug: "comida",       label: "Comida",                 icon: ChefHat },
+  { slug: "otros",        label: "Otros",                  icon: Ellipsis },
 ];
 
 function ProductsSection({ config }: { config?: SectionConfig }) {
@@ -245,25 +254,20 @@ function ProductsSection({ config }: { config?: SectionConfig }) {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{title}</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {AGRO_PRODUCTS.map((p) => (
-            <div key={p.key} className="group rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 bg-white">
-              <div className="relative aspect-square overflow-hidden bg-[#E1F5EE]">
-                <img src={p.img} alt={t(`landing.products.items.${p.key}`)} loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#E1F5EE] text-[#085041]">
-                  {p.badge === "demand" ? t("landing.products.badgeDemand") : t("landing.products.badgeExport")}
-                </span>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+          {CATEGORIAS.map((c) => (
+            <Link key={c.slug} href={`/servicios?categoria=${c.slug}`}
+              className="group flex flex-col items-center text-center gap-3 p-6 rounded-2xl border border-gray-200 bg-white hover:border-[#D92D20] hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+              <div className="w-12 h-12 rounded-2xl bg-[#FEF3F2] flex items-center justify-center group-hover:bg-[#D92D20] transition-colors">
+                <c.icon className="h-6 w-6 text-[#D92D20] group-hover:text-white transition-colors" />
               </div>
-              <div className="p-4">
-                <p className="text-sm font-extrabold text-[#085041]">{t(`landing.products.items.${p.key}`)}</p>
-              </div>
-            </div>
+              <p className="text-sm font-bold text-gray-900">{c.label}</p>
+            </Link>
           ))}
         </div>
         <div className="mt-10 text-center">
           <Link href={ctaLink}
-            className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-[#085041] transition-colors shadow-sm">
+            className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-[#B42318] transition-colors shadow-sm">
             {ctaText} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -274,8 +278,8 @@ function ProductsSection({ config }: { config?: SectionConfig }) {
 
 /* ─── Soy... ──────────────────────────────────────────────── */
 const SOY_ROLES = [
-  { id: "proveedor", icon: Sprout,    href: "/register?rol=proveedor", cardClass: "hover:border-[#D92D20]", iconClass: "text-[#D92D20] bg-red-100" },
-  { id: "cliente",   icon: Building2, href: "/register?rol=cliente",   cardClass: "hover:border-[#0E9384]", iconClass: "text-[#0E9384] bg-teal-100" },
+  { id: "proveedor", icon: Wrench,     href: "/register?rol=proveedor", cardClass: "hover:border-[#D92D20]", iconClass: "text-[#D92D20] bg-red-100" },
+  { id: "cliente",   icon: SearchIcon, href: "/register?rol=cliente",   cardClass: "hover:border-[#0E9384]", iconClass: "text-[#0E9384] bg-teal-100" },
 ];
 
 function SoySection() {
@@ -287,14 +291,14 @@ function SoySection() {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{t("landing.soy.title")}</h2>
           <p className="text-lg text-gray-600 max-w-xl mx-auto">{t("landing.soy.subtitle")}</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {SOY_ROLES.map((role) => (
             <Link key={role.id} href={role.href}
               className={`group flex flex-col items-start p-6 bg-white rounded-2xl border-2 border-gray-200 ${role.cardClass} transition-all duration-200 hover:shadow-lg hover:-translate-y-1`}>
               <div className={`p-3 rounded-xl ${role.iconClass} mb-4`}><role.icon className="h-6 w-6" /></div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">{t("landing.soy.iAm")} {t(`landing.soy.cards.${role.id}.title`)}</h3>
               <p className="text-sm text-gray-600 leading-relaxed flex-1">{t(`landing.soy.cards.${role.id}.description`)}</p>
-              <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-[#1D9E75] group-hover:gap-2 transition-all">
+              <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-[#D92D20] group-hover:gap-2 transition-all">
                 {t("landing.soy.start")} <ChevronRight className="h-4 w-4" />
               </div>
             </Link>
@@ -306,7 +310,7 @@ function SoySection() {
 }
 
 /* ─── Sección B — Del productor al mundo ─────────────────── */
-const DEFAULT_PRODUCER_IMG = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800";
+const DEFAULT_PRODUCER_IMG = "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800";
 
 function ProducerStory({ config }: { config?: SectionConfig }) {
   const { t } = useTranslation();
@@ -321,27 +325,27 @@ function ProducerStory({ config }: { config?: SectionConfig }) {
     <section className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative rounded-3xl overflow-hidden shadow-xl bg-[#1D9E75]">
+          <div className="relative rounded-3xl overflow-hidden shadow-xl bg-[#D92D20]">
             <div className="aspect-[4/3]">
               <img src={imgSrc} alt={title} loading="lazy" className="w-full h-full object-cover" />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </div>
           <div className="space-y-6">
-            <span className="inline-block bg-[#E1F5EE] text-[#085041] text-xs font-bold px-3.5 py-1.5 rounded-full">{t("landing.producerStory.badge")}</span>
+            <span className="inline-block bg-[#FEF3F2] text-[#B42318] text-xs font-bold px-3.5 py-1.5 rounded-full">{t("landing.producerStory.badge")}</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">{title}</h2>
             <p className="text-base text-gray-600 leading-relaxed">{body}</p>
             <ul className="space-y-3">
               {points.map((pt) => (
                 <li key={pt} className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-5 h-5 mt-0.5 rounded-full bg-[#1D9E75] flex items-center justify-center">
+                  <div className="flex-shrink-0 w-5 h-5 mt-0.5 rounded-full bg-[#D92D20] flex items-center justify-center">
                     <Check className="h-3 w-3 text-white" strokeWidth={3} />
                   </div>
                   <span className="text-sm font-medium text-gray-700">{pt}</span>
                 </li>
               ))}
             </ul>
-            <Link href={ctaLink} className="inline-flex items-center gap-2 bg-[#085041] text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-[#1D9E75] transition-colors shadow-sm">
+            <Link href={ctaLink} className="inline-flex items-center gap-2 bg-[#B42318] text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-[#D92D20] transition-colors shadow-sm">
               {ctaText} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -352,7 +356,7 @@ function ProducerStory({ config }: { config?: SectionConfig }) {
 }
 
 /* ─── Cómo funciona ───────────────────────────────────────── */
-const STEP_ICONS = [Users, FileCheck, Package, Ship];
+const STEP_ICONS = [SearchIcon, MessageCircle, Handshake, CheckCircle2];
 const STEP_IDS = ["01", "02", "03", "04"] as const;
 
 function ComoFunciona() {
@@ -370,8 +374,8 @@ function ComoFunciona() {
             return (
               <div key={id} className="relative flex flex-col items-start">
                 {i < STEP_IDS.length - 1 && <div className="hidden lg:block absolute top-7 left-[calc(100%-8px)] w-full h-0.5 bg-gray-200 z-0" />}
-                <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-[#1D9E75] text-white mb-5 shadow-md"><Icon className="h-6 w-6" /></div>
-                <span className="text-xs font-bold text-[#1D9E75] uppercase tracking-wider mb-1">{t("landing.howItWorks.stepLabel")} {id}</span>
+                <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-[#D92D20] text-white mb-5 shadow-md"><Icon className="h-6 w-6" /></div>
+                <span className="text-xs font-bold text-[#D92D20] uppercase tracking-wider mb-1">{t("landing.howItWorks.stepLabel")} {id}</span>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{t(`landing.howItWorks.steps.${id}.title`)}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{t(`landing.howItWorks.steps.${id}.description`)}</p>
               </div>
@@ -384,7 +388,7 @@ function ComoFunciona() {
 }
 
 /* ─── Sección C — Exportación completa ───────────────────── */
-const DEFAULT_EXPORT_IMG = "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800";
+const DEFAULT_EXPORT_IMG = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800";
 
 function ExportSection({ config }: { config?: SectionConfig }) {
   const { t } = useTranslation();
@@ -396,7 +400,7 @@ function ExportSection({ config }: { config?: SectionConfig }) {
   const imgSrc  = config?.image_url || DEFAULT_EXPORT_IMG;
   const points  = [t("landing.export.point1"), t("landing.export.point2"), t("landing.export.point3"), t("landing.export.point4")];
   return (
-    <section className="py-24 bg-[#085041]">
+    <section className="py-24 bg-[#B42318]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 order-2 lg:order-1">
@@ -413,11 +417,11 @@ function ExportSection({ config }: { config?: SectionConfig }) {
                 </li>
               ))}
             </ul>
-            <Link href={ctaLink} className="inline-flex items-center gap-2 bg-white text-[#085041] px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm">
+            <Link href={ctaLink} className="inline-flex items-center gap-2 bg-white text-[#B42318] px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm">
               {ctaText} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl order-1 lg:order-2 bg-[#1D9E75]">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl order-1 lg:order-2 bg-[#D92D20]">
             <div className="aspect-[4/3]">
               <img src={imgSrc} alt={title} loading="lazy" className="w-full h-full object-cover" />
             </div>
@@ -439,35 +443,35 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-              <span className="font-bold text-white text-sm">MARKARU</span>
+              <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+              <span className="font-bold text-white text-sm">Apurape</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">{t("landing.footer.tagline")}</p>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.platform")}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/servicios"     className="hover:text-[#1D9E75] transition-colors">{t("nav.services")}</Link></li>
-              <li><Link href="/#como-funciona" className="hover:text-[#1D9E75] transition-colors">{t("nav.howItWorks")}</Link></li>
-              <li><Link href="/#planes"       className="hover:text-[#1D9E75] transition-colors">{t("nav.plans")}</Link></li>
+              <li><Link href="/servicios"     className="hover:text-[#D92D20] transition-colors">{t("nav.services")}</Link></li>
+              <li><Link href="/#como-funciona" className="hover:text-[#D92D20] transition-colors">{t("nav.howItWorks")}</Link></li>
+              <li><Link href="/#planes"       className="hover:text-[#D92D20] transition-colors">{t("nav.plans")}</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.company")}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/sobre-nosotros" className="hover:text-[#1D9E75] transition-colors">{t("landing.footer.aboutUs")}</Link></li>
-              <li><Link href="/blog"           className="hover:text-[#1D9E75] transition-colors">Blog</Link></li>
-              <li><Link href="/contacto"       className="hover:text-[#1D9E75] transition-colors">{t("landing.footer.contact")}</Link></li>
+              <li><Link href="/sobre-nosotros" className="hover:text-[#D92D20] transition-colors">{t("landing.footer.aboutUs")}</Link></li>
+              <li><Link href="/blog"           className="hover:text-[#D92D20] transition-colors">Blog</Link></li>
+              <li><Link href="/contacto"       className="hover:text-[#D92D20] transition-colors">{t("landing.footer.contact")}</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.legal")}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/terminos"   className="hover:text-[#1D9E75] transition-colors">{t("landing.footer.terms")}</Link></li>
-              <li><Link href="/privacidad" className="hover:text-[#1D9E75] transition-colors">{t("landing.footer.privacy")}</Link></li>
-              <li><Link href="/cookies"    className="hover:text-[#1D9E75] transition-colors">{t("landing.footer.cookiesPolicy")}</Link></li>
+              <li><Link href="/terminos"   className="hover:text-[#D92D20] transition-colors">{t("landing.footer.terms")}</Link></li>
+              <li><Link href="/privacidad" className="hover:text-[#D92D20] transition-colors">{t("landing.footer.privacy")}</Link></li>
+              <li><Link href="/cookies"    className="hover:text-[#D92D20] transition-colors">{t("landing.footer.cookiesPolicy")}</Link></li>
               <li>
-                <Link href="/reclamos" className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#1D9E75] transition-colors">
+                <Link href="/reclamos" className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#D92D20] transition-colors">
                   <span aria-hidden>📋</span> {t("reclamos.footerLink")}
                 </Link>
               </li>
@@ -477,7 +481,7 @@ function Footer() {
         <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-600">{t("landing.footer.allRights", { year })}</p>
           <div className="flex items-center gap-2 text-xs text-gray-600">
-            <TrendingUp className="h-3 w-3 text-[#1D9E75]" />{t("landing.footer.madeIn")}
+            <Handshake className="h-3 w-3 text-[#D92D20]" />{t("landing.footer.madeIn")}
           </div>
         </div>
       </div>

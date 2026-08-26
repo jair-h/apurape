@@ -20,7 +20,7 @@ interface Reclamacion {
 const STATUS_LABELS: Record<string, { label: string; cls: string }> = {
   pendiente:   { label: "Pendiente",   cls: "bg-amber-100 text-amber-700" },
   en_revision: { label: "En revisión", cls: "bg-blue-100 text-blue-700" },
-  resuelto:    { label: "Resuelto",    cls: "bg-[#E1F5EE] text-[#085041]" },
+  resuelto:    { label: "Resuelto",    cls: "bg-[#FEF3F2] text-[#B42318]" },
 };
 
 const TIPO_LABELS: Record<string, { label: string; cls: string }> = {
@@ -70,14 +70,14 @@ export default function AdminReclamacionesPage() {
       <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-extrabold text-[#085041]">Reclamaciones</h1>
+            <h1 className="text-2xl font-extrabold text-[#B42318]">Reclamaciones</h1>
             <p className="text-sm text-[#6B7280] mt-0.5">{total} reclamos y quejas del Libro de Reclamaciones.</p>
           </div>
           <div className="flex gap-2 flex-wrap">
             {(["all", "pendiente", "en_revision", "resuelto"] as const).map((f) => (
               <button key={f} type="button"
                 onClick={() => { setFilter(f); setPage(0); }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${filter === f ? "bg-[#085041] text-white" : "bg-white border border-gray-200 text-[#6B7280] hover:border-[#1D9E75]"}`}>
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${filter === f ? "bg-[#B42318] text-white" : "bg-white border border-gray-200 text-[#6B7280] hover:border-[#D92D20]"}`}>
                 {f === "all" ? "Todas" : STATUS_LABELS[f].label}
               </button>
             ))}
@@ -87,12 +87,12 @@ export default function AdminReclamacionesPage() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center p-12">
-              <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+              <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
             </div>
           ) : rows.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12">
               <AlertCircle className="h-10 w-10 text-gray-300 mb-3" />
-              <p className="text-sm font-bold text-[#085041]">Sin reclamaciones</p>
+              <p className="text-sm font-bold text-[#B42318]">Sin reclamaciones</p>
               <p className="text-xs text-[#6B7280] mt-1">No hay reclamaciones con este filtro.</p>
             </div>
           ) : (
@@ -125,7 +125,7 @@ export default function AdminReclamacionesPage() {
                         </td>
                         <td className="px-4 py-3">
                           <button type="button" onClick={() => setSelected(r)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-[#6B7280] hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all">
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-[#6B7280] hover:border-[#D92D20] hover:text-[#D92D20] transition-all">
                             <MessageSquare className="h-3.5 w-3.5" /> Ver
                           </button>
                         </td>
@@ -159,7 +159,7 @@ export default function AdminReclamacionesPage() {
             <div className="flex items-start justify-between px-5 py-4 border-b border-gray-100">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-base font-extrabold text-[#085041]">{selected.nombre}</h3>
+                  <h3 className="text-base font-extrabold text-[#B42318]">{selected.nombre}</h3>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TIPO_LABELS[selected.tipo]?.cls}`}>{TIPO_LABELS[selected.tipo]?.label}</span>
                 </div>
                 <p className="text-xs text-[#6B7280] font-mono">Ticket {selected.id.slice(0, 8).toUpperCase()}</p>
@@ -170,16 +170,16 @@ export default function AdminReclamacionesPage() {
               {/* Contact */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-xl p-3 flex items-center gap-2">
-                  <IdCard className="h-4 w-4 text-[#1D9E75] flex-shrink-0" />
+                  <IdCard className="h-4 w-4 text-[#D92D20] flex-shrink-0" />
                   <span className="text-sm text-[#1E293B]">{selected.dni}</span>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3 flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-[#1D9E75] flex-shrink-0" />
+                  <Mail className="h-4 w-4 text-[#D92D20] flex-shrink-0" />
                   <span className="text-sm text-[#1E293B] truncate">{selected.email}</span>
                 </div>
                 {selected.telefono && (
                   <div className="bg-gray-50 rounded-xl p-3 flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-[#1D9E75] flex-shrink-0" />
+                    <Phone className="h-4 w-4 text-[#D92D20] flex-shrink-0" />
                     <span className="text-sm text-[#1E293B]">{selected.telefono}</span>
                   </div>
                 )}
@@ -205,7 +205,7 @@ export default function AdminReclamacionesPage() {
                         onClick={() => updateStatus(selected.id, s)}
                         disabled={saving || selected.status === s}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all disabled:opacity-50 ${
-                          selected.status === s ? `${st.cls} border-transparent` : "bg-white border-gray-200 text-[#6B7280] hover:border-[#1D9E75]"
+                          selected.status === s ? `${st.cls} border-transparent` : "bg-white border-gray-200 text-[#6B7280] hover:border-[#D92D20]"
                         }`}>
                         {st.label}
                       </button>

@@ -3,7 +3,7 @@
 /* ─────────────────────────────────────────────────────────────
  * Chat Proveedor ↔ Cliente con cotización y cierre de servicio.
  *
- * Heredado del chat de MARKARU. Cambios de fondo:
+ * Heredado del chat de Apurape. Cambios de fondo:
  *   · deal_proposals (producto, volumen TM, incoterm, puerto) → quotes
  *     (monto en soles, qué incluye, qué no, días estimados).
  *   · Fuera logistics_quotes / cotización de flete: no existe la tabla.
@@ -101,20 +101,20 @@ function initials(name: string): string {
 function ConvListItem({ conv, active, onClick }: { conv: ConvItem; active: boolean; onClick: () => void }) {
   return (
     <button type="button" onClick={onClick}
-      className={`w-full text-left px-4 py-3.5 transition-colors border-b border-gray-100 last:border-0 ${active ? "bg-[#E1F5EE]" : "hover:bg-gray-50"}`}>
+      className={`w-full text-left px-4 py-3.5 transition-colors border-b border-gray-100 last:border-0 ${active ? "bg-[#FEF3F2]" : "hover:bg-gray-50"}`}>
       <div className="flex items-start gap-3">
-        <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold text-white flex-shrink-0 ${active ? "bg-[#1D9E75]" : "bg-[#085041]"}`}>
+        <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold text-white flex-shrink-0 ${active ? "bg-[#D92D20]" : "bg-[#B42318]"}`}>
           {initials(conv.other_user_name)}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <p className={`text-xs font-bold truncate ${active ? "text-[#085041]" : "text-[#1E293B]"}`}>{conv.other_user_name}</p>
+            <p className={`text-xs font-bold truncate ${active ? "text-[#B42318]" : "text-[#1E293B]"}`}>{conv.other_user_name}</p>
             <span className="text-[10px] text-[#6B7280] whitespace-nowrap flex-shrink-0">{formatTime(conv.last_message_at)}</span>
           </div>
           <div className="flex items-center justify-between mt-1">
             <p className="text-[11px] text-[#6B7280] truncate flex-1">{conv.last_message ?? "Sin mensajes aún"}</p>
             {conv.my_unread > 0 && (
-              <span className="ml-2 flex-shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-[#1D9E75] text-white text-[9px] font-bold flex items-center justify-center">
+              <span className="ml-2 flex-shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D92D20] text-white text-[9px] font-bold flex items-center justify-center">
                 {conv.my_unread > 99 ? "99+" : conv.my_unread}
               </span>
             )}
@@ -148,21 +148,21 @@ function MsgBubble({ msg, isMe, otherName }: { msg: MsgRow; isMe: boolean; other
     return (
       <div className="flex justify-end gap-2 group">
         <div className="max-w-xs lg:max-w-md">
-          <div className={`bg-[#1D9E75] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm leading-relaxed ${isTemp ? "opacity-70" : ""}`}>
+          <div className={`bg-[#D92D20] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm leading-relaxed ${isTemp ? "opacity-70" : ""}`}>
             {msg.content}
           </div>
           <p className="text-[10px] text-[#6B7280] text-right mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
             {isTemp ? "Enviando…" : timeStr}
           </p>
         </div>
-        <div className="w-7 h-7 rounded-full bg-[#085041] flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 self-end">TÚ</div>
+        <div className="w-7 h-7 rounded-full bg-[#B42318] flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 self-end">TÚ</div>
       </div>
     );
   }
 
   return (
     <div className="flex gap-2 group">
-      <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-[#085041] text-[10px] font-bold flex-shrink-0 self-end">
+      <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-[#B42318] text-[10px] font-bold flex-shrink-0 self-end">
         {initials(otherName)}
       </div>
       <div className="max-w-xs lg:max-w-md">
@@ -200,11 +200,11 @@ function QuoteCard({
 
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#085041]/15 shadow-sm overflow-hidden">
-        <div className="px-4 py-2.5 bg-[#E1F5EE] flex items-center justify-between gap-2">
+      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#B42318]/15 shadow-sm overflow-hidden">
+        <div className="px-4 py-2.5 bg-[#FEF3F2] flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Handshake className="h-4 w-4 text-[#085041]" />
-            <p className="text-xs font-bold text-[#085041]">
+            <Handshake className="h-4 w-4 text-[#B42318]" />
+            <p className="text-xs font-bold text-[#B42318]">
               {isProvider ? "Cotización que enviaste" : "Cotización recibida"}
             </p>
           </div>
@@ -213,7 +213,7 @@ function QuoteCard({
 
         <div className="px-4 py-3.5 space-y-3">
           <div>
-            <p className="text-2xl font-extrabold text-[#085041]">{soles(quote.amount)}</p>
+            <p className="text-2xl font-extrabold text-[#B42318]">{soles(quote.amount)}</p>
             {quote.estimated_days != null && (
               <p className="text-[11px] text-[#6B7280] mt-0.5">
                 Tiempo estimado: {quote.estimated_days} {quote.estimated_days === 1 ? "día" : "días"}
@@ -246,7 +246,7 @@ function QuoteCard({
             {isClient && (
               <>
                 <button type="button" disabled={processing} onClick={() => onAccept(quote)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors disabled:opacity-50">
                   {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
                   Aceptar y agendar
                 </button>
@@ -294,14 +294,14 @@ function JobCard({
 
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#1D9E75]/25 shadow-sm overflow-hidden">
-        <div className="px-4 py-2.5 bg-[#085041] flex items-center justify-between gap-2">
+      <div className="w-full max-w-md bg-white rounded-2xl border-2 border-[#D92D20]/25 shadow-sm overflow-hidden">
+        <div className="px-4 py-2.5 bg-[#B42318] flex items-center justify-between gap-2">
           <p className="text-xs font-bold text-white truncate">{job.title}</p>
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border flex-shrink-0 ${st.cls}`}>{st.label}</span>
         </div>
 
         <div className="px-4 py-3.5 space-y-2">
-          <p className="text-lg font-extrabold text-[#085041]">{soles(job.amount)}</p>
+          <p className="text-lg font-extrabold text-[#B42318]">{soles(job.amount)}</p>
 
           {job.completed_at && (
             <p className="text-[11px] text-[#6B7280]">
@@ -319,7 +319,7 @@ function JobCard({
         <div className="px-4 pb-4">
           {isProvider && job.status === "agendado" && (
             <button type="button" disabled={processing} onClick={() => onComplete(job)}
-              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors disabled:opacity-50">
               {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
               Marcar servicio como completado
             </button>
@@ -334,7 +334,7 @@ function JobCard({
 
           {isClient && job.status === "pendiente_confirmar" && (
             <button type="button" disabled={processing} onClick={() => onConfirm(job)}
-              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors disabled:opacity-50">
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors disabled:opacity-50">
               {processing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Star className="h-3.5 w-3.5" />}
               Confirmar y calificar
             </button>
@@ -370,7 +370,7 @@ function QuoteModal({
       setForm(prev => ({ ...prev, [key]: e.target.value }));
 
   const labelClass = "block text-[11px] font-bold text-[#6B7280] uppercase tracking-wide mb-1";
-  const inputClass = "w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent";
+  const inputClass = "w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent";
 
   const valid = Number(form.amount) > 0 && form.scope.trim().length > 0;
   const outOfQuotes = quotesLeft !== null && quotesLeft <= 0;
@@ -380,7 +380,7 @@ function QuoteModal({
       <div className="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-extrabold text-[#085041]">Enviar cotización</h3>
+            <h3 className="text-base font-extrabold text-[#B42318]">Enviar cotización</h3>
             <p className="text-[11px] text-[#6B7280] mt-0.5">
               {quotesLeft === null
                 ? "Cotizaciones ilimitadas con tu plan"
@@ -394,13 +394,13 @@ function QuoteModal({
 
         {outOfQuotes ? (
           <div className="px-5 py-8 text-center space-y-3">
-            <p className="text-sm font-bold text-[#085041]">Llegaste al límite del plan Básico</p>
+            <p className="text-sm font-bold text-[#B42318]">Llegaste al límite del plan Básico</p>
             <p className="text-xs text-[#6B7280] leading-relaxed">
               Ya usaste todas tus cotizaciones de este mes. Con el plan Pro son
               ilimitadas y además entras al sorteo mensual de tu categoría.
             </p>
             <Link href="/dashboard/plan"
-              className="inline-block px-4 py-2 rounded-xl bg-[#1D9E75] text-white text-xs font-bold hover:bg-[#085041] transition-colors">
+              className="inline-block px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors">
               Ver el plan Pro
             </Link>
           </div>
@@ -439,7 +439,7 @@ function QuoteModal({
             </div>
 
             <button type="button" disabled={!valid || submitting} onClick={() => onSubmit(form)}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#085041] text-white text-sm font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-40">
+              className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#B42318] text-white text-sm font-bold hover:bg-[#D92D20] transition-colors disabled:opacity-40">
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Handshake className="h-4 w-4" />}
               Enviar cotización
             </button>
@@ -467,7 +467,7 @@ function ConfirmModal({
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="bg-white w-full sm:max-w-sm sm:rounded-2xl rounded-t-2xl">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-base font-extrabold text-[#085041]">Confirmar y calificar</h3>
+          <h3 className="text-base font-extrabold text-[#B42318]">Confirmar y calificar</h3>
           <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700">
             <X className="h-5 w-5" />
           </button>
@@ -498,11 +498,11 @@ function ConfirmModal({
             </label>
             <textarea rows={3} value={comment} onChange={e => setComment(e.target.value)}
               placeholder="¿Cómo te fue con el servicio?"
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent" />
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent" />
           </div>
 
           <button type="button" disabled={stars === 0 || submitting} onClick={() => onSubmit(stars, comment)}
-            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] transition-colors disabled:opacity-40">
+            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] transition-colors disabled:opacity-40">
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
             Confirmar servicio
           </button>
@@ -520,10 +520,10 @@ function ConfirmModal({
 function EmptyChat() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
-      <div className="w-14 h-14 rounded-2xl bg-[#E1F5EE] flex items-center justify-center mb-4">
-        <MessageCircle className="h-7 w-7 text-[#1D9E75]" />
+      <div className="w-14 h-14 rounded-2xl bg-[#FEF3F2] flex items-center justify-center mb-4">
+        <MessageCircle className="h-7 w-7 text-[#D92D20]" />
       </div>
-      <p className="text-sm font-bold text-[#085041]">Elige una conversación</p>
+      <p className="text-sm font-bold text-[#B42318]">Elige una conversación</p>
       <p className="text-xs text-[#6B7280] mt-1 max-w-xs leading-relaxed">
         Aquí acuerdas el precio, cierras el servicio y lo confirmas.
       </p>
@@ -534,7 +534,7 @@ function EmptyChat() {
 function NoConversations() {
   return (
     <div className="p-6 text-center">
-      <p className="text-xs font-semibold text-[#085041]">Todavía no tienes conversaciones</p>
+      <p className="text-xs font-semibold text-[#B42318]">Todavía no tienes conversaciones</p>
       <p className="text-[11px] text-[#6B7280] mt-1 leading-relaxed">
         Cuando contactes a alguien aparecerá aquí.
       </p>
@@ -938,9 +938,9 @@ function MensajesInner() {
 
       {/* Lista de conversaciones */}
       <div className={`${selectedConvId ? "hidden lg:flex" : "flex"} w-full lg:w-72 flex-shrink-0 bg-white border-r border-gray-200 flex-col`}>
-        <div className="px-4 py-3.5 border-b border-gray-100 bg-[#085041]">
+        <div className="px-4 py-3.5 border-b border-gray-100 bg-[#B42318]">
           <h2 className="text-sm font-bold text-white">Mensajes</h2>
-          <p className="text-[11px] text-green-300 mt-0.5">
+          <p className="text-[11px] text-red-200 mt-0.5">
             {totalUnread > 0 ? `${totalUnread} sin leer` : "Todo leído"}
           </p>
         </div>
@@ -950,13 +950,13 @@ function MensajesInner() {
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
             <input type="text" placeholder="Buscar conversación..." value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent" />
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent" />
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           {loadingConvs ? (
-            <div className="flex justify-center items-center pt-12"><Loader2 className="h-5 w-5 text-[#1D9E75] animate-spin" /></div>
+            <div className="flex justify-center items-center pt-12"><Loader2 className="h-5 w-5 text-[#D92D20] animate-spin" /></div>
           ) : filtered.length === 0 ? (
             search
               ? <div className="p-6 text-center text-xs text-[#6B7280]">Sin resultados</div>
@@ -977,15 +977,15 @@ function MensajesInner() {
           <>
             <div className="flex-shrink-0 bg-white border-b border-gray-200 px-5 py-3.5 flex items-center gap-3 shadow-sm">
               <button type="button" onClick={() => setSelectedConvId(null)}
-                className="lg:hidden text-gray-400 hover:text-[#085041] transition-colors">
+                className="lg:hidden text-gray-400 hover:text-[#B42318] transition-colors">
                 <ArrowLeft className="h-5 w-5" />
               </button>
               <Link href={`/perfil/${selectedConv.other_user_id}`}
-                className="w-8 h-8 rounded-lg bg-[#085041] flex items-center justify-center text-white text-xs font-bold flex-shrink-0 hover:bg-[#1D9E75] transition-colors">
+                className="w-8 h-8 rounded-lg bg-[#B42318] flex items-center justify-center text-white text-xs font-bold flex-shrink-0 hover:bg-[#D92D20] transition-colors">
                 {initials(selectedConv.other_user_name)}
               </Link>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-[#085041] truncate">{selectedConv.other_user_name}</p>
+                <p className="text-sm font-bold text-[#B42318] truncate">{selectedConv.other_user_name}</p>
                 <p className="text-xs text-[#6B7280]">
                   {pendingForMe > 0 ? `${pendingForMe} acción pendiente` : "Conversación privada"}
                 </p>
@@ -994,7 +994,7 @@ function MensajesInner() {
               {/* Cotizar — solo el Proveedor */}
               {currentUserRole === "proveedor" && (
                 <button type="button" onClick={openQuoteForm}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] transition-colors flex-shrink-0 shadow-sm">
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#B42318] text-white text-xs font-bold hover:bg-[#D92D20] transition-colors flex-shrink-0 shadow-sm">
                   <Handshake className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Cotizar</span>
                 </button>
@@ -1003,7 +1003,7 @@ function MensajesInner() {
 
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {loadingMsgs ? (
-                <div className="flex justify-center pt-12"><Loader2 className="h-6 w-6 text-[#1D9E75] animate-spin" /></div>
+                <div className="flex justify-center pt-12"><Loader2 className="h-6 w-6 text-[#D92D20] animate-spin" /></div>
               ) : chatItems.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-[#6B7280]">No hay mensajes aún. ¡Sé el primero en escribir!</p>
@@ -1032,10 +1032,10 @@ function MensajesInner() {
               <div className="flex items-end gap-3">
                 <textarea rows={1} value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
                   placeholder="Escribe un mensaje... (Enter para enviar)"
-                  className="flex-1 resize-none px-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition max-h-32"
+                  className="flex-1 resize-none px-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition max-h-32"
                   style={{ fieldSizing: "content" } as React.CSSProperties} />
                 <button type="button" onClick={handleSend} disabled={!input.trim() || sending}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#1D9E75] text-white hover:bg-[#085041] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0">
+                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#D92D20] text-white hover:bg-[#B42318] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0">
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </button>
               </div>
@@ -1072,7 +1072,7 @@ export default function MensajesPage() {
   return (
     <Suspense fallback={
       <div className="flex flex-1 items-center justify-center">
-        <Loader2 className="h-7 w-7 text-[#1D9E75] animate-spin" />
+        <Loader2 className="h-7 w-7 text-[#D92D20] animate-spin" />
       </div>
     }>
       <MensajesInner />

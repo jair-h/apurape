@@ -26,14 +26,14 @@ function BannerPreview({ form }: { form: Omit<Banner, "id" | "created_at"> }) {
   return (
     <div className="mt-5 border-t border-gray-100 pt-5">
       <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Vista previa (hero)</p>
-      <div className="relative rounded-2xl overflow-hidden bg-[#085041] min-h-[200px] flex items-center justify-center">
+      <div className="relative rounded-2xl overflow-hidden bg-[#B42318] min-h-[200px] flex items-center justify-center">
         {form.image_url ? (
           <>
             <img src={form.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
           </>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#085041] to-[#1D9E75]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#B42318] to-[#D92D20]" />
         )}
         <div className="relative z-10 text-center px-6 py-8">
           {form.title ? (
@@ -47,7 +47,7 @@ function BannerPreview({ form }: { form: Omit<Banner, "id" | "created_at"> }) {
             <p className="text-sm text-white/85 mt-2 drop-shadow">{form.subtitle}</p>
           )}
           {form.link_url && form.button_text && (
-            <span className="inline-flex items-center gap-1.5 mt-4 bg-white text-[#085041] px-5 py-2 rounded-xl text-xs font-bold shadow-lg">
+            <span className="inline-flex items-center gap-1.5 mt-4 bg-white text-[#B42318] px-5 py-2 rounded-xl text-xs font-bold shadow-lg">
               {form.button_text} <ArrowRight className="h-3.5 w-3.5" />
             </span>
           )}
@@ -64,13 +64,13 @@ function BannerForm({ banner, onSave, onClose, saving }: {
 }) {
   const [form, setForm] = useState({ ...EMPTY, ...banner });
   const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
-  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 transition";
+  const inputCls = "w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm placeholder-gray-400 focus:outline-none focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 transition";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
-          <h3 className="text-base font-extrabold text-[#085041]">{banner.id ? "Editar banner" : "Nuevo banner"}</h3>
+          <h3 className="text-base font-extrabold text-[#B42318]">{banner.id ? "Editar banner" : "Nuevo banner"}</h3>
           <button type="button" onClick={onClose}><X className="h-5 w-5 text-gray-400" /></button>
         </div>
         <div className="px-5 py-4 space-y-4">
@@ -109,7 +109,7 @@ function BannerForm({ banner, onSave, onClose, saving }: {
               <label className="flex items-center gap-2 cursor-pointer">
                 <button type="button" onClick={() => set("active", !form.active)}>
                   {form.active
-                    ? <ToggleRight className="h-8 w-8 text-[#1D9E75]" />
+                    ? <ToggleRight className="h-8 w-8 text-[#D92D20]" />
                     : <ToggleLeft className="h-8 w-8 text-gray-300" />}
                 </button>
                 <span className="text-xs font-semibold text-gray-700">{form.active ? "Activo" : "Inactivo"}</span>
@@ -124,7 +124,7 @@ function BannerForm({ banner, onSave, onClose, saving }: {
           <button type="button" onClick={onClose}
             className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#6B7280]">Cancelar</button>
           <button type="button" onClick={() => onSave(form)} disabled={saving || !form.title || !form.image_url}
-            className="flex-1 py-2.5 rounded-xl bg-[#085041] text-white text-xs font-bold hover:bg-[#1D9E75] disabled:opacity-50 flex items-center justify-center gap-2">
+            className="flex-1 py-2.5 rounded-xl bg-[#B42318] text-white text-xs font-bold hover:bg-[#D92D20] disabled:opacity-50 flex items-center justify-center gap-2">
             {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
             Guardar banner
           </button>
@@ -177,19 +177,19 @@ export default function AdminBannersPage() {
     setBanners((prev) => prev.map((x) => x.id === b.id ? { ...x, active: !b.active } : x));
   };
 
-  if (loading) return <div className="flex flex-1 items-center justify-center"><Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" /></div>;
+  if (loading) return <div className="flex flex-1 items-center justify-center"><Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" /></div>;
 
   return (
     <>
       <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-extrabold text-[#085041]">Banners</h1>
+            <h1 className="text-2xl font-extrabold text-[#B42318]">Banners</h1>
             <p className="text-sm text-[#6B7280] mt-0.5">Hasta 5 banners activos se muestran como carrusel en la landing.</p>
           </div>
           <button type="button" onClick={() => setFormBanner({})}
             disabled={banners.length >= 5}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] disabled:opacity-50 transition-colors shadow-sm">
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] disabled:opacity-50 transition-colors shadow-sm">
             <Plus className="h-4 w-4" /> Nuevo banner
           </button>
         </div>
@@ -197,10 +197,10 @@ export default function AdminBannersPage() {
         {banners.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
             <Image className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-            <p className="text-base font-bold text-[#085041] mb-1">Sin banners</p>
+            <p className="text-base font-bold text-[#B42318] mb-1">Sin banners</p>
             <p className="text-sm text-[#6B7280] mb-6">Crea el primer banner para mostrarlo como hero en la landing.</p>
             <button type="button" onClick={() => setFormBanner({})}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1D9E75] text-white text-sm font-bold hover:bg-[#085041] transition-colors">
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318] transition-colors">
               <Plus className="h-4 w-4" /> Crear banner
             </button>
           </div>
@@ -209,7 +209,7 @@ export default function AdminBannersPage() {
             {banners.map((b) => (
               <div key={b.id} className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm flex items-center gap-4 flex-wrap">
                 <GripVertical className="h-4 w-4 text-gray-300 flex-shrink-0" />
-                <div className="w-8 h-8 rounded-lg bg-[#E1F5EE] flex items-center justify-center text-xs font-bold text-[#085041] flex-shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#FEF3F2] flex items-center justify-center text-xs font-bold text-[#B42318] flex-shrink-0">
                   {b.order_num}
                 </div>
                 {b.image_url && (
@@ -219,20 +219,20 @@ export default function AdminBannersPage() {
                   <p className="text-sm font-bold text-[#1E293B] truncate">{b.title}</p>
                   {b.subtitle && <p className="text-xs text-gray-500 truncate">{b.subtitle}</p>}
                   {b.link_url && <p className="text-xs text-[#6B7280] truncate">{b.link_url}</p>}
-                  {b.button_text && <p className="text-xs text-[#1D9E75] font-medium">Botón: "{b.button_text}"</p>}
+                  {b.button_text && <p className="text-xs text-[#D92D20] font-medium">Botón: "{b.button_text}"</p>}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button type="button" onClick={() => toggleActive(b)}
                     className="p-1.5" title={b.active ? "Desactivar" : "Activar"}>
                     {b.active
-                      ? <ToggleRight className="h-6 w-6 text-[#1D9E75]" />
+                      ? <ToggleRight className="h-6 w-6 text-[#D92D20]" />
                       : <ToggleLeft className="h-6 w-6 text-gray-300" />}
                   </button>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.active ? "bg-[#E1F5EE] text-[#085041]" : "bg-gray-100 text-gray-500"}`}>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${b.active ? "bg-[#FEF3F2] text-[#B42318]" : "bg-gray-100 text-gray-500"}`}>
                     {b.active ? "Activo" : "Inactivo"}
                   </span>
                   <button type="button" onClick={() => setFormBanner(b)}
-                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all">
+                    className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:border-[#D92D20] hover:text-[#D92D20] transition-all">
                     <Edit2 className="h-4 w-4" />
                   </button>
                   <button type="button" onClick={() => setDeleteId(b.id)}

@@ -170,13 +170,13 @@ export function PortCombobox({
                   onMouseDown={() => select(p.name)}
                   className={`px-3 py-2 cursor-pointer transition-colors flex items-center gap-2 ${
                     i === highlighted
-                      ? "bg-[#E1F5EE] text-[#085041]"
+                      ? "bg-[#FEF3F2] text-[#B42318]"
                       : "text-[#1E293B] hover:bg-gray-50"
                   }`}
                 >
                   {p.type === "aereo"
                     ? <Plane className="h-3.5 w-3.5 flex-shrink-0 text-blue-400" />
-                    : <Anchor className="h-3.5 w-3.5 flex-shrink-0 text-[#1D9E75]" />}
+                    : <Anchor className="h-3.5 w-3.5 flex-shrink-0 text-[#D92D20]" />}
                   <span className="text-sm font-medium leading-tight">{p.name}</span>
                   <span className="text-xs text-gray-400 truncate">{p.country}</span>
                 </div>

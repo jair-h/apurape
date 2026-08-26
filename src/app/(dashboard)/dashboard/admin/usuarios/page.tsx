@@ -27,17 +27,12 @@ interface AppUser {
 }
 
 const ROLE_LABELS: Record<string, string> = {
-  productor: "Productor", exportador: "Exportador", forwarder: "Forwarder",
-  certificadora: "Certificadora", comprador: "Comprador", banco: "Banco", admin: "Admin",
+  proveedor: "Proveedor", cliente: "Cliente", admin: "Admin",
 };
 const ROLE_COLORS: Record<string, string> = {
-  productor:    "bg-green-100 text-green-700",
-  exportador:   "bg-blue-100 text-blue-700",
-  forwarder:    "bg-purple-100 text-purple-700",
-  certificadora:"bg-amber-100 text-amber-700",
-  comprador:    "bg-pink-100 text-pink-700",
-  banco:        "bg-gray-100 text-gray-700",
-  admin:        "bg-red-100 text-red-700",
+  proveedor: "bg-red-100 text-[#B42318]",
+  cliente:   "bg-teal-100 text-[#0E9384]",
+  admin:     "bg-gray-100 text-gray-700",
 };
 
 const PAGE_SIZE = 20;
@@ -118,11 +113,11 @@ export default function UsuariosPage() {
     setConfirmModal(null);
   };
 
-  const selectCls = "w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 text-xs text-[#1E293B] focus:outline-none focus:border-[#1D9E75] transition-all";
+  const selectCls = "w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 text-xs text-[#1E293B] focus:outline-none focus:border-[#D92D20] transition-all";
 
   if (loading) return (
     <div className="flex flex-1 items-center justify-center">
-      <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+      <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
     </div>
   );
 
@@ -130,15 +125,15 @@ export default function UsuariosPage() {
     <>
       <div className="flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-6 space-y-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#085041]">Usuarios registrados</h1>
+          <h1 className="text-2xl font-extrabold text-[#B42318]">Usuarios registrados</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">Gestión completa de todos los usuarios de la plataforma.</p>
         </div>
 
         {/* Summary */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "Total",       value: users.length,                            cls: "text-[#085041]" },
-            { label: "Verificados", value: users.filter((u) => u.verified).length,  cls: "text-[#1D9E75]" },
+            { label: "Total",       value: users.length,                            cls: "text-[#B42318]" },
+            { label: "Verificados", value: users.filter((u) => u.verified).length,  cls: "text-[#D92D20]" },
             { label: "Suspendidos", value: users.filter((u) => u.suspended).length, cls: "text-red-500" },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-xl border border-gray-200 px-3 py-3 shadow-sm text-center">
@@ -155,11 +150,11 @@ export default function UsuariosPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input value={search} onChange={(e) => { setSearch(e.target.value); setPage(0); }}
                 placeholder="Buscar por nombre o email..."
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-xs placeholder:text-gray-400 focus:outline-none focus:border-[#1D9E75] focus:ring-2 focus:ring-[#1D9E75]/20 transition-all" />
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-xs placeholder:text-gray-400 focus:outline-none focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 transition-all" />
             </div>
             <button type="button" onClick={() => setShowFilters(!showFilters)}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all ${
-                showFilters ? "bg-[#085041] text-white border-[#085041]" : "bg-white border-gray-200 text-[#6B7280] hover:border-[#1D9E75]"
+                showFilters ? "bg-[#B42318] text-white border-[#B42318]" : "bg-white border-gray-200 text-[#6B7280] hover:border-[#D92D20]"
               }`}>
               <Filter className="h-4 w-4" /> Filtros
             </button>
@@ -167,7 +162,7 @@ export default function UsuariosPage() {
           {showFilters && (
             <div className="bg-white rounded-2xl border border-gray-200 p-4 grid grid-cols-2 gap-3 shadow-sm">
               <div>
-                <label className="block text-[10px] font-bold text-[#085041] mb-1.5 uppercase tracking-wider">Rol</label>
+                <label className="block text-[10px] font-bold text-[#B42318] mb-1.5 uppercase tracking-wider">Rol</label>
                 <select value={roleFilter} onChange={(e) => { setRoleFilter(e.target.value as RoleFilter); setPage(0); }} className={selectCls}>
                   <option value="todos">Todos</option>
                   {["productor","exportador","forwarder","certificadora","comprador","banco"].map((r) => (
@@ -186,7 +181,7 @@ export default function UsuariosPage() {
         </div>
 
         <p className="text-xs text-[#6B7280]">
-          Mostrando <span className="font-bold text-[#085041]">{filtered.length}</span> de {users.length} usuarios
+          Mostrando <span className="font-bold text-[#B42318]">{filtered.length}</span> de {users.length} usuarios
         </p>
 
         {/* Table */}
@@ -207,7 +202,7 @@ export default function UsuariosPage() {
                   ].map((h, i) => (
                     <th key={i}
                       onClick={() => h.sort && (setSortAsc(!sortAsc))}
-                      className={`text-left text-[10px] font-bold text-[#6B7280] uppercase tracking-wider px-4 py-3 ${h.sort ? "cursor-pointer hover:text-[#085041] select-none" : ""}`}>
+                      className={`text-left text-[10px] font-bold text-[#6B7280] uppercase tracking-wider px-4 py-3 ${h.sort ? "cursor-pointer hover:text-[#B42318] select-none" : ""}`}>
                       {h.label}
                       {h.sort && (sortAsc ? <ChevronUp className="h-3 w-3 inline ml-0.5" /> : <ChevronDown className="h-3 w-3 inline ml-0.5" />)}
                     </th>
@@ -218,7 +213,7 @@ export default function UsuariosPage() {
                 {paginated.length === 0 ? (
                   <tr><td colSpan={8} className="py-12 text-center">
                     <Users className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                    <p className="text-sm font-semibold text-[#085041]">Sin resultados</p>
+                    <p className="text-sm font-semibold text-[#B42318]">Sin resultados</p>
                   </td></tr>
                 ) : paginated.map((u) => {
                   const isLoading = actionLoading === u.user_id;
@@ -246,21 +241,21 @@ export default function UsuariosPage() {
                         {u.suspended
                           ? <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600"><Ban className="h-3 w-3" /> Suspendido</span>
                           : u.verified
-                          ? <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E1F5EE] text-[#085041]"><CheckCircle2 className="h-3 w-3" /> Verificado</span>
+                          ? <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FEF3F2] text-[#B42318]"><CheckCircle2 className="h-3 w-3" /> Verificado</span>
                           : <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700"><XCircle className="h-3 w-3" /> Pendiente</span>
                         }
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1.5">
                           <Link href={`/perfil/${u.user_id}`} target="_blank"
-                            className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#6B7280] border border-gray-200 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all bg-white">
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#6B7280] border border-gray-200 hover:border-[#D92D20] hover:text-[#D92D20] transition-all bg-white">
                             <Eye className="h-3 w-3" /> Ver
                           </Link>
                           {!u.verified && !u.suspended && (
                             <button type="button"
                               disabled={isLoading}
                               onClick={() => setConfirmModal({ user: u, action: "verify" })}
-                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#1D9E75] border border-[#1D9E75] hover:bg-[#E1F5EE] transition-all bg-white disabled:opacity-50">
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#D92D20] border border-[#D92D20] hover:bg-[#FEF3F2] transition-all bg-white disabled:opacity-50">
                               {isLoading ? <Loader2 className="h-3 w-3 animate-spin" /> : <ShieldCheck className="h-3 w-3" />} Verificar
                             </button>
                           )}
@@ -275,7 +270,7 @@ export default function UsuariosPage() {
                             <button type="button"
                               disabled={isLoading}
                               onClick={() => setConfirmModal({ user: u, action: "unsuspend" })}
-                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#1D9E75] border border-[#1D9E75] hover:bg-[#E1F5EE] transition-all bg-white disabled:opacity-50">
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-[#D92D20] border border-[#D92D20] hover:bg-[#FEF3F2] transition-all bg-white disabled:opacity-50">
                               <CheckCircle2 className="h-3 w-3" /> Reactivar
                             </button>
                           )}
@@ -296,11 +291,11 @@ export default function UsuariosPage() {
               </p>
               <div className="flex gap-2">
                 <button onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0}
-                  className="p-1.5 rounded-lg border border-gray-200 text-[#6B7280] hover:border-[#1D9E75] hover:text-[#1D9E75] disabled:opacity-40 transition-all">
+                  className="p-1.5 rounded-lg border border-gray-200 text-[#6B7280] hover:border-[#D92D20] hover:text-[#D92D20] disabled:opacity-40 transition-all">
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}
-                  className="p-1.5 rounded-lg border border-gray-200 text-[#6B7280] hover:border-[#1D9E75] hover:text-[#1D9E75] disabled:opacity-40 transition-all">
+                  className="p-1.5 rounded-lg border border-gray-200 text-[#6B7280] hover:border-[#D92D20] hover:text-[#D92D20] disabled:opacity-40 transition-all">
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -314,7 +309,7 @@ export default function UsuariosPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-              <h3 className="text-base font-extrabold text-[#085041]">
+              <h3 className="text-base font-extrabold text-[#B42318]">
                 {confirmModal.action === "verify" ? "Verificar usuario"
                   : confirmModal.action === "suspend" ? "Suspender cuenta"
                   : "Reactivar cuenta"}
@@ -344,7 +339,7 @@ export default function UsuariosPage() {
                   else handleSuspend(confirmModal.user, false);
                 }}
                 className={`flex-1 py-2.5 rounded-xl text-white text-xs font-bold transition-colors ${
-                  confirmModal.action === "suspend" ? "bg-red-500 hover:bg-red-600" : "bg-[#085041] hover:bg-[#1D9E75]"
+                  confirmModal.action === "suspend" ? "bg-red-500 hover:bg-red-600" : "bg-[#B42318] hover:bg-[#D92D20]"
                 }`}>
                 Confirmar
               </button>

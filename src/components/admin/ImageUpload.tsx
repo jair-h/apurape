@@ -57,7 +57,7 @@ export function ImageUpload({ value, onChange, inputClassName, folder = "admin-i
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:border-[#1D9E75] hover:text-[#1D9E75] bg-white disabled:opacity-50 transition-all whitespace-nowrap"
+          className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:border-[#D92D20] hover:text-[#D92D20] bg-white disabled:opacity-50 transition-all whitespace-nowrap"
         >
           {uploading
             ? <Loader2 className="h-3.5 w-3.5 animate-spin" />

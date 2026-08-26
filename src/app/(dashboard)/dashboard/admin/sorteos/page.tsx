@@ -94,7 +94,7 @@ export default function AdminSorteosPage() {
   };
 
   if (loading) {
-    return <div className="flex flex-1 items-center justify-center bg-gray-50"><Loader2 className="h-8 w-8 text-[#085041] animate-spin" /></div>;
+    return <div className="flex flex-1 items-center justify-center bg-gray-50"><Loader2 className="h-8 w-8 text-[#B42318] animate-spin" /></div>;
   }
 
   return (
@@ -146,19 +146,19 @@ export default function AdminSorteosPage() {
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${st.cls}`}>{st.label}</span>
 
                     <button type="button" onClick={() => openEntries(r)}
-                      className="px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] font-bold text-[#6B7280] hover:border-[#085041] transition-colors">
+                      className="px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] font-bold text-[#6B7280] hover:border-[#B42318] transition-colors">
                       {expanded === r.id ? "Ocultar" : "Ranking"}
                     </button>
 
                     {r.status === "abierto" && (
                       <>
                         <button type="button" onClick={() => recompute(r)} disabled={working === r.id}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] font-bold text-[#6B7280] hover:border-[#085041] transition-colors disabled:opacity-50">
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[10px] font-bold text-[#6B7280] hover:border-[#B42318] transition-colors disabled:opacity-50">
                           {working === r.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
                           Recalcular
                         </button>
                         <button type="button" onClick={() => close(r)} disabled={working === r.id}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#085041] text-white text-[10px] font-bold hover:bg-[#1D9E75] transition-colors disabled:opacity-50">
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#B42318] text-white text-[10px] font-bold hover:bg-[#D92D20] transition-colors disabled:opacity-50">
                           <Lock className="h-3 w-3" /> Cerrar y premiar
                         </button>
                       </>
@@ -176,7 +176,7 @@ export default function AdminSorteosPage() {
                       <div className="space-y-1.5">
                         {entries.map(e => (
                           <div key={e.profile_id} className="flex items-center gap-3 text-[11px]">
-                            <span className="w-6 font-extrabold text-[#085041]">#{e.rank ?? "—"}</span>
+                            <span className="w-6 font-extrabold text-[#B42318]">#{e.rank ?? "—"}</span>
                             <span className="flex-1 font-semibold text-gray-900 truncate">{names[e.profile_id] ?? "Usuario"}</span>
                             <span className="text-[#6B7280]">{e.confirmed_jobs} ventas</span>
                             <span className="text-amber-500">{e.five_star_count} × 5★</span>

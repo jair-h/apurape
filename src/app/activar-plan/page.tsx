@@ -111,7 +111,7 @@ function CheckoutInner() {
     window.Culqi.publicKey = pk;
 
     window.Culqi.settings({
-      title: "MARKARU",
+      title: "Apurape",
       currency: "USD",
       description: `Plan ${info.name}`,
       amount: info.amountCents,
@@ -124,12 +124,12 @@ function CheckoutInner() {
     return (
       <Shell>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-          <div className="inline-flex items-center justify-center bg-[#E1F5EE] p-4 rounded-2xl mb-4">
-            <CreditCard className="h-8 w-8 text-[#1D9E75]" />
+          <div className="inline-flex items-center justify-center bg-[#FEF3F2] p-4 rounded-2xl mb-4">
+            <CreditCard className="h-8 w-8 text-[#D92D20]" />
           </div>
-          <h1 className="text-xl font-extrabold text-[#085041] mb-2">{t("checkout.noPlanTitle")}</h1>
+          <h1 className="text-xl font-extrabold text-[#B42318] mb-2">{t("checkout.noPlanTitle")}</h1>
           <p className="text-sm text-gray-500 mb-6">{t("checkout.noPlan")}</p>
-          <Link href="/planes" className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#167a5a] transition-colors">
+          <Link href="/planes" className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#912018] transition-colors">
             {t("checkout.seePlans")}
           </Link>
         </div>
@@ -142,19 +142,19 @@ function CheckoutInner() {
     return (
       <Shell>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-          <div className="inline-flex items-center justify-center bg-[#E1F5EE] p-5 rounded-2xl mb-5">
-            <CheckCircle2 className="h-12 w-12 text-[#1D9E75]" />
+          <div className="inline-flex items-center justify-center bg-[#FEF3F2] p-5 rounded-2xl mb-5">
+            <CheckCircle2 className="h-12 w-12 text-[#D92D20]" />
           </div>
-          <h1 className="text-2xl font-extrabold text-[#085041] mb-2">{t("checkout.successTitle")}</h1>
+          <h1 className="text-2xl font-extrabold text-[#B42318] mb-2">{t("checkout.successTitle")}</h1>
           <p className="text-sm text-gray-600 leading-relaxed mb-4">{t("checkout.activeOneYear", { plan: info.name })}</p>
           {chargeId && (
             <div className="inline-block bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 mb-6">
               <span className="text-[11px] text-gray-500">{t("checkout.orderNumber")}</span>
-              <p className="text-sm font-bold tracking-wide text-[#085041]">{chargeId}</p>
+              <p className="text-sm font-bold tracking-wide text-[#B42318]">{chargeId}</p>
             </div>
           )}
           <div>
-            <Link href="/dashboard" className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#167a5a] transition-colors">
+            <Link href="/dashboard" className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#912018] transition-colors">
               {t("checkout.goDashboard")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -179,14 +179,14 @@ function CheckoutInner() {
           </div>
 
           {/* Selected plan summary */}
-          <div className="mx-6 mt-5 rounded-xl bg-[#085041] text-white p-4 flex items-center justify-between">
+          <div className="mx-6 mt-5 rounded-xl bg-[#B42318] text-white p-4 flex items-center justify-between">
             <div>
-              <p className="text-[11px] uppercase tracking-wider text-green-200">{t("checkout.planLabel")}</p>
+              <p className="text-[11px] uppercase tracking-wider text-red-100">{t("checkout.planLabel")}</p>
               <p className="text-lg font-extrabold">{info.name}</p>
             </div>
             <div className="text-right">
               <p className="text-2xl font-extrabold">{info.priceLabel}</p>
-              <p className="text-[11px] text-green-200">{t("checkout.annual")}</p>
+              <p className="text-[11px] text-red-100">{t("checkout.annual")}</p>
             </div>
           </div>
 
@@ -205,7 +205,7 @@ function CheckoutInner() {
               type="button"
               onClick={openCheckout}
               disabled={status === "processing"}
-              className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] text-white py-3.5 rounded-xl text-sm font-bold hover:bg-[#167a5a] disabled:opacity-70 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3.5 rounded-xl text-sm font-bold hover:bg-[#912018] disabled:opacity-70 transition-colors"
             >
               {status === "processing" ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> {t("checkout.processing")}</>
@@ -219,7 +219,7 @@ function CheckoutInner() {
             {/* Trust / Culqi */}
             <div className="pt-1 space-y-3">
               <p className="flex items-center justify-center gap-1.5 text-xs text-gray-500">
-                <Lock className="h-3.5 w-3.5 text-[#1D9E75]" /> {t("checkout.secure")}
+                <Lock className="h-3.5 w-3.5 text-[#D92D20]" /> {t("checkout.secure")}
               </p>
               <div className="flex items-center justify-center gap-2">
                 <span className="text-[11px] text-gray-400">{t("checkout.accepted")}:</span>
@@ -242,8 +242,8 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 justify-center mb-8">
-          <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain" />
-          <span className="font-bold text-lg text-gray-900">MARKARU</span>
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain" />
+          <span className="font-bold text-lg text-gray-900">Apurape</span>
         </Link>
         {children}
       </div>
@@ -255,7 +255,7 @@ export default function ActivarPlanPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <SpinnerFallback className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <SpinnerFallback className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     }>
       <CheckoutInner />

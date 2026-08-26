@@ -1,7 +1,7 @@
 "use client";
 
 /* Trabajos del Proveedor. Reemplaza a las pantallas de operaciones que
- * tenía cada rol de MARKARU.
+ * tenía cada rol de Apurape.
  *
  * Aquí marca "servicio completado", pero eso NO cierra nada: el trabajo
  * queda esperando a que el Cliente confirme. Solo su confirmación suma

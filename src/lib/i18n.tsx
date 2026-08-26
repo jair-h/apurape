@@ -26,7 +26,7 @@ const LOCALES: Record<Lang, Record<string, unknown>> = {
   en: en as Record<string, unknown>,
 };
 
-const LS_KEY = "markaru_lang";
+const LS_KEY = "apurape_lang";
 
 /* ─── Context ─────────────────────────────────────────────── */
 type I18nContextValue = {

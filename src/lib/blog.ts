@@ -42,7 +42,7 @@ export const CTA_PRESETS: Record<CtaKey, { label: string; title: string; descrip
   },
   general: {
     label: "General",
-    title: "Únete a MARKARU",
+    title: "Únete a Apurape",
     description: "Únete a Markaru y conecta con el ecosistema agroexportador.",
     button: "Crear cuenta gratis",
     link: "/register",

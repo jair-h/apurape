@@ -41,7 +41,7 @@ function RolSelector({ selected, onSelect }: { selected: string; onSelect: (id: 
             onClick={() => onSelect(role.id)}
             className={`flex items-start gap-4 p-4 rounded-xl border-2 text-left transition-all duration-150 ${
               active
-                ? "border-[#1D9E75] bg-green-50 shadow-sm"
+                ? "border-[#D92D20] bg-red-50 shadow-sm"
                 : `border-gray-200 bg-white ${role.borderClass}`
             }`}
           >
@@ -49,7 +49,7 @@ function RolSelector({ selected, onSelect }: { selected: string; onSelect: (id: 
               <role.icon className="h-5 w-5" />
             </div>
             <div>
-              <p className={`text-sm font-semibold ${active ? "text-[#1D9E75]" : "text-gray-900"}`}>
+              <p className={`text-sm font-semibold ${active ? "text-[#D92D20]" : "text-gray-900"}`}>
                 {t(`auth.register.roles.${role.id}.label`)}
               </p>
               <p className="text-xs text-gray-500 leading-relaxed mt-0.5">
@@ -101,11 +101,11 @@ function RegisterForm({
 
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
   const inputClass =
-    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition";
+    "w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200 mb-2">
+      <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200 mb-2">
         <div className={`p-2 rounded-lg ${roleConfig.iconClass}`}>
           <roleConfig.icon className="h-4 w-4" />
         </div>
@@ -202,15 +202,15 @@ function RegisterForm({
 
       <p className="text-xs text-gray-500">
         {t("auth.register.termsPrefix")}{" "}
-        <Link href="/terminos" className="text-[#1D9E75] hover:underline">{t("auth.register.terms")}</Link>{" "}
+        <Link href="/terminos" className="text-[#D92D20] hover:underline">{t("auth.register.terms")}</Link>{" "}
         {t("auth.register.and")}{" "}
-        <Link href="/privacidad" className="text-[#1D9E75] hover:underline">{t("auth.register.privacy")}</Link>.
+        <Link href="/privacidad" className="text-[#D92D20] hover:underline">{t("auth.register.privacy")}</Link>.
       </p>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 bg-[#1D9E75] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#167a5a] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#912018] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? (
           <><Loader2 className="h-4 w-4 animate-spin" /> {t("auth.register.creatingAccount")}</>
@@ -306,9 +306,9 @@ function RegisterPageInner() {
       <div className="w-full max-w-2xl">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 justify-center mb-8">
-          <img src="/images/markaru-logo.png" alt="MARKARU" className="h-10 w-auto object-contain" />
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-10 w-auto object-contain" />
           <span className="font-bold text-lg text-gray-900">
-            MARKARU
+            Apurape
           </span>
         </Link>
 
@@ -316,9 +316,9 @@ function RegisterPageInner() {
           <>
               {/* Progress */}
               <div className="flex items-center gap-3 mb-8">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${step >= 1 ? "bg-[#1D9E75] text-white" : "bg-gray-200 text-gray-500"}`}>1</div>
-                <div className={`flex-1 h-0.5 ${step >= 2 ? "bg-[#1D9E75]" : "bg-gray-200"}`} />
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${step >= 2 ? "bg-[#1D9E75] text-white" : "bg-gray-200 text-gray-500"}`}>2</div>
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${step >= 1 ? "bg-[#D92D20] text-white" : "bg-gray-200 text-gray-500"}`}>1</div>
+                <div className={`flex-1 h-0.5 ${step >= 2 ? "bg-[#D92D20]" : "bg-gray-200"}`} />
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${step >= 2 ? "bg-[#D92D20] text-white" : "bg-gray-200 text-gray-500"}`}>2</div>
               </div>
 
               {step === 1 && (
@@ -337,7 +337,7 @@ function RegisterPageInner() {
                       type="button"
                       disabled={!selectedRol}
                       onClick={() => setStep(2)}
-                      className="inline-flex items-center gap-2 bg-[#1D9E75] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#167a5a] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#912018] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {t("auth.register.next")}
                     </button>
@@ -380,7 +380,7 @@ function RegisterPageInner() {
 
         <p className="text-center text-sm text-gray-600 mt-6">
           {t("auth.register.alreadyHaveAccount")}{" "}
-          <Link href="/login" className="text-[#1D9E75] font-semibold hover:underline">
+          <Link href="/login" className="text-[#D92D20] font-semibold hover:underline">
             {t("auth.register.signIn")}
           </Link>
         </p>
@@ -393,7 +393,7 @@ export default function RegisterPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <SpinnerFallback className="h-8 w-8 text-[#1D9E75] animate-spin" />
+        <SpinnerFallback className="h-8 w-8 text-[#D92D20] animate-spin" />
       </div>
     }>
       <RegisterPageInner />

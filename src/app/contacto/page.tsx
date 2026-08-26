@@ -27,7 +27,7 @@ export default function ContactoPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#1D9E75] text-sm mb-10 transition-colors"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-[#D92D20] text-sm mb-10 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             {t("legal.backToHome")}
@@ -45,11 +45,11 @@ export default function ContactoPage() {
             <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
               {sent ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <CheckCircle2 className="h-12 w-12 text-[#1D9E75] mb-4" />
+                  <CheckCircle2 className="h-12 w-12 text-[#D92D20] mb-4" />
                   <p className="text-lg font-bold text-gray-900 mb-2">{t("contact.form.success")}</p>
                   <button
                     onClick={() => { setSent(false); setForm({ name: "", email: "", message: "" }); }}
-                    className="mt-6 text-sm text-[#1D9E75] font-medium hover:underline"
+                    className="mt-6 text-sm text-[#D92D20] font-medium hover:underline"
                   >
                     {t("contact.form.sendAnother")}
                   </button>
@@ -67,7 +67,7 @@ export default function ContactoPage() {
                       value={form.name}
                       onChange={handleChange}
                       placeholder={t("contact.form.namePlaceholder")}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition"
                     />
                   </div>
                   <div>
@@ -81,7 +81,7 @@ export default function ContactoPage() {
                       value={form.email}
                       onChange={handleChange}
                       placeholder="tu@email.com"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition"
                     />
                   </div>
                   <div>
@@ -95,12 +95,12 @@ export default function ContactoPage() {
                       value={form.message}
                       onChange={handleChange}
                       placeholder={t("contact.form.messagePlaceholder")}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] focus:border-transparent transition resize-none"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition resize-none"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-[#1D9E75] hover:bg-[#17876a] text-white font-bold py-3.5 rounded-xl transition-colors"
+                    className="w-full bg-[#D92D20] hover:bg-[#912018] text-white font-bold py-3.5 rounded-xl transition-colors"
                   >
                     {t("contact.form.send")}
                   </button>
@@ -112,18 +112,18 @@ export default function ContactoPage() {
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-green-100 p-2 rounded-xl">
-                    <Mail className="h-5 w-5 text-[#1D9E75]" />
+                  <div className="bg-red-100 p-2 rounded-xl">
+                    <Mail className="h-5 w-5 text-[#D92D20]" />
                   </div>
                   <h3 className="font-bold text-gray-900">{t("contact.info.emailLabel")}</h3>
                 </div>
-                <p className="text-sm text-[#1D9E75] font-medium">{t("contact.info.email")}</p>
+                <p className="text-sm text-[#D92D20] font-medium">{t("contact.info.email")}</p>
               </div>
 
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-green-100 p-2 rounded-xl">
-                    <Clock className="h-5 w-5 text-[#1D9E75]" />
+                  <div className="bg-red-100 p-2 rounded-xl">
+                    <Clock className="h-5 w-5 text-[#D92D20]" />
                   </div>
                   <h3 className="font-bold text-gray-900">Tiempos de respuesta</h3>
                 </div>
@@ -132,8 +132,8 @@ export default function ContactoPage() {
 
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-green-100 p-2 rounded-xl">
-                    <Share2 className="h-5 w-5 text-[#1D9E75]" />
+                  <div className="bg-red-100 p-2 rounded-xl">
+                    <Share2 className="h-5 w-5 text-[#D92D20]" />
                   </div>
                   <h3 className="font-bold text-gray-900">{t("contact.info.socialsLabel")}</h3>
                 </div>
@@ -147,11 +147,11 @@ export default function ContactoPage() {
       <footer className="bg-gray-900 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-white">MARKARU</span>
+            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+            <span className="font-bold text-sm text-white">Apurape</span>
           </div>
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} MARKARU. Todos los derechos reservados.
+            © {new Date().getFullYear()} Apurape. Todos los derechos reservados.
           </p>
         </div>
       </footer>

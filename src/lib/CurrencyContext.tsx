@@ -16,7 +16,7 @@ import {
   formatDailyLocal,
 } from "@/lib/currencies";
 
-const LS_KEY = "markaru_currency";
+const LS_KEY = "apurape_currency";
 
 type CurrencyContextValue = {
   currency: CurrencyEntry;

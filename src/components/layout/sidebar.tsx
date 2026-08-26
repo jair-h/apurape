@@ -158,16 +158,16 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
   };
 
   const isAdmin = role === "admin";
-  const bg = isAdmin ? "bg-[#0D2B1F]" : "bg-[#085041]";
+  const bg = isAdmin ? "bg-[#7A271A]" : "bg-[#B42318]";
   const navItems = role ? (NAV_BY_ROLE[role] ?? DEFAULT_NAV) : DEFAULT_NAV;
 
   return (
     <aside className={`w-56 flex-shrink-0 ${bg} flex flex-col h-full`}>
       {/* Logo */}
       <Link href="/" onClick={onClose} className="flex items-center gap-2 px-4 h-14 border-b border-white/10 hover:bg-white/5 transition-colors">
-        <img src="/images/markaru-logo.png" alt="MARKARU" className="h-8 w-auto object-contain flex-shrink-0" />
+        <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain flex-shrink-0" />
         <span className="font-bold text-sm text-white leading-tight">
-          MARKARU
+          Apurape
           <span className="block text-[10px] font-normal text-white/50">LATAM</span>
         </span>
       </Link>
@@ -184,7 +184,7 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#1D9E75] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#D92D20] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {userName.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0">
@@ -242,14 +242,14 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
                 onClick={onClose}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-100 ${
                   active
-                    ? "bg-[#1D9E75] text-white"
+                    ? "bg-[#D92D20] text-white"
                     : "text-white/70 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <item.icon className={`h-4 w-4 flex-shrink-0 ${active ? "text-white" : "text-white/60"}`} />
                 <span className="flex-1">{t(item.labelKey)}</span>
                 {badge > 0 && (
-                  <span className="flex-shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-white text-[#085041] text-[9px] font-bold flex items-center justify-center">
+                  <span className="flex-shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-white text-[#B42318] text-[9px] font-bold flex items-center justify-center">
                     {badge > 99 ? "99+" : badge}
                   </span>
                 )}
@@ -269,7 +269,7 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
               <button
                 onClick={() => setLang(l)}
                 className={`text-xs font-bold px-0.5 transition-colors ${
-                  lang === l ? "text-[#4CD9A4]" : "text-white/40 hover:text-white"
+                  lang === l ? "text-[#FDA29B]" : "text-white/40 hover:text-white"
                 }`}
               >
                 {l.toUpperCase()}

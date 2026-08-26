@@ -31,7 +31,7 @@ export default function PerfilRedirectPage() {
 
   return (
     <div className="flex flex-1 items-center justify-center bg-gray-50">
-      <Loader2 className="h-8 w-8 text-[#1D9E75] animate-spin" />
+      <Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" />
     </div>
   );
 }

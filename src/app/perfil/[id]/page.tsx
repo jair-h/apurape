@@ -12,7 +12,7 @@ import ProfileActions from "./ProfileActions";
 /* ─────────────────────────────────────────────────────────────
  * Perfil público de Apurape.
  *
- * Reemplaza al perfil de MARKARU, que leía producer_profiles /
+ * Reemplaza al perfil de Apurape, que leía producer_profiles /
  * exporter_profiles / forwarder_profiles / products / exporter_products
  * y mostraba certificaciones agro, hectáreas, incoterms y meses de
  * cosecha. Ahora todo vive en dos tablas: provider_services (lo que
