@@ -216,7 +216,7 @@
       ],
       "sectionBodies": [
         "By accessing or using the Apurape platform, you agree to be bound by these Terms of Use. If you do not agree with any part, you must not use the service. [PENDING — replace with final text]",
-        "Apurape is a B2B agro-export platform connecting agricultural producers, exporters, freight forwarders and international buyers in Latin America. [PENDING — replace with final text]",
+        "Apurape is a marketplace connecting service providers with clients in Peru. Apurape does not provide the services offered and is not a party to the agreement between provider and client: it makes available the platform where both meet, agree and rate each other. [PENDING — replace with final text]",
         "To use certain features you must create an account. You are responsible for maintaining the confidentiality of your credentials and for all activity that occurs under your account. [PENDING — replace with final text]",
         "You agree to use Apurape only for lawful purposes and in accordance with these terms. Using the platform for fraudulent activities, spam or any illegal activity is prohibited. [PENDING — replace with final text]",
         "All content on the platform, including texts, graphics, logos and software, is the property of Apurape or its licensors and is protected by applicable intellectual property laws. [PENDING — replace with final text]",
@@ -1027,7 +1027,7 @@
     "intro": "A place to find someone who can sort something out for you, and where good work gets noticed.",
     "meaning": {
       "title": "What Apurape means",
-      "body": "[PENDING — the real origin of the name is missing. Write here where 'Apurape' comes from and why it was chosen.] In the meantime, what does define the platform is its slogan: you help me, I help you. A network where everyone is, at some point, both."
+      "body": "“Apurape” comes from an expression any Peruvian recognises instantly: “apúrate, pe” — that mix of urgency and closeness we use with each other every day. We chose that name because that's how real life works: someone needs something right now, and on the other side there's a person ready to sort it out. We didn't invent a fancy word — we used the one we all already use, because this platform is for everyone."
     },
     "mission": {
       "title": "Our mission",
@@ -1039,8 +1039,8 @@
     },
     "story": {
       "title": "Our story",
-      "p1": "[PENDING — the real story behind Apurape is missing. This text is a placeholder: replace it with how and why the project started.]",
-      "p2": "[PENDING — second paragraph of the story.]"
+      "p1": "Apurape started from a simple question: why is it so hard to find someone you trust for an everyday problem —a repair at home, a private lesson, a service for your business— when deep down we all know someone who does it well, they're just invisible? Thousands of people in Peru have a real skill, a trade, a talent that could become their living, but they have nowhere to show it and no way to reach whoever needs them.",
+      "p2": "That's why we built Apurape: a place where that skill finally has somewhere to shine. It's not just a list of contacts — it's a community where every job well done adds up, every good rating opens more doors, and those who put in the most effort get a real chance to gain something from it. Because we believe getting ahead shouldn't depend on who you know, but on how well you do what you know how to do. You help me, I help you — that's the whole idea, and with every person who joins, it becomes more real."
     },
     "vision": {
       "title": "Our vision",

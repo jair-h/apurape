@@ -216,7 +216,7 @@
       ],
       "sectionBodies": [
         "Al acceder o usar la plataforma Apurape, aceptas quedar vinculado por estos Términos de uso. Si no estás de acuerdo con alguna parte, no debes usar el servicio. [PENDIENTE — reemplazar con texto final]",
-        "Apurape es una plataforma B2B de agroexportación que conecta productores agrícolas, exportadores, freight forwarders y compradores internacionales de América Latina. [PENDIENTE — reemplazar con texto final]",
+        "Apurape es un marketplace que conecta a proveedores de servicios con clientes en el Perú. Apurape no presta los servicios ofrecidos ni es parte del acuerdo entre proveedor y cliente: pone a disposición la plataforma donde ambos se encuentran, acuerdan y se califican. [PENDIENTE — reemplazar con texto final]",
         "Para usar ciertas funciones debes crear una cuenta. Eres responsable de mantener la confidencialidad de tus credenciales y de toda la actividad que ocurra bajo tu cuenta. [PENDIENTE — reemplazar con texto final]",
         "Te comprometes a usar Apurape únicamente para fines lícitos y de acuerdo con estos términos. Está prohibido usar la plataforma para actividades fraudulentas, spam o cualquier actividad ilegal. [PENDIENTE — reemplazar con texto final]",
         "Todo el contenido de la plataforma, incluyendo textos, gráficos, logotipos y software, es propiedad de Apurape o sus licenciantes y está protegido por las leyes de propiedad intelectual aplicables. [PENDIENTE — reemplazar con texto final]",
@@ -1027,7 +1027,7 @@
     "intro": "Un lugar donde encontrar a quien te resuelva algo, y donde el trabajo bien hecho se nota.",
     "meaning": {
       "title": "Qué significa Apurape",
-      "body": "[PENDIENTE — falta el origen real del nombre. Escribir aquí de dónde viene 'Apurape' y por qué se eligió.] Mientras tanto, lo que sí define a la plataforma es su slogan: tú me ayudas, yo te ayudo. Una red donde todos son, en algún momento, las dos cosas."
+      "body": "“Apurape” nace de una expresión que cualquier peruano reconoce al instante: “apúrate, pe” — esa mezcla de urgencia y cercanía con la que nos hablamos todos los días. Elegimos ese nombre porque así es como funciona la vida real: alguien necesita algo ya, y del otro lado hay una persona lista para resolverlo. No inventamos una palabra rebuscada — usamos la que ya usamos todos, porque esta plataforma es para todos."
     },
     "mission": {
       "title": "Nuestra misión",
@@ -1039,8 +1039,8 @@
     },
     "story": {
       "title": "Nuestra historia",
-      "p1": "[PENDIENTE — falta la historia real detrás de Apurape. Este texto es un marcador de posición: reemplázalo por cómo y por qué nació el proyecto.]",
-      "p2": "[PENDIENTE — segundo párrafo de la historia.]"
+      "p1": "Apurape nació de una pregunta simple: ¿por qué es tan difícil encontrar a alguien de confianza para resolver algo cotidiano —un arreglo en casa, una clase particular, un servicio para un negocio— cuando en el fondo todos conocemos a alguien que sabe hacerlo bien, solo que nadie lo ve? Miles de personas en Perú tienen una habilidad real, un oficio, un talento que podría convertirse en su sustento, pero no tienen dónde mostrarlo ni cómo llegar a quien los necesita.",
+      "p2": "Por eso construimos Apurape: un espacio donde esa habilidad por fin tiene un lugar para brillar. No es solo un directorio de contactos — es una comunidad donde cada trabajo bien hecho suma, cada buena calificación abre más puertas, y quienes más se esfuerzan tienen la oportunidad real de ganar algo por ello. Porque creemos que salir adelante no debería depender de a quién conoces, sino de qué tan bien haces lo que sabes hacer. Tú me ayudas, yo te ayudo — esa es la idea completa, y con cada persona que se une, se vuelve más real."
     },
     "vision": {
       "title": "Nuestra visión",
