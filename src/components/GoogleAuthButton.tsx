@@ -6,17 +6,23 @@ import { createClient } from "@/lib/supabase";
 import { useTranslation } from "@/lib/i18n";
 
 /**
- * ─── NOTA: Google OAuth en MODO DE PRUEBA ────────────────────────────────
- * La app de Google Cloud Console está en estado "Testing", por lo que por
- * ahora SOLO los correos agregados como "testers" en la OAuth consent screen
- * pueden iniciar sesión con Google.
+ * ─── Google OAuth: DESACTIVADO ───────────────────────────────────────────
+ * Apurape todavía no tiene credenciales de Google OAuth propias (las que
+ * había eran del proyecto MARKARU). Mientras no existan, el botón no se
+ * muestra: pulsarlo llevaría a una pantalla de error de Google.
  *
- * Cuando se publique la app (Google Cloud Console → OAuth consent screen →
- * botón "Publish app" / cambiar de "Testing" a "In production"), CUALQUIER
- * usuario podrá usar este botón sin necesidad de ser agregado como tester.
- * No requiere cambios de código: solo publicar la app en Google.
+ * Para reactivarlo, cuando el proveedor esté configurado:
+ *   1. Google Cloud Console → crear credenciales OAuth para este proyecto.
+ *   2. Supabase → Authentication → Providers → Google → pegar client id y
+ *      secret, y añadir la URL de callback del sitio.
+ *   3. Poner GOOGLE_AUTH_ENABLED en true, aquí abajo. Nada más.
+ *
+ * Ojo con el estado de la app en Google: si queda en "Testing", solo los
+ * correos añadidos como testers podrán entrar. Para abrirlo a todos hay que
+ * publicarla (OAuth consent screen → Publish app).
  * ─────────────────────────────────────────────────────────────────────────
  */
+const GOOGLE_AUTH_ENABLED = false;
 
 function GoogleIcon() {
   return (
@@ -43,6 +49,9 @@ export default function GoogleAuthButton({ context }: { context: "login" | "regi
     // On success the browser navigates to Google; only reset on error.
     if (error) setLoading(false);
   };
+
+  // El return va después de los hooks para no romper el orden de llamada.
+  if (!GOOGLE_AUTH_ENABLED) return null;
 
   return (
     <div>
