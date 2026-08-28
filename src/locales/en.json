@@ -54,7 +54,7 @@
     "faq4q": "Can I try before paying?",
     "faq4a": "Yes. As a provider your first month is free, and when you subscribe we add another month. If you don't continue, your account stays on the Basic plan with limited quotes.",
     "faq5q": "What's the difference between Individual and Business?",
-    "faq5a": "Only the price and the raffle: S/120 a year for an individual, S/330 for a business. Monthly raffles are split between the two so you compete with your peers.",
+    "faq5a": "Only the price and the contest: S/120 a year for an individual, S/330 for a business. Monthly contests are split between the two so you compete with your peers.",
     "ctaTitle": "Ready to get more clients?",
     "ctaSubtitle": "Join the first providers on Apurape. Start free today.",
     "ctaButton": "Create free account"
@@ -316,8 +316,8 @@
     "myJobs": "My jobs",
     "myHires": "My hires",
     "findServices": "Find services",
-    "raffle": "Monthly raffle",
-    "raffles": "Raffles",
+    "raffle": "Monthly contest",
+    "raffles": "Contests",
     "myPoints": "My points"
   },
 
@@ -489,13 +489,13 @@
       "body": "On Apurape you don't compete on price against strangers. Every service a client confirms stays on your profile, and only the client's confirmation counts. That makes reputation hard to fake and easy to trust.",
       "point1": "0% commission: you keep everything you agree",
       "point2": "Only the client confirms the job, nobody else",
-      "point3": "Monthly raffle among the best-rated providers",
+      "point3": "Monthly contest among the best-rated providers",
       "cta": "Start offering your services"
     },
     "export": {
       "badge": "What makes us different",
-      "title": "The monthly raffle: doing good work pays off",
-      "body": "Every month we run a raffle among providers with confirmed sales and at least three five-star ratings, split by category and account type. The winner comes out of an automatic ranking, not a vote and not a favour.",
+      "title": "The monthly contest: doing good work pays off",
+      "body": "Every month we reward the providers with confirmed sales and at least three five-star ratings, split by category and account type. The winner comes out of an automatic ranking, not a vote and not a favour.",
       "point1": "You enter with your confirmed sales for the month",
       "point2": "At least 3 five-star ratings",
       "point3": "Split by category: you compete with your peers",
@@ -634,7 +634,7 @@
           "Receive quotes and compare",
           "Direct chat with providers",
           "Earn points for confirming and rating",
-          "Your own monthly client raffle"
+          "Your own monthly client contest"
         ]
       }
     },

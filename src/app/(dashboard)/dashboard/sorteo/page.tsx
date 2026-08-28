@@ -1,6 +1,6 @@
 "use client";
 
-/* Sorteo mensual del Proveedor: si califica, en qué posición va y qué le
+/* Concurso mensual del Proveedor: si califica, en qué posición va y qué le
  * falta. La regla vive en la base (provider_monthly_stats.qualifies), esta
  * pantalla solo la explica. */
 
@@ -83,7 +83,7 @@ export default function SorteoPage() {
     <div className="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6">
       <div className="max-w-3xl">
         <div className="mb-5">
-          <h1 className="text-2xl font-extrabold text-gray-900">Sorteo del mes</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">Concurso del mes</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">
             Ventas confirmadas por el cliente + al menos {minFive} calificaciones de 5 estrellas
             en el mes, dentro de tu categoría.
@@ -94,10 +94,10 @@ export default function SorteoPage() {
           <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-5">
             <Lock className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm font-bold text-amber-900">El sorteo es para el plan Pro</p>
+              <p className="text-sm font-bold text-amber-900">El concurso es para el plan Pro</p>
               <p className="text-xs text-amber-800 mt-1 leading-relaxed">
                 Puedes ir acumulando ventas y calificaciones desde ahora, pero para
-                entrar al sorteo necesitas el plan Pro.
+                entrar al concurso necesitas el plan Pro.
               </p>
               <Link href="/dashboard/plan"
                 className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#D92D20] hover:underline">
@@ -165,11 +165,11 @@ export default function SorteoPage() {
           </div>
         )}
 
-        <h2 className="text-sm font-bold text-gray-900 mb-3">Sorteos abiertos de tu tipo de cuenta</h2>
+        <h2 className="text-sm font-bold text-gray-900 mb-3">Concursos abiertos de tu tipo de cuenta</h2>
 
         {misRaffles.length === 0 ? (
           <p className="text-xs text-[#6B7280] bg-white rounded-2xl border border-gray-200 p-5">
-            No hay sorteos abiertos ahora mismo.
+            No hay concursos abiertos ahora mismo.
           </p>
         ) : (
           <div className="space-y-2">

@@ -54,7 +54,7 @@
     "faq4q": "¿Puedo probar antes de pagar?",
     "faq4a": "Sí. Como proveedor tienes el primer mes gratis, y al suscribirte te regalamos un mes más. Si no continúas, tu cuenta queda en el plan Básico con cotizaciones limitadas.",
     "faq5q": "¿Qué diferencia hay entre Persona y Negocio?",
-    "faq5a": "Solo el precio y el sorteo: S/120 al año si eres una persona, S/330 si eres un negocio. Los sorteos mensuales se separan entre ambos para que compitas con los tuyos.",
+    "faq5a": "Solo el precio y el concurso: S/120 al año si eres una persona, S/330 si eres un negocio. Los concursos mensuales se separan entre ambos para que compitas con los tuyos.",
     "ctaTitle": "¿Listo para conseguir más clientes?",
     "ctaSubtitle": "Súmate a los primeros proveedores de Apurape. Empieza gratis hoy.",
     "ctaButton": "Crear cuenta gratis"
@@ -316,8 +316,8 @@
     "myJobs": "Mis trabajos",
     "myHires": "Mis contrataciones",
     "findServices": "Buscar servicios",
-    "raffle": "Sorteo del mes",
-    "raffles": "Sorteos",
+    "raffle": "Concurso del mes",
+    "raffles": "Concursos",
     "myPoints": "Mis puntos"
   },
 
@@ -489,13 +489,13 @@
       "body": "En Apurape no compites por precio contra desconocidos. Cada servicio que un cliente confirma queda en tu perfil, y solo la confirmación del cliente cuenta. Eso vuelve la reputación difícil de inflar y fácil de creer.",
       "point1": "0% de comisión: cobras todo lo que acuerdas",
       "point2": "Solo el cliente confirma el trabajo, nadie más",
-      "point3": "Sorteo mensual entre los proveedores mejor calificados",
+      "point3": "Concurso mensual entre los proveedores mejor calificados",
       "cta": "Empieza a ofrecer tus servicios"
     },
     "export": {
       "badge": "Nuestro diferencial",
-      "title": "El sorteo mensual: trabajar bien tiene premio",
-      "body": "Cada mes sorteamos entre los proveedores con ventas confirmadas y al menos tres calificaciones de cinco estrellas, separado por categoría y por tipo de cuenta. El ganador sale por ranking automático, no por votación ni por dedo.",
+      "title": "El concurso mensual: trabajar bien tiene premio",
+      "body": "Cada mes premiamos a los proveedores con ventas confirmadas y al menos tres calificaciones de cinco estrellas, separado por categoría y por tipo de cuenta. El ganador sale por ranking automático, no por votación ni por dedo.",
       "point1": "Entras con tus ventas confirmadas del mes",
       "point2": "Mínimo 3 calificaciones de 5 estrellas",
       "point3": "Separado por categoría: compites con los tuyos",
@@ -634,7 +634,7 @@
           "Recibe cotizaciones y compara",
           "Chat directo con proveedores",
           "Gana puntos por confirmar y calificar",
-          "Sorteo mensual propio para clientes"
+          "Concurso mensual propio para clientes"
         ]
       }
     },

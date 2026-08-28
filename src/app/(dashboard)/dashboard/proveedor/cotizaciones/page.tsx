@@ -93,7 +93,7 @@ export default function ProveedorCotizacionesPage() {
               {left === 0 ? "Te quedaste sin cotizaciones este mes" : `Te quedan ${left}`}
             </p>
             <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-              Con el plan Pro son ilimitadas y entras al sorteo mensual de tu categoría.
+              Con el plan Pro son ilimitadas y entras al concurso mensual de tu categoría.
             </p>
             <Link href="/dashboard/plan"
               className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#D92D20] hover:underline">

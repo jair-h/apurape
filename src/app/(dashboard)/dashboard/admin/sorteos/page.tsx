@@ -1,6 +1,6 @@
 "use client";
 
-/* Gestión de sorteos. El cálculo y el cierre viven en la base
+/* Gestión de concursos. El cálculo y el cierre viven en la base
  * (compute_raffle_entries / close_raffle); esta pantalla solo los dispara
  * y muestra el ranking resultante. */
 
@@ -85,7 +85,7 @@ export default function AdminSorteosPage() {
   };
 
   const close = async (r: RaffleRow) => {
-    if (!confirm("Cerrar el sorteo marca al ganador por ranking y no se puede deshacer. ¿Continuar?")) return;
+    if (!confirm("Cerrar el concurso marca al ganador por ranking y no se puede deshacer. ¿Continuar?")) return;
     setWorking(r.id);
     const { error } = await supabase.rpc("close_raffle", { p_raffle_id: r.id });
     if (error) alert(`No se pudo cerrar:\n${error.message}`);
@@ -100,7 +100,7 @@ export default function AdminSorteosPage() {
   return (
     <div className="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6">
       <div className="mb-5">
-        <h1 className="text-2xl font-extrabold text-gray-900">Sorteos</h1>
+        <h1 className="text-2xl font-extrabold text-gray-900">Concursos</h1>
         <p className="text-sm text-[#6B7280] mt-0.5">
           Recalcular vuelve a construir los conteos del mes desde los trabajos y
           las calificaciones, y marca los pares recíprocos antes de rankear.
@@ -110,7 +110,7 @@ export default function AdminSorteosPage() {
       {raffles.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 py-16 text-center">
           <Trophy className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm font-bold text-gray-900">No hay sorteos creados</p>
+          <p className="text-sm font-bold text-gray-900">No hay concursos creados</p>
           <p className="text-xs text-[#6B7280] mt-1 max-w-sm mx-auto leading-relaxed">
             Se crean con open_monthly_raffles() al inicio de cada mes.
           </p>
@@ -197,7 +197,7 @@ export default function AdminSorteosPage() {
       <p className="text-[10px] text-gray-400 mt-4 leading-relaxed max-w-2xl">
         <Play className="h-3 w-3 inline" /> Al cerrar, close_raffle() recalcula, marca los
         pares recíprocos del periodo y asigna el ganador al puesto #1. Si no hay
-        participantes, el sorteo queda anulado.
+        participantes, el concurso queda anulado.
       </p>
     </div>
   );

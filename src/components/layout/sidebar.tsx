@@ -135,7 +135,7 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
 
   // Badge de trabajos: para el Cliente son los servicios que el
   // Proveedor marcó como completados y esperan su confirmación —
-  // el paso que sostiene todo el ranking del sorteo, así que tiene
+  // el paso que sostiene todo el ranking del concurso, así que tiene
   // que verse. Para el Proveedor, los que aún están agendados.
   useEffect(() => {
     if (!userId || !role) return;

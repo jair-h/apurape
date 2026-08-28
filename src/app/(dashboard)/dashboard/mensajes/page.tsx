@@ -328,7 +328,7 @@ function JobCard({
           {isProvider && job.status === "pendiente_confirmar" && (
             <p className="text-[11px] text-[#6B7280] text-center leading-relaxed">
               Esperando que el cliente confirme. Solo su confirmación cuenta
-              para tu reputación y para el sorteo.
+              para tu reputación y para el concurso.
             </p>
           )}
 
@@ -397,7 +397,7 @@ function QuoteModal({
             <p className="text-sm font-bold text-[#B42318]">Llegaste al límite del plan Básico</p>
             <p className="text-xs text-[#6B7280] leading-relaxed">
               Ya usaste todas tus cotizaciones de este mes. Con el plan Pro son
-              ilimitadas y además entras al sorteo mensual de tu categoría.
+              ilimitadas y además entras al concurso mensual de tu categoría.
             </p>
             <Link href="/dashboard/plan"
               className="inline-block px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors">

@@ -2,7 +2,7 @@
 
 /* Puntos y nivel del Cliente. Contratar en Apurape no cuesta nada; lo que
  * el Cliente gana es esto: puntos por confirmar y calificar, y entradas a
- * su propio sorteo mensual. */
+ * su propio concurso mensual. */
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -18,7 +18,7 @@ const REASON_LABEL: Record<string, string> = {
   calificacion_recibida: "Te calificaron",
   bono:                  "Bono",
   ajuste_admin:          "Ajuste del equipo",
-  premio:                "Premio de sorteo",
+  premio:                "Premio de concurso",
 };
 
 const LEVELS = [
@@ -119,9 +119,9 @@ export default function ClientePuntosPage() {
         <div className="flex items-start gap-3 bg-teal-50 border border-teal-200 rounded-2xl p-4 mb-5">
           <Star className="h-5 w-5 text-[#0E9384] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-bold text-[#0E9384]">Sorteo mensual de clientes</p>
+            <p className="text-sm font-bold text-[#0E9384]">Concurso mensual de clientes</p>
             <p className="text-xs text-teal-800 mt-1 leading-relaxed">
-              Cada servicio que confirmas en el mes te da una entrada al sorteo de
+              Cada servicio que confirmas en el mes te da una entrada al concurso de
               clientes, separado por tipo de cuenta. No cuesta nada participar.
             </p>
           </div>

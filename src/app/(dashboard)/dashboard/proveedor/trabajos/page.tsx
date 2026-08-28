@@ -5,7 +5,7 @@
  *
  * Aquí marca "servicio completado", pero eso NO cierra nada: el trabajo
  * queda esperando a que el Cliente confirme. Solo su confirmación suma
- * a la reputación y al sorteo. */
+ * a la reputación y al concurso. */
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
