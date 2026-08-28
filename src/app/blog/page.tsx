@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Blog · Centro de Conocimiento Agroexportador · Apurape",
-  description: "Guías y novedades sobre agroexportación, logística, mercados internacionales, certificaciones y oportunidades de negocio en LATAM.",
+  title: "Blog · Centro de Recursos para Proveedores · Apurape",
+  description: "Guías prácticas para proveedores de servicios en Perú: cómo conseguir más clientes, cuánto cobrar por tu trabajo y cómo construir una reputación que hable por ti.",
 };
 
 export default async function BlogPage() {

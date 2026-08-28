@@ -3,53 +3,46 @@
 export interface Faq { question: string; answer: string; }
 
 export const CAT_LABEL: Record<string, string> = {
-  productos: "Productos", logistica: "Logística", mercados: "Mercados",
-  exportacion: "Exportación", certificaciones: "Certificaciones",
-  financiamiento: "Financiamiento", normativa: "Normativa", tecnologia: "Tecnología & IA",
+  guias: "Guías para Proveedores", crecer: "Cómo Crecer tu Negocio",
+  historias: "Historias de Éxito", atencion: "Atención al Cliente",
+  precios: "Precios y Cotización", apurape: "Novedades de Apurape",
 };
 
 /* ─── Reusable CTAs ───────────────────────────────────────── */
-export type CtaKey = "productores" | "exportadores" | "logistica" | "compradores" | "general";
+export type CtaKey = "proveedores" | "clientes" | "concurso" | "general";
 
 export const CTA_PRESETS: Record<CtaKey, { label: string; title: string; description: string; button: string; link: string }> = {
-  productores: {
-    label: "Productores",
-    title: "¿Eres productor agrícola?",
-    description: "Crea tu perfil y empieza a recibir oportunidades comerciales.",
-    button: "Crear perfil de productor",
-    link: "/register",
+  proveedores: {
+    label: "Proveedores",
+    title: "¿Ofreces un servicio?",
+    description: "Publica tus servicios y empieza a recibir clientes de tu distrito. 0% de comisión.",
+    button: "Crear perfil de proveedor",
+    link: "/register?rol=proveedor",
   },
-  exportadores: {
-    label: "Exportadores",
-    title: "¿Eres exportador?",
-    description: "Encuentra proveedores verificados y solicita cotizaciones.",
-    button: "Buscar proveedores",
-    link: "/register",
+  clientes: {
+    label: "Clientes",
+    title: "¿Necesitas que te resuelvan algo?",
+    description: "Cuenta qué necesitas y recibe cotizaciones sin costo. Contratar en Apurape es gratis.",
+    button: "Publicar una solicitud",
+    link: "/register?rol=cliente",
   },
-  logistica: {
-    label: "Logística / Forwarder",
-    title: "¿Ofreces servicios logísticos?",
-    description: "Recibe RFQs reales y conecta con empresas que necesitan transporte.",
-    button: "Recibir RFQs",
-    link: "/register",
-  },
-  compradores: {
-    label: "Compradores",
-    title: "¿Buscas proveedores en LATAM?",
-    description: "Publica una solicitud y compara ofertas de productores y exportadores.",
-    button: "Publicar solicitud",
-    link: "/register",
+  concurso: {
+    label: "Concurso mensual",
+    title: "Trabajar bien tiene premio",
+    description: "Cada mes premiamos a los proveedores con más servicios confirmados y mejores calificaciones.",
+    button: "Ver las bases del concurso",
+    link: "/concurso",
   },
   general: {
     label: "General",
     title: "Únete a Apurape",
-    description: "Únete a Markaru y conecta con el ecosistema agroexportador.",
+    description: "Tú me ayudas, yo te ayudo. Crea tu cuenta gratis y empieza hoy.",
     button: "Crear cuenta gratis",
     link: "/register",
   },
 };
 
-export const CTA_ORDER: CtaKey[] = ["productores", "exportadores", "logistica", "compradores", "general"];
+export const CTA_ORDER: CtaKey[] = ["proveedores", "clientes", "concurso", "general"];
 
 /* ─── Related tools ───────────────────────────────────────── */
 export interface BlogTool { key: string; label: string; href: string; icon: string; }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   BookOpen, Calendar, Tag, Loader2, Search, ArrowRight,
   Mail, Check, User, AlertCircle,
+  TrendingUp, Trophy, Heart, Megaphone,
 } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
 import { useTranslation } from "@/lib/i18n";
@@ -20,16 +21,18 @@ export interface Post {
   published_at: string;
 }
 
-/* ─── Category taxonomy (shared with admin) ───────────────── */
+/* ─── Category taxonomy (shared with admin) ─────────────────
+ * Cada categoría lleva icono en vez de foto: las anteriores eran fotos de
+ * Unsplash de campo y contenedores, y sustituirlas por otras fotos
+ * externas solo cambiaría el tema del problema. Con icono no dependemos
+ * de nada de fuera y el bloque nunca se ve roto. */
 const BLOG_CATEGORIES = [
-  { slug: "productos",       label: "Productos",       img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400" },
-  { slug: "logistica",       label: "Logística",       img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400" },
-  { slug: "mercados",        label: "Mercados",        img: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400" },
-  { slug: "exportacion",     label: "Exportación",     img: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400" },
-  { slug: "certificaciones", label: "Certificaciones", img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400" },
-  { slug: "financiamiento",  label: "Financiamiento",  img: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400" },
-  { slug: "normativa",       label: "Normativa",       img: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400" },
-  { slug: "tecnologia",      label: "Tecnología & IA", img: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400" },
+  { slug: "guias",     label: "Guías para Proveedores", icon: BookOpen },
+  { slug: "crecer",    label: "Cómo Crecer tu Negocio", icon: TrendingUp },
+  { slug: "historias", label: "Historias de Éxito",     icon: Trophy },
+  { slug: "atencion",  label: "Atención al Cliente",    icon: Heart },
+  { slug: "precios",   label: "Precios y Cotización",   icon: Tag },
+  { slug: "apurape",   label: "Novedades de Apurape",   icon: Megaphone },
 ];
 
 const CAT_LABEL: Record<string, string> = Object.fromEntries(
@@ -147,7 +150,7 @@ function Newsletter() {
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">No te pierdas ningún artículo</h2>
         <p className="text-white/80 mb-8">
-          Recibe las últimas guías y novedades sobre agroexportación directamente en tu correo.
+          Recibe las últimas guías y novedades de Apurape directamente en tu correo.
         </p>
         {state === "done" ? (
           <div className="inline-flex items-center gap-2 bg-white/15 text-white px-5 py-3 rounded-xl text-sm font-semibold">
@@ -205,13 +208,13 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
         <section className="bg-[#B42318] py-16 sm:py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span className="inline-flex items-center gap-2 bg-[#FEF3F2] text-[#B42318] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
-              <BookOpen className="h-3.5 w-3.5" /> Centro de Conocimiento Agroexportador
+              <BookOpen className="h-3.5 w-3.5" /> Centro de Recursos para Proveedores
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 leading-tight">
-              Centro de Conocimiento Agroexportador
+              Centro de Recursos para Proveedores
             </h1>
             <p className="text-base sm:text-lg text-white/80 mb-8">
-              Aprende sobre agroexportación, logística, mercados internacionales, certificaciones y oportunidades de negocio en un solo lugar.
+              Guías prácticas para conseguir más clientes, cobrar lo justo por tu trabajo y construir una reputación que hable por ti.
             </p>
             <form onSubmit={(e) => e.preventDefault()} className="flex gap-2 max-w-xl mx-auto">
               <div className="relative flex-1">
@@ -258,7 +261,7 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
               </div>
               <h2 className="text-2xl font-extrabold text-[#B42318] mb-3">Próximamente</h2>
               <p className="text-gray-500 mb-7 leading-relaxed">
-                Estamos preparando contenido sobre agroexportación, mercados internacionales y guías para exportadores de LATAM.
+                Estamos preparando guías para proveedores: cómo cotizar, cómo tratar con un cliente difícil y cómo hacer crecer tu negocio.
               </p>
               <Link href="/servicios"
                 className="inline-flex items-center gap-2 bg-[#D92D20] text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#B42318] transition-colors shadow-sm">
@@ -311,14 +314,14 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
                     Ver todas las categorías <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                   {BLOG_CATEGORIES.map((c) => (
                     <button key={c.slug} type="button" onClick={() => setCat(c.slug)}
-                      className="group relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm">
-                      <img src={c.img} alt={c.label} loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      <div className="absolute inset-0 bg-[#B42318]/70 group-hover:bg-[#B42318]/60 transition-colors" />
-                      <span className="absolute inset-0 flex items-center justify-center text-white font-extrabold text-sm sm:text-base text-center px-2">
+                      className="group flex flex-col items-center justify-center gap-3 aspect-[4/3] rounded-2xl border border-gray-200 bg-white hover:border-[#D92D20] hover:shadow-lg transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-[#FEF3F2] flex items-center justify-center group-hover:bg-[#D92D20] transition-colors">
+                        <c.icon className="h-6 w-6 text-[#D92D20] group-hover:text-white transition-colors" />
+                      </div>
+                      <span className="font-extrabold text-sm text-gray-900 text-center px-3">
                         {c.label}
                       </span>
                     </button>
@@ -347,7 +350,7 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
               ¿Listo para llevar tu negocio al siguiente nivel?
             </h2>
             <p className="text-white/90 mb-8">
-              Únete a la red de productores, exportadores y empresas agroexportadoras de LATAM.
+              Únete a la red de proveedores de servicios de Apurape.
             </p>
             <Link href="/register"
               className="inline-flex items-center gap-2 bg-white text-[#B42318] px-8 py-4 rounded-xl text-base font-extrabold hover:bg-gray-100 transition-colors shadow-xl">

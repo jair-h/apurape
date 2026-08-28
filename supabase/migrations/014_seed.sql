@@ -11,9 +11,10 @@ insert into public.config (key, value) values
   ('bonus_free_months',        '1'),       -- mes gratis extra al pagar
   ('trial_days',               '30'),      -- primer mes gratis
 
-  -- Límite del plan Básico: cotizaciones por mes. El Cliente
-  -- publica solicitudes sin límite.
-  ('quotes_free_per_month',    '5'),
+  -- Límite permanente del plan Básico: cotizaciones por mes calendario.
+  -- No es un periodo de prueba, no vence. El Cliente publica solicitudes
+  -- sin límite. (Bajado de 5 a 3 en 018_quote_limit_3.sql.)
+  ('quotes_free_per_month',    '3'),
 
   -- Sorteo
   ('raffle_min_five_stars',    '3'),       -- documenta la regla del generated column

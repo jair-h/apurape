@@ -25,6 +25,8 @@ type Plan = {
   annualUsd?: number;
   trial?: string;
   isFree?: boolean;
+  /** Equivalente diario bajo el precio grande. Solo en los planes Pro. */
+  dailyNoteKey?: string;
 };
 
 type Tab = {
@@ -57,6 +59,7 @@ const TABS: Tab[] = [
         price: "S/ 120",
         periodKey: "plans.proveedor.pro.period",
         descKey: "plans.proveedor.proPersona.description",
+        dailyNoteKey: "plans.proveedor.proPersona.daily",
         featured: true,
         href: "/register?rol=proveedor&plan=pro&tipo=persona",
         featuresKey: "plans.proveedor.pro.features",
@@ -67,6 +70,7 @@ const TABS: Tab[] = [
         price: "S/ 330",
         periodKey: "plans.proveedor.pro.period",
         descKey: "plans.proveedor.proNegocio.description",
+        dailyNoteKey: "plans.proveedor.proNegocio.daily",
         featured: false,
         href: "/register?rol=proveedor&plan=pro&tipo=negocio",
         featuresKey: "plans.proveedor.proNegocio.features",
@@ -136,6 +140,11 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
         <span className={`text-sm ml-1 ${plan.featured ? "text-red-200" : "text-gray-400"}`}>
           {t(plan.periodKey)}
         </span>
+        {plan.dailyNoteKey && (
+          <p className={`mt-1 text-xs font-semibold ${plan.featured ? "text-white" : "text-[#D92D20]"}`}>
+            {t(plan.dailyNoteKey)}
+          </p>
+        )}
         {localDailyText && (
           <p className={`mt-1 text-xs font-semibold ${plan.featured ? "text-white" : "text-[#D92D20]"}`}>
             {t("plans.approxPerDay", { amount: localDailyText })}

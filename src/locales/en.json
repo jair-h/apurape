@@ -591,7 +591,7 @@
         "features": [
           "Public profile with your services",
           "Direct chat with clients",
-          "Limited quotes per month",
+          "3 quotes per month, always",
           "Ratings and reputation",
           "0% commission on your sales"
         ]
@@ -610,11 +610,13 @@
       },
       "proPersona": {
         "name": "Pro Individual",
-        "description": "For people working on their own. First month free + one extra month when you subscribe."
+        "description": "For people working on their own. First month free + one extra month when you subscribe.",
+        "daily": "That's less than S/0.33 a day"
       },
       "proNegocio": {
         "name": "Pro Business",
         "description": "For registered businesses. First month free + one extra month when you subscribe.",
+        "daily": "That's less than S/1 a day",
         "features": [
           "Unlimited quotes",
           "Monthly contest in the Business category",
@@ -944,9 +946,9 @@
   },
 
   "blog": {
-    "comingSoon": "Coming soon: guides and news for providers and clients",
+    "comingSoon": "Coming soon: guides and resources for providers",
     "soonTitle": "The blog is on its way",
-    "soonSubtitle": "Soon you will find articles, guides and news about services in Peru.",
+    "soonSubtitle": "Soon you'll find guides on getting more clients, quoting better and growing your business.",
     "backToHome": "Back to home"
   },
 

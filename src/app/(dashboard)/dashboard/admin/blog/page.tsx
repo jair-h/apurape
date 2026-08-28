@@ -47,51 +47,40 @@ const EMPTY_POST: Omit<BlogPost, "id" | "created_at" | "updated_at"> = {
   published_at: null,
 };
 
-const CATEGORIES = ["productos", "logistica", "mercados", "exportacion", "certificaciones", "financiamiento", "normativa", "tecnologia"];
+const CATEGORIES = ["guias", "crecer", "historias", "atencion", "precios", "apurape"];
 const CAT_LABELS: Record<string, string> = {
-  productos: "Productos", logistica: "Logística", mercados: "Mercados",
-  exportacion: "Exportación", certificaciones: "Certificaciones",
-  financiamiento: "Financiamiento", normativa: "Normativa", tecnologia: "Tecnología & IA",
+  guias: "Guías para Proveedores", crecer: "Cómo Crecer tu Negocio",
+  historias: "Historias de Éxito", atencion: "Atención al Cliente",
+  precios: "Precios y Cotización", apurape: "Novedades de Apurape",
 };
 
 /* ─── Article templates (H2 outlines) ─────────────────────── */
 const TEMPLATES: { key: string; label: string; category: string; headings: string[] }[] = [
-  { key: "producto", label: "Producto", category: "productos", headings: [
-    "Introducción", "¿Por qué exportar este producto?", "Principales mercados internacionales",
-    "Requisitos para exportar", "Certificaciones recomendadas", "Logística y transporte",
-    "Precio FOB y costos", "Cómo encontrar compradores", "Errores comunes", "Preguntas frecuentes", "Conclusión",
+  { key: "guia", label: "Guía práctica", category: "guias", headings: [
+    "Introducción", "¿Para quién es esta guía?", "Qué necesitas antes de empezar",
+    "Paso a paso", "Ejemplo real", "Errores comunes", "Preguntas frecuentes", "Conclusión",
   ] },
-  { key: "logistica", label: "Logística", category: "logistica", headings: [
-    "Introducción", "¿Qué significa este concepto?", "¿Por qué es importante en comercio internacional?",
-    "Cómo funciona paso a paso", "Ejemplo práctico", "Errores comunes", "Preguntas frecuentes", "Conclusión",
-  ] },
-  { key: "exportacion", label: "Exportación", category: "exportacion", headings: [
-    "Introducción", "¿Qué es y por qué importa?", "Marco general del proceso de exportación",
-    "Documentación necesaria", "Incoterms y responsabilidades", "Logística y transporte internacional",
-    "Costos y formas de pago", "Errores comunes", "Preguntas frecuentes", "Conclusión",
-  ] },
-  { key: "certificacion", label: "Certificación", category: "certificaciones", headings: [
-    "Introducción", "¿Qué es esta certificación?", "¿Por qué es importante para exportar?",
-    "Requisitos y alcance", "Proceso de certificación paso a paso", "Costos y tiempos estimados",
+  { key: "crecer", label: "Crecer el negocio", category: "crecer", headings: [
+    "Introducción", "El problema que frena a la mayoría", "Qué hacer distinto",
+    "Cómo aplicarlo esta semana", "Cómo medir si está funcionando",
     "Errores comunes", "Preguntas frecuentes", "Conclusión",
   ] },
-  { key: "mercado", label: "Mercado", category: "mercados", headings: [
-    "Introducción", "Panorama general del mercado", "Demanda y tendencias de consumo",
-    "Requisitos de acceso y aranceles", "Competencia y precios de referencia",
-    "Oportunidades para exportadores de LATAM", "Riesgos y consideraciones", "Preguntas frecuentes", "Conclusión",
+  { key: "historia", label: "Historia de éxito", category: "historias", headings: [
+    "Quién es y a qué se dedica", "Cómo empezó", "El punto de quiebre",
+    "Qué cambió en su forma de trabajar", "Resultados", "Su consejo para quien empieza",
   ] },
-  { key: "financiamiento", label: "Financiamiento", category: "financiamiento", headings: [
-    "Introducción", "¿En qué consiste?", "¿Por qué es clave para exportar?",
-    "Tipos de financiamiento disponibles", "Requisitos y cómo aplicar", "Costos, tasas y plazos",
+  { key: "atencion", label: "Atención al cliente", category: "atencion", headings: [
+    "Introducción", "Por qué esto define si te vuelven a llamar", "Qué esperar del cliente",
+    "Cómo responder", "Qué decir cuando algo sale mal", "Errores comunes",
+    "Preguntas frecuentes", "Conclusión",
+  ] },
+  { key: "precios", label: "Precios y cotización", category: "precios", headings: [
+    "Introducción", "Cómo calcular tu costo real", "Cuánto cobrar por tu trabajo",
+    "Qué incluir y qué dejar fuera de la cotización", "Cómo responder al “está muy caro”",
     "Errores comunes", "Preguntas frecuentes", "Conclusión",
   ] },
-  { key: "normativa", label: "Normativa", category: "normativa", headings: [
-    "Introducción", "¿Qué regula esta normativa?", "¿A quién aplica?", "Principales obligaciones",
-    "Cómo cumplir paso a paso", "Sanciones por incumplimiento", "Errores comunes", "Preguntas frecuentes", "Conclusión",
-  ] },
-  { key: "tecnologia", label: "Tecnología", category: "tecnologia", headings: [
-    "Introducción", "¿Qué es y cómo funciona?", "Aplicaciones en la agroexportación", "Beneficios concretos",
-    "Casos de uso reales", "Cómo implementarlo", "Retos y limitaciones", "Preguntas frecuentes", "Conclusión",
+  { key: "novedades", label: "Novedad de Apurape", category: "apurape", headings: [
+    "Qué cambió", "Por qué lo hicimos", "Cómo te afecta", "Cómo empezar a usarlo",
   ] },
 ];
 

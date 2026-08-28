@@ -591,7 +591,7 @@
         "features": [
           "Perfil público con tus servicios",
           "Chat directo con clientes",
-          "Cotizaciones limitadas al mes",
+          "3 cotizaciones al mes, siempre",
           "Calificaciones y reputación",
           "0% de comisión sobre tus ventas"
         ]
@@ -610,11 +610,13 @@
       },
       "proPersona": {
         "name": "Pro Persona",
-        "description": "Para quien trabaja por su cuenta. Primer mes gratis + un mes adicional al suscribirte."
+        "description": "Para quien trabaja por su cuenta. Primer mes gratis + un mes adicional al suscribirte.",
+        "daily": "Eso es menos de S/0.33 al día"
       },
       "proNegocio": {
         "name": "Pro Negocio",
         "description": "Para negocios registrados. Primer mes gratis + un mes adicional al suscribirte.",
+        "daily": "Eso es menos de S/1 al día",
         "features": [
           "Cotizaciones ilimitadas",
           "Concurso mensual de la categoría Negocios",
@@ -944,9 +946,9 @@
   },
 
   "blog": {
-    "comingSoon": "Próximamente noticias y guías de agroexportación",
+    "comingSoon": "Próximamente: guías y recursos para proveedores",
     "soonTitle": "El blog está en camino",
-    "soonSubtitle": "Pronto encontrarás artículos, guías y noticias del sector agroexportador latinoamericano.",
+    "soonSubtitle": "Pronto encontrarás guías para conseguir más clientes, cotizar mejor y hacer crecer tu negocio.",
     "backToHome": "Volver al inicio"
   },
 

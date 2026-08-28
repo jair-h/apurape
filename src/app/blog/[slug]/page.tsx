@@ -393,7 +393,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <div className="bg-[#B42318] rounded-2xl p-6 text-center shadow-sm">
               <h4 className="text-base font-extrabold text-white mb-2">Crea tu cuenta gratis</h4>
-              <p className="text-xs text-white/75 mb-4">Únete a la red agroexportadora de LATAM.</p>
+              <p className="text-xs text-white/75 mb-4">Únete a la red de proveedores de servicios de Apurape.</p>
               <Link href="/register"
                 className="inline-flex items-center justify-center gap-2 w-full bg-white text-[#B42318] px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors">
                 Crear cuenta gratis <ArrowRight className="h-4 w-4" />
