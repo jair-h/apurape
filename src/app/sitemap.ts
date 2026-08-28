@@ -15,6 +15,7 @@ const STATIC_PAGES: { path: string; priority: number; freq: Freq }[] = [
   { path: "/sobre-nosotros", priority: 0.7, freq: "monthly" },
   { path: "/planes",         priority: 0.8, freq: "monthly" },
   { path: "/como-funciona",  priority: 0.7, freq: "monthly" },
+  { path: "/concurso",       priority: 0.6, freq: "monthly" },
   { path: "/reclamos",       priority: 0.5, freq: "yearly" },
   { path: "/terminos",       priority: 0.3, freq: "yearly" },
   { path: "/privacidad",     priority: 0.3, freq: "yearly" },

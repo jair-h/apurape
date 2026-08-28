@@ -396,7 +396,7 @@ function ExportSection({ config }: { config?: SectionConfig }) {
   const title   = config?.title    || t("landing.export.title");
   const body    = config?.body     || t("landing.export.body");
   const ctaText = config?.cta_text || t("landing.export.cta");
-  const ctaLink = config?.cta_link || "/#como-funciona";
+  const ctaLink = config?.cta_link || "/concurso";
   const imgSrc  = config?.image_url || DEFAULT_EXPORT_IMG;
   const points  = [t("landing.export.point1"), t("landing.export.point2"), t("landing.export.point3"), t("landing.export.point4")];
   return (
@@ -470,6 +470,7 @@ function Footer() {
               <li><Link href="/terminos"   className="hover:text-[#D92D20] transition-colors">{t("landing.footer.terms")}</Link></li>
               <li><Link href="/privacidad" className="hover:text-[#D92D20] transition-colors">{t("landing.footer.privacy")}</Link></li>
               <li><Link href="/cookies"    className="hover:text-[#D92D20] transition-colors">{t("landing.footer.cookiesPolicy")}</Link></li>
+              <li><Link href="/concurso"   className="hover:text-[#D92D20] transition-colors">{t("landing.footer.contestRules")}</Link></li>
               <li>
                 <Link href="/reclamos" className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#D92D20] transition-colors">
                   <span aria-hidden>📋</span> {t("reclamos.footerLink")}

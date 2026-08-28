@@ -4,18 +4,24 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
 
-const SECTIONS = [
+type Section = { title: string; body: string; bullets?: string[] };
+
+const SECTIONS: Section[] = [
   {
-    title: "1. Qué son las cookies",
-    body: "Las cookies son pequeños archivos que se guardan en tu dispositivo cuando visitas una web. Permiten que la web recuerde tus preferencias y mejore tu experiencia.",
+    title: "1. Qué son",
+    body: "Las cookies son pequeños archivos que se almacenan en el navegador del usuario para mejorar su experiencia y recordar sus preferencias.",
   },
   {
-    title: "2. Qué cookies usamos",
-    body: "Cookies esenciales: mantienen tu sesión activa y recuerdan si aceptaste las cookies. Cookies de preferencias: recuerdan tu idioma y país/moneda para mostrar precios locales. No usamos cookies publicitarias ni vendemos datos a anunciantes.",
+    title: "2. Cookies que usamos",
+    body: "Usamos dos tipos de cookies:",
+    bullets: [
+      "Necesarias: mantener la sesión iniciada y la seguridad del sitio.",
+      "Analíticas: entender el uso de la Plataforma (por ejemplo, Google Analytics).",
+    ],
   },
   {
-    title: "3. Cómo gestionar las cookies",
-    body: "Puedes aceptar o rechazar desde el banner al entrar. También puedes configurar tu navegador para bloquear cookies, aunque algunas funciones pueden no funcionar sin ellas.",
+    title: "3. Gestión de cookies",
+    body: "Al ingresar por primera vez, se muestra un aviso de cookies donde el usuario puede aceptar o rechazar las no esenciales. El usuario puede eliminar o bloquear cookies desde la configuración de su navegador en cualquier momento.",
   },
 ];
 
@@ -36,13 +42,20 @@ export default function CookiesPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
             Política de Cookies
           </h1>
-          <p className="text-sm text-gray-400 mb-12">Última actualización: julio 2026</p>
+          <p className="text-sm text-gray-400 mb-12">Última actualización: 28 de agosto de 2026</p>
 
           <div className="space-y-10">
             {SECTIONS.map((s, i) => (
               <section key={i}>
                 <h2 className="text-lg font-bold text-gray-900 mb-3">{s.title}</h2>
                 <p className="text-gray-600 leading-relaxed">{s.body}</p>
+                {s.bullets && (
+                  <ul className="mt-3 space-y-2 list-disc pl-5">
+                    {s.bullets.map((b) => (
+                      <li key={b} className="text-gray-600 leading-relaxed">{b}</li>
+                    ))}
+                  </ul>
+                )}
               </section>
             ))}
           </div>

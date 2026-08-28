@@ -499,8 +499,8 @@
       "point1": "Entras con tus ventas confirmadas del mes",
       "point2": "Mínimo 3 calificaciones de 5 estrellas",
       "point3": "Separado por categoría: compites con los tuyos",
-      "point4": "Los clientes también tienen su propio sorteo",
-      "cta": "Ver cómo funciona"
+      "point4": "Los clientes también tienen su propio concurso",
+      "cta": "Ver las bases del concurso"
     },
     "footer": {
       "tagline": "El marketplace donde encuentras a quien te ayude, y donde tu trabajo bien hecho se nota.",
@@ -513,7 +513,8 @@
       "contact": "Contacto",
       "terms": "Términos de uso",
       "privacy": "Política de privacidad",
-      "cookiesPolicy": "Política de cookies"
+      "cookiesPolicy": "Política de cookies",
+      "contestRules": "Bases del concurso"
     }
   },
 
@@ -598,12 +599,27 @@
       "pro": {
         "name": "Pro",
         "period": "al año",
-        "description": "S/120 al año si eres persona, S/330 si eres negocio. Primer mes gratis + un mes adicional al suscribirte.",
+        "description": "Primer mes gratis + un mes adicional al suscribirte.",
         "features": [
           "Cotizaciones ilimitadas",
-          "Acceso al sorteo mensual de tu categoría",
+          "Acceso al concurso mensual de tu categoría",
           "Perfil destacado en resultados",
           "Insignia de proveedor Pro",
+          "0% de comisión sobre tus ventas"
+        ]
+      },
+      "proPersona": {
+        "name": "Pro Persona",
+        "description": "Para quien trabaja por su cuenta. Primer mes gratis + un mes adicional al suscribirte."
+      },
+      "proNegocio": {
+        "name": "Pro Negocio",
+        "description": "Para negocios registrados. Primer mes gratis + un mes adicional al suscribirte.",
+        "features": [
+          "Cotizaciones ilimitadas",
+          "Concurso mensual de la categoría Negocios",
+          "Perfil destacado en resultados",
+          "Insignia de negocio Pro",
           "0% de comisión sobre tus ventas"
         ]
       }
@@ -624,7 +640,7 @@
     },
     "title": "Planes para cada actor del ecosistema",
     "subtitle": "Cada rol tiene su propio modelo. Selecciona el tuyo para ver los planes disponibles.",
-    "allPricesNote": "Todos los precios en USD · Sin costos ocultos · Cancela cuando quieras",
+    "allPricesNote": "Todos los precios en soles (S/) · Sin costos ocultos · Cancela cuando quieras",
     "mostPopular": "Más popular",
     "viewIn": "Ver precios en:",
     "changeCurrency": "cambiar moneda",

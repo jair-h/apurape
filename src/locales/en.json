@@ -499,8 +499,8 @@
       "point1": "You enter with your confirmed sales for the month",
       "point2": "At least 3 five-star ratings",
       "point3": "Split by category: you compete with your peers",
-      "point4": "Clients get their own raffle too",
-      "cta": "See how it works"
+      "point4": "Clients get their own contest too",
+      "cta": "Read the contest rules"
     },
     "footer": {
       "tagline": "The marketplace where you find someone to help, and where good work gets noticed.",
@@ -513,7 +513,8 @@
       "contact": "Contact",
       "terms": "Terms of use",
       "privacy": "Privacy policy",
-      "cookiesPolicy": "Cookie policy"
+      "cookiesPolicy": "Cookie policy",
+      "contestRules": "Contest rules"
     }
   },
 
@@ -598,12 +599,27 @@
       "pro": {
         "name": "Pro",
         "period": "per year",
-        "description": "S/120 a year if you're an individual, S/330 for a business. First month free + one extra month when you subscribe.",
+        "description": "First month free + one extra month when you subscribe.",
         "features": [
           "Unlimited quotes",
-          "Access to your category's monthly raffle",
+          "Access to your category's monthly contest",
           "Featured profile in results",
           "Pro provider badge",
+          "0% commission on your sales"
+        ]
+      },
+      "proPersona": {
+        "name": "Pro Individual",
+        "description": "For people working on their own. First month free + one extra month when you subscribe."
+      },
+      "proNegocio": {
+        "name": "Pro Business",
+        "description": "For registered businesses. First month free + one extra month when you subscribe.",
+        "features": [
+          "Unlimited quotes",
+          "Monthly contest in the Business category",
+          "Featured profile in results",
+          "Pro business badge",
           "0% commission on your sales"
         ]
       }
@@ -624,7 +640,7 @@
     },
     "title": "Plans for every actor in the ecosystem",
     "subtitle": "Each role has its own model. Select yours to see available plans.",
-    "allPricesNote": "All prices in USD · No hidden costs · Cancel anytime",
+    "allPricesNote": "All prices in Peruvian soles (S/) · No hidden costs · Cancel anytime",
     "mostPopular": "Most popular",
     "viewIn": "View prices in:",
     "changeCurrency": "change currency",

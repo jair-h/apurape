@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { useCurrency } from "@/lib/CurrencyContext";
-import { CurrencyHint } from "@/components/CurrencySelector";
 
 /* ─── Types ───────────────────────────────────────────────── */
 type Plan = {
@@ -54,16 +53,23 @@ const TABS: Tab[] = [
         ctaKey: "plans.cta.registerFree",
       },
       {
-        nameKey: "plans.proveedor.pro.name",
-        // El precio depende del tipo de cuenta (persona / negocio). Aquí,
-        // sin sesión, se muestra el rango; el importe exacto sale en
-        // /dashboard/plan, que ya conoce el account_type del perfil.
-        price: "Desde S/ 120",
+        nameKey: "plans.proveedor.proPersona.name",
+        price: "S/ 120",
         periodKey: "plans.proveedor.pro.period",
-        descKey: "plans.proveedor.pro.description",
+        descKey: "plans.proveedor.proPersona.description",
         featured: true,
-        href: "/register?rol=proveedor&plan=pro",
+        href: "/register?rol=proveedor&plan=pro&tipo=persona",
         featuresKey: "plans.proveedor.pro.features",
+        ctaKey: "plans.cta.startNow",
+      },
+      {
+        nameKey: "plans.proveedor.proNegocio.name",
+        price: "S/ 330",
+        periodKey: "plans.proveedor.pro.period",
+        descKey: "plans.proveedor.proNegocio.description",
+        featured: false,
+        href: "/register?rol=proveedor&plan=pro&tipo=negocio",
+        featuresKey: "plans.proveedor.proNegocio.features",
         ctaKey: "plans.cta.startNow",
       },
     ],
@@ -202,7 +208,6 @@ export default function Pricing() {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {t("plans.subtitle")}
           </p>
-          <CurrencyHint className="mt-4" />
         </div>
 
         {/* Tab selector */}
@@ -249,10 +254,12 @@ export default function Pricing() {
 
         {/* Plan cards */}
         <div
-          className={`grid gap-8 items-stretch max-w-3xl mx-auto ${
+          className={`grid gap-8 items-stretch mx-auto ${
             current.plans.length === 1
               ? "grid-cols-1 max-w-sm"
-              : "grid-cols-1 md:grid-cols-2"
+              : current.plans.length === 2
+              ? "grid-cols-1 md:grid-cols-2 max-w-3xl"
+              : "grid-cols-1 md:grid-cols-3 max-w-5xl"
           }`}
         >
           {current.plans.map((plan) => (

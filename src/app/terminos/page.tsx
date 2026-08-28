@@ -4,49 +4,55 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
 
-const SECTIONS = [
+type Section = { title: string; body: string; bullets?: string[]; after?: string };
+
+const SECTIONS: Section[] = [
   {
-    title: "1. Aceptación de los términos",
-    body: "Al registrarte y usar Apurape, aceptas estos Términos de Uso. Apurape es una plataforma digital que conecta a productores, exportadores, agentes de carga, certificadoras y compradores del sector agrícola. Si no estás de acuerdo con estos términos, no debes usar la plataforma.",
+    title: "1. Objeto del servicio",
+    body: "Apurape (“la Plataforma”, “nosotros”) es un marketplace digital que conecta a personas y negocios que ofrecen servicios o productos (“Proveedores”) con personas que los buscan (“Clientes”), operando en Perú. Apurape facilita el contacto, la cotización y la confirmación de servicios entre Proveedores y Clientes, pero no presta los servicios ni vende los productos ofrecidos por los Proveedores, ni es parte del acuerdo comercial entre Proveedor y Cliente.",
   },
   {
-    title: "2. Qué es Apurape",
-    body: "Apurape es un espacio de conexión entre actores del comercio agrícola. Facilitamos el contacto, la comunicación y el seguimiento de operaciones entre las partes. Apurape no compra, no vende, no transporta ni certifica productos directamente; son los usuarios quienes realizan sus operaciones entre sí.",
+    title: "2. Registro y cuentas",
+    body: "Para usar la Plataforma es necesario crear una cuenta:",
+    bullets: [
+      "Cualquier persona natural o negocio puede registrarse como Cliente, de forma gratuita, sin límites de uso.",
+      "Para publicar servicios y recibir solicitudes como Proveedor, el usuario puede operar en el Plan Básico (gratuito, con límite de cotizaciones mensuales) o en el Plan Pro (pago anual).",
+      "Un mismo usuario puede actuar como Proveedor y Cliente con el mismo perfil (“rol dual”).",
+      "El usuario es responsable de la veracidad de la información de su perfil (nombre, contacto, servicios ofrecidos, precios).",
+    ],
   },
   {
-    title: "3. Registro y cuenta",
-    body: "Para usar ciertas funciones debes registrarte con información veraz y actualizada. Eres responsable de mantener la confidencialidad de tu cuenta y de todas las actividades que ocurran en ella. Apurape puede verificar la información proporcionada y suspender cuentas con datos falsos.",
+    title: "3. Planes y precios",
+    body: "Los planes disponibles son:",
+    bullets: [
+      "Básico (Proveedor) — Gratis, vigencia indefinida, con límite de cotizaciones mensuales.",
+      "Pro Persona — S/120, vigencia anual.",
+      "Pro Negocio — S/330, vigencia anual.",
+    ],
+    after: "Los Clientes nunca pagan por registrarse ni por usar la Plataforma. Apurape no cobra comisión sobre las ventas realizadas entre Proveedor y Cliente. Los pagos se procesan a través de Culqi y los planes se activan automáticamente al confirmarse el pago. En el primer registro, el Proveedor recibe un mes gratuito de prueba, y un mes adicional gratuito al confirmar su primer pago anual.",
   },
   {
-    title: "4. Rol de Apurape en las operaciones",
-    body: "Apurape actúa como facilitador tecnológico. Las negociaciones, acuerdos, pagos y entregas se realizan directamente entre las partes. Apurape no es responsable por incumplimientos, calidad de productos, pagos o cualquier disputa entre usuarios, aunque ofrece herramientas de seguimiento y calificación para mayor transparencia.",
+    title: "4. Responsabilidad sobre los servicios contratados",
+    body: "Apurape actúa únicamente como intermediario tecnológico. La calidad, cumplimiento, plazos y condiciones del servicio contratado son responsabilidad exclusiva del Proveedor. Apurape no garantiza resultados, no participa en la ejecución del servicio, y no es responsable por daños, incumplimientos o disputas derivadas de la relación entre Proveedor y Cliente.",
   },
   {
-    title: "5. Obligaciones del usuario",
-    body: "El usuario se compromete a usar la plataforma de forma lícita, a no publicar información falsa, a no suplantar identidades y a cumplir las leyes de comercio aplicables en su país y en los países de destino de sus operaciones.",
+    title: "5. Calificaciones y confirmación de servicios",
+    body: "Cada servicio contratado a través de la Plataforma debe ser marcado como completado por el Proveedor y confirmado por el Cliente. Solo la confirmación del Cliente valida el servicio dentro del sistema. Las calificaciones reflejan la opinión de cada usuario y no constituyen una certificación de calidad por parte de Apurape.",
   },
   {
-    title: "6. Planes y pagos",
-    body: "Apurape ofrece planes gratuitos y de pago según el rol. Las condiciones, precios y beneficios de cada plan se detallan en la página de Planes. Apurape puede modificar los planes notificando a los usuarios.",
+    title: "6. Conducta prohibida",
+    body: "Está prohibido: crear cuentas falsas o duplicadas, simular servicios o confirmaciones para obtener beneficios del Concurso Mensual, publicar información falsa, ofrecer servicios ilegales, y evadir el uso de la Plataforma para el contacto inicial con fines de incumplir estos Términos.",
   },
   {
-    title: "7. Propiedad intelectual",
-    body: "La marca Apurape, su logo, diseño y contenido son propiedad de Apurape. El contenido que suben los usuarios es responsabilidad de cada usuario, quien declara tener derecho a publicarlo.",
+    title: "7. Modificaciones",
+    body: "Apurape puede modificar estos Términos, notificando los cambios relevantes a través de la Plataforma. El uso continuado tras la modificación implica su aceptación.",
   },
   {
-    title: "8. Limitación de responsabilidad",
-    body: "Apurape no garantiza resultados comerciales ni se responsabiliza por pérdidas derivadas de operaciones entre usuarios. La plataforma se ofrece buscando siempre el mejor servicio posible.",
+    title: "8. Ley aplicable",
+    body: "Estos Términos se rigen por las leyes de la República del Perú.",
   },
   {
-    title: "9. Modificaciones",
-    body: "Apurape puede actualizar estos términos. Los cambios se notificarán en la plataforma y el uso continuado implica su aceptación.",
-  },
-  {
-    title: "10. Contacto",
-    body: "Para cualquier consulta sobre estos términos, escríbenos a través de la página de Contacto.",
-  },
-  {
-    title: "11. Política de reembolsos",
+    title: "9. Política de reembolsos",
     body: "Los planes anuales de Apurape no son reembolsables una vez activados y el acceso a la plataforma haya comenzado. Si experimentas un problema técnico grave imputable a Apurape en los primeros 7 días desde la activación de tu plan, puedes contactarnos a través de la página de Contacto para evaluar tu caso. Los reembolsos, si aplicaran, se procesarán en un plazo de 10 días hábiles. Las pruebas gratuitas no dan derecho a reembolso.",
   },
 ];
@@ -66,32 +72,50 @@ export default function TerminosPage() {
           </Link>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
-            Términos de Uso
+            Términos y Condiciones de Uso
           </h1>
-          <p className="text-sm text-gray-400 mb-12">Última actualización: julio 2026</p>
+          <p className="text-sm text-gray-400 mb-12">Última actualización: 28 de agosto de 2026</p>
 
           <div className="space-y-10">
             {SECTIONS.map((s, i) => (
               <section key={i}>
                 <h2 className="text-lg font-bold text-gray-900 mb-3">{s.title}</h2>
                 <p className="text-gray-600 leading-relaxed">{s.body}</p>
+                {s.bullets && (
+                  <ul className="mt-3 space-y-2 list-disc pl-5">
+                    {s.bullets.map((b) => (
+                      <li key={b} className="text-gray-600 leading-relaxed">{b}</li>
+                    ))}
+                  </ul>
+                )}
+                {s.after && <p className="text-gray-600 leading-relaxed mt-3">{s.after}</p>}
               </section>
             ))}
           </div>
-        </div>
-      </main>
 
-      <footer className="bg-gray-900 py-8">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-white">Apurape</span>
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Las reglas del Concurso Mensual se detallan en un documento aparte:{" "}
+              <Link href="/concurso" className="text-[#D92D20] font-semibold hover:underline">
+                Bases del Concurso Mensual
+              </Link>
+              .
+            </p>
           </div>
-          <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Apurape. Todos los derechos reservados.
-          </p>
         </div>
-      </footer>
+
+        <footer className="bg-gray-900 py-8">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
+              <span className="font-bold text-sm text-white">Apurape</span>
+            </div>
+            <p className="text-xs text-gray-600">
+              © {new Date().getFullYear()} Apurape
+            </p>
+          </div>
+        </footer>
+      </main>
     </>
   );
 }
