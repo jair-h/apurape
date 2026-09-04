@@ -74,7 +74,10 @@ export default function ProveedorSolicitudesPage() {
   const handleContact = async (r: RequestRow) => {
     if (!userId) return;
     setContacting(r.id);
-    const convId = await findOrCreateConversation(userId, r.client_id, r.id, "request");
+    // Aquí el proveedor soy yo: respondo a la solicitud de un cliente.
+    const convId = await findOrCreateConversation(userId, r.client_id, {
+      subjectId: r.id, subjectType: "request", providerId: userId,
+    });
     router.push(convId ? `/dashboard/mensajes?conv=${convId}` : "/dashboard/mensajes");
     setContacting(null);
   };

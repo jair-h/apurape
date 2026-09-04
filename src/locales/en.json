@@ -318,7 +318,8 @@
     "findServices": "Find services",
     "raffle": "Monthly contest",
     "raffles": "Contests",
-    "myPoints": "My points"
+    "myPoints": "My points",
+    "myFavorites": "My favourites"
   },
 
   "roles": {

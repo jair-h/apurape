@@ -6,9 +6,12 @@ import { useRouter } from "next/navigation";
 import { MessageCircle, Loader2, Share2, Copy, Check } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { findOrCreateConversation } from "@/lib/conversations";
+import FavoriteButton from "@/components/FavoriteButton";
 
 /** Contact (chat if logged in, else /login) + share — the interactive part of the public profile. */
-export default function ProfileActions({ profileUserId }: { profileUserId: string }) {
+export default function ProfileActions({
+  profileUserId, isProvider = false,
+}: { profileUserId: string; isProvider?: boolean }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn]       = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -29,7 +32,11 @@ export default function ProfileActions({ profileUserId }: { profileUserId: strin
   const handleContact = async () => {
     if (!currentUserId) return;
     setContactLoading(true);
-    const convId = await findOrCreateConversation(currentUserId, profileUserId);
+    // Si el perfil que estoy mirando es de un proveedor, él es quien
+    // responde. Si es de un cliente, la conversación no se mide.
+    const convId = await findOrCreateConversation(currentUserId, profileUserId, {
+      providerId: isProvider ? profileUserId : null,
+    });
     router.push(convId ? `/dashboard/mensajes?conv=${convId}` : "/dashboard/mensajes");
     setContactLoading(false);
   };
@@ -53,6 +60,10 @@ export default function ProfileActions({ profileUserId }: { profileUserId: strin
         </Link>
       )}
       {!isLoggedIn && <p className="text-[10px] text-center text-[#6B7280] mt-2">Inicia sesión para contactar</p>}
+
+      <div className="mt-3">
+        <FavoriteButton providerId={profileUserId} variant="full" />
+      </div>
 
       {/* Share */}
       <div className="mt-3">

@@ -12,6 +12,8 @@
 import { useState, useEffect } from "react";
 import { Loader2, Save, Check, Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import BusinessHoursEditor from "@/components/dashboard/BusinessHoursEditor";
+import type { BusinessHours } from "@/lib/businessHours";
 
 interface Props { accent: string; accentHover: string; }
 
@@ -47,6 +49,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
   const [priv, setPriv] = useState<PrivateFields>({
     phone: "", whatsapp: "", doc_type: "", doc_number: "",
   });
+  const [hours, setHours] = useState<BusinessHours>({});
 
   useEffect(() => {
     (async () => {
@@ -55,7 +58,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
 
       const [{ data: p }, { data: pp }] = await Promise.all([
         supabase.from("profiles")
-          .select("name, business_name, bio, account_type, region, province, district, role")
+          .select("name, business_name, bio, account_type, region, province, district, role, business_hours")
           .eq("id", user.id).maybeSingle(),
         supabase.from("profile_private")
           .select("phone, whatsapp, doc_type, doc_number")
@@ -69,6 +72,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
           account_type: p.account_type ?? "persona",
           region: p.region ?? "", province: p.province ?? "", district: p.district ?? "",
         });
+        setHours((p.business_hours ?? {}) as BusinessHours);
       }
       if (pp) {
         setPriv({
@@ -93,6 +97,9 @@ export default function ProfileForm({ accent, accentHover }: Props) {
       region:       pub.region.trim() || null,
       province:     pub.province.trim() || null,
       district:     pub.district.trim() || null,
+      // Solo el Proveedor tiene horario de atención; el Cliente no lo edita
+      // y no se manda para no pisar el valor por accidente.
+      ...(role === "proveedor" ? { business_hours: hours } : {}),
     }).eq("id", user.id);
 
     // upsert: la fila puede no existir si el usuario es anterior al trigger.
@@ -199,6 +206,13 @@ export default function ProfileForm({ accent, accentHover }: Props) {
             Sin distrito no apareces en las búsquedas por zona.
           </p>
         </div>
+
+        {/* Horario — solo Proveedor */}
+        {role === "proveedor" && (
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4">
+            <BusinessHoursEditor value={hours} onChange={setHours} accent={accent} />
+          </div>
+        )}
 
         {/* Privado */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4 space-y-4">

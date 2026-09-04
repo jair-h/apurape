@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Loader2, Search, Star, Check, ArrowRight, Plus, Trophy, Gift,
+  Loader2, Search, Star, Check, ArrowRight, Plus, Trophy, Gift, Heart,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
@@ -160,6 +160,18 @@ export default function ClienteHomePage() {
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-gray-900">Buscar servicios</p>
             <p className="text-[11px] text-[#6B7280]">Explora proveedores de tu distrito por categoría.</p>
+          </div>
+          <ArrowRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
+        </Link>
+
+        <Link href="/dashboard/cliente/favoritos"
+          className="flex items-center gap-3 bg-white rounded-2xl border border-gray-200 p-4 shadow-sm hover:border-[#0E9384] transition-colors">
+          <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+            <Heart className="h-4 w-4 text-[#0E9384]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-gray-900">Tus favoritos</p>
+            <p className="text-[11px] text-[#6B7280]">Los proveedores que guardaste, a la mano.</p>
           </div>
           <ArrowRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
         </Link>

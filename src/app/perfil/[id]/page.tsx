@@ -8,6 +8,9 @@ import {
 import { createServerSupabase } from "@/lib/supabase-server";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import ProfileActions from "./ProfileActions";
+import BusinessHoursBadge from "@/components/BusinessHoursBadge";
+import WinnerBadge from "@/components/WinnerBadge";
+import type { BusinessHours } from "@/lib/businessHours";
 
 /* ─────────────────────────────────────────────────────────────
  * Perfil público de Apurape.
@@ -45,6 +48,9 @@ interface Profile {
   rating: number | null; ratings_count: number | null; five_star_count: number | null;
   confirmed_jobs_count: number | null; verified: boolean | null;
   plan: string | null; level: string | null; points: number | null; created_at: string;
+  business_hours: BusinessHours | null;
+  last_award_period: string | null;
+  service_categories: { name: string } | null;   // categoría del premio
 }
 
 interface ServiceRow {
@@ -73,12 +79,14 @@ async function getProfileData(id: string): Promise<ProfileBundle | null> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, name, business_name, role, account_type, bio, avatar_url, region, province, district, country, rating, ratings_count, five_star_count, confirmed_jobs_count, verified, plan, level, points, created_at")
+    .select("id, name, business_name, role, account_type, bio, avatar_url, region, province, district, country, rating, ratings_count, five_star_count, confirmed_jobs_count, verified, plan, level, points, created_at, business_hours, last_award_period, service_categories!profiles_last_award_category_id_fkey(name)")
     .eq("id", id)
     .maybeSingle();
 
   if (!profile) return null;
-  const p = profile as Profile;
+  // `as unknown` porque supabase-js tipa el embed como arreglo aunque la FK
+  // sea a-uno; en tiempo de ejecución llega un objeto.
+  const p = profile as unknown as Profile;
 
   // Solo el Proveedor tiene catálogo. Las calificaciones que se
   // muestran son las que dejó un Cliente: son las que cuentan.
@@ -300,6 +308,21 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
                 <p className="text-xs text-[#6B7280] leading-relaxed text-center mb-4">{profile.bio}</p>
               )}
 
+              {isProveedor && profile.last_award_period && (
+                <div className="mb-4">
+                  <WinnerBadge
+                    period={profile.last_award_period}
+                    categoria={profile.service_categories?.name ?? null}
+                  />
+                </div>
+              )}
+
+              {isProveedor && (
+                <div className="mb-4 pb-4 border-b border-gray-100 flex flex-col items-center">
+                  <BusinessHoursBadge hours={profile.business_hours} />
+                </div>
+              )}
+
               {/* Reputación */}
               <div className="grid grid-cols-2 gap-2 mb-4">
                 <div className="bg-gray-50 rounded-xl p-3 text-center">
@@ -328,7 +351,7 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
                 </p>
               )}
 
-              <ProfileActions profileUserId={profile.id} />
+              <ProfileActions profileUserId={profile.id} isProvider={isProveedor} />
 
               <p className="text-[10px] text-center text-[#6B7280] mt-4">
                 En Apurape desde {memberSince}

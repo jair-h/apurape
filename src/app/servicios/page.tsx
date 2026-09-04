@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Search, MapPin, Star, Wrench, Loader2, CheckCircle2, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
+import FavoriteButton from "@/components/FavoriteButton";
+import { WinnerTag } from "@/components/WinnerBadge";
 
 interface Category { id: string; slug: string; name: string; }
 
@@ -23,6 +25,7 @@ interface ServiceRow {
     name: string | null; business_name: string | null;
     rating: number | null; ratings_count: number | null;
     verified: boolean | null; district: string | null;
+    last_award_period: string | null;
   } | null;
 }
 
@@ -47,6 +50,9 @@ function ServiceCard({ s }: { s: ServiceRow }) {
             <Trophy className="h-2.5 w-2.5" /> Destacado
           </span>
         )}
+        <div className="absolute top-2 right-2">
+          <FavoriteButton providerId={s.provider_id} />
+        </div>
       </div>
 
       <div className="p-4 flex flex-col flex-1">
@@ -55,9 +61,10 @@ function ServiceCard({ s }: { s: ServiceRow }) {
           <p className="text-[11px] text-[#6B7280] mt-0.5">{s.service_categories.name}</p>
         )}
 
-        <div className="flex items-center gap-1.5 mt-2">
+        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           <p className="text-xs font-semibold text-gray-700 truncate">{providerName}</p>
           {provider?.verified && <CheckCircle2 className="h-3 w-3 text-[#0E9384] flex-shrink-0" />}
+          <WinnerTag period={provider?.last_award_period ?? null} />
         </div>
 
         {provider?.ratings_count ? (
@@ -115,7 +122,7 @@ function ServiciosInner() {
 
     let q = supabase
       .from("provider_services")
-      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles(name, business_name, rating, ratings_count, verified, district)")
+      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles(name, business_name, rating, ratings_count, verified, district, last_award_period)")
       .eq("status", "activo")
       .order("featured_until", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })

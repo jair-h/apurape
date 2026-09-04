@@ -12,6 +12,37 @@ import { createClient } from "@/lib/supabase";
 interface StatRow {
   period: string; category_id: string;
   confirmed_jobs: number; five_star_count: number; avg_stars: number; qualifies: boolean;
+  avg_response_minutes: number | null;
+  quality_score: number; volume_score: number;
+  speed_score: number | null; excellence_index: number;
+}
+
+/* "1 h 20 min" a partir de minutos. */
+function fmtRespuesta(min: number | null): string {
+  if (min === null) return "—";
+  if (min < 60) return `${Math.round(min)} min`;
+  const h = Math.floor(min / 60), m = Math.round(min % 60);
+  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+}
+
+function Barra({ label, valor, peso, detalle, sinDatos }: {
+  label: string; valor: number; peso: string; detalle: string; sinDatos?: boolean;
+}) {
+  const pct = Math.round(valor * 100);
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[11px] font-bold text-gray-700">
+          {label} <span className="font-normal text-gray-400">· {peso}</span>
+        </span>
+        <span className="text-[11px] text-[#6B7280]">{detalle}</span>
+      </div>
+      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full transition-all ${sinDatos ? "bg-gray-300" : "bg-[#D92D20]"}`}
+          style={{ width: `${sinDatos ? 100 : pct}%` }} />
+      </div>
+    </div>
+  );
 }
 
 interface RaffleRow {
@@ -53,7 +84,8 @@ export default function SorteoPage() {
 
       const [{ data: p }, { data: st }, { data: rf }, { data: en }, { data: cs }, { data: cfg }] = await Promise.all([
         supabase.from("profiles").select("plan, account_type").eq("id", user.id).maybeSingle(),
-        supabase.from("provider_monthly_stats").select("period, category_id, confirmed_jobs, five_star_count, avg_stars, qualifies")
+        supabase.from("provider_monthly_stats")
+          .select("period, category_id, confirmed_jobs, five_star_count, avg_stars, qualifies, avg_response_minutes, quality_score, volume_score, speed_score, excellence_index")
           .eq("profile_id", user.id).eq("period", period),
         supabase.from("raffles").select("*").eq("period", period).eq("audience", "proveedor"),
         supabase.from("raffle_entries").select("raffle_id, entries, score, rank").eq("profile_id", user.id),
@@ -85,8 +117,8 @@ export default function SorteoPage() {
         <div className="mb-5">
           <h1 className="text-2xl font-extrabold text-gray-900">Concurso del mes</h1>
           <p className="text-sm text-[#6B7280] mt-0.5">
-            Ventas confirmadas por el cliente + al menos {minFive} calificaciones de 5 estrellas
-            en el mes, dentro de tu categoría.
+            Gana el Índice de Excelencia más alto de cada categoría, entre quienes
+            tengan al menos {minFive} calificaciones de 5 estrellas en el mes.
           </p>
         </div>
 
@@ -137,7 +169,7 @@ export default function SorteoPage() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3 mb-3">
+                  <div className="grid grid-cols-4 gap-3 mb-4">
                     <div>
                       <p className="text-lg font-extrabold text-gray-900">{s.confirmed_jobs}</p>
                       <p className="text-[10px] text-[#6B7280]">Confirmadas</p>
@@ -150,6 +182,35 @@ export default function SorteoPage() {
                       <p className="text-lg font-extrabold text-gray-900">{Number(s.avg_stars).toFixed(1)}</p>
                       <p className="text-[10px] text-[#6B7280]">Promedio</p>
                     </div>
+                    <div>
+                      <p className="text-lg font-extrabold text-[#D92D20]">
+                        {Math.round(Number(s.excellence_index) * 100)}
+                      </p>
+                      <p className="text-[10px] text-[#6B7280]">Índice</p>
+                    </div>
+                  </div>
+
+                  {/* De qué está hecho el índice */}
+                  <div className="space-y-2.5 pb-3 mb-3 border-b border-gray-100">
+                    <Barra label="Calidad" peso="50%" valor={Number(s.quality_score)}
+                      detalle={`${Number(s.avg_stars).toFixed(1)} de 5`} />
+                    <Barra label="Volumen" peso="30%" valor={Number(s.volume_score)}
+                      detalle={Number(s.volume_score) >= 1
+                        ? "el más alto de tu categoría"
+                        : `${Math.round(Number(s.volume_score) * 100)}% del líder`} />
+                    {s.speed_score === null ? (
+                      <Barra label="Velocidad" peso="sin datos" valor={0} sinDatos
+                        detalle="su peso se reparte" />
+                    ) : (
+                      <Barra label="Velocidad" peso="20%" valor={Number(s.speed_score)}
+                        detalle={`respondes en ${fmtRespuesta(s.avg_response_minutes)}`} />
+                    )}
+                    {s.speed_score === null && (
+                      <p className="text-[10px] text-gray-400 leading-relaxed">
+                        Todavía no tienes conversaciones con una primera respuesta medible
+                        este mes. Tu índice se calcula solo con calidad y volumen.
+                      </p>
+                    )}
                   </div>
 
                   {faltan > 0 && (
@@ -208,9 +269,10 @@ export default function SorteoPage() {
         )}
 
         <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
-          El ganador se decide por ranking automático (más calificaciones de 5 estrellas,
-          luego más ventas confirmadas), no por votación. Los trabajos entre cuentas que se
-          contratan mutuamente quedan excluidos.
+          El Índice de Excelencia combina calidad (50%), volumen de trabajos comparado
+          con el resto de tu categoría (30%) y velocidad de tu primera respuesta (20%).
+          El ganador sale de un ranking automático, no de una votación. Los trabajos
+          entre cuentas que se contratan mutuamente quedan excluidos.
         </p>
       </div>
     </div>

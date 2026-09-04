@@ -23,10 +23,12 @@ import {
   AlertCircle,
   Settings,
   Home,
+  Heart,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useTranslation, SUPPORTED_LANGS } from "@/lib/i18n";
 import { Globe } from "lucide-react";
+import NotificationBell from "./NotificationBell";
 
 /* ─── Types ───────────────────────────────────────────────── */
 
@@ -58,6 +60,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
     { icon: Plus,            labelKey: "sidebar.publishRequest", href: "/dashboard/cliente/solicitud/nueva" },
     { icon: ClipboardList,   labelKey: "sidebar.myRequests",     href: "/dashboard/cliente/solicitudes" },
     { icon: TrendingUp,      labelKey: "sidebar.myHires",        href: "/dashboard/cliente/trabajos" },
+    { icon: Heart,           labelKey: "sidebar.myFavorites",    href: "/dashboard/cliente/favoritos" },
     { icon: MessageCircle,   labelKey: "sidebar.messages",       href: "/dashboard/mensajes" },
     { icon: Star,            labelKey: "sidebar.myPoints",       href: "/dashboard/cliente/puntos" },
   ],
@@ -163,14 +166,17 @@ export default function DashboardSidebar({ onClose }: { onClose?: () => void } =
 
   return (
     <aside className={`w-56 flex-shrink-0 ${bg} flex flex-col h-full`}>
-      {/* Logo */}
-      <Link href="/" onClick={onClose} className="flex items-center gap-2 px-4 h-14 border-b border-white/10 hover:bg-white/5 transition-colors">
-        <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain flex-shrink-0" />
-        <span className="font-bold text-sm text-white leading-tight">
-          Apurape
-          <span className="block text-[10px] font-normal text-white/50">LATAM</span>
-        </span>
-      </Link>
+      {/* Logo + campana de avisos */}
+      <div className="flex items-center gap-2 px-4 h-14 border-b border-white/10">
+        <Link href="/" onClick={onClose} className="flex items-center gap-2 flex-1 min-w-0 hover:opacity-80 transition-opacity">
+          <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain flex-shrink-0" />
+          <span className="font-bold text-sm text-white leading-tight truncate">
+            Apurape
+            <span className="block text-[10px] font-normal text-white/50">LATAM</span>
+          </span>
+        </Link>
+        <NotificationBell />
+      </div>
 
       {/* User info */}
       <div className="px-4 py-3 border-b border-white/10">
