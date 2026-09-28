@@ -33,6 +33,10 @@ interface ConvRow {
   subject_id: string | null; subject_type: string | null;
   last_message: string | null; last_message_at: string | null;
   unread_count_p1: number; unread_count_p2: number; created_at: string;
+  provider_id: string | null;
+  /* Sellado al primer mensaje del proveedor. Si está en null, responder
+     aquí consume una de las conversaciones nuevas del plan Básico. */
+  provider_first_message_at: string | null;
 }
 
 interface ConvItem extends ConvRow {
@@ -354,12 +358,11 @@ function JobCard({
 /* ─── QuoteModal ────────────────────────────────────────── */
 
 function QuoteModal({
-  onClose, onSubmit, submitting, quotesLeft,
+  onClose, onSubmit, submitting,
 }: {
   onClose: () => void;
   onSubmit: (form: QuoteFormState) => void;
   submitting: boolean;
-  quotesLeft: number | null;
 }) {
   const [form, setForm] = useState<QuoteFormState>({
     amount: "", scope: "", excludes: "", estimated_days: "", valid_until: "",
@@ -373,7 +376,6 @@ function QuoteModal({
   const inputClass = "w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent";
 
   const valid = Number(form.amount) > 0 && form.scope.trim().length > 0;
-  const outOfQuotes = quotesLeft !== null && quotesLeft <= 0;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -382,9 +384,7 @@ function QuoteModal({
           <div>
             <h3 className="text-base font-extrabold text-[#B42318]">Enviar cotización</h3>
             <p className="text-[11px] text-[#6B7280] mt-0.5">
-              {quotesLeft === null
-                ? "Cotizaciones ilimitadas con tu plan"
-                : `Te quedan ${quotesLeft} cotizaciones este mes`}
+              Cotiza cuantas veces necesites en esta conversación
             </p>
           </div>
           <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700">
@@ -392,20 +392,7 @@ function QuoteModal({
           </button>
         </div>
 
-        {outOfQuotes ? (
-          <div className="px-5 py-8 text-center space-y-3">
-            <p className="text-sm font-bold text-[#B42318]">Llegaste al límite del plan Básico</p>
-            <p className="text-xs text-[#6B7280] leading-relaxed">
-              Ya usaste todas tus cotizaciones de este mes. Con el plan Pro son
-              ilimitadas y además entras al concurso mensual de tu categoría.
-            </p>
-            <Link href="/dashboard/plan"
-              className="inline-block px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors">
-              Ver el plan Pro
-            </Link>
-          </div>
-        ) : (
-          <div className="px-5 py-4 space-y-4">
+        <div className="px-5 py-4 space-y-4">
             <div>
               <label className={labelClass}>Monto (S/) *</label>
               <input type="number" min="0" step="0.01" value={form.amount} onChange={set("amount")}
@@ -443,8 +430,7 @@ function QuoteModal({
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Handshake className="h-4 w-4" />}
               Enviar cotización
             </button>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -566,7 +552,8 @@ function MensajesInner() {
   const [showQuoteForm,   setShowQuoteForm]   = useState(false);
   const [submitting,      setSubmitting]      = useState(false);
   const [processingId,    setProcessingId]    = useState<string | null>(null);
-  const [quotesLeft,      setQuotesLeft]      = useState<number | null>(null);
+  /* null = ilimitadas (Pro, mes de prueba, admin) */
+  const [convsLeft,       setConvsLeft]       = useState<number | null>(null);
   const [confirmingJob,   setConfirmingJob]   = useState<Job | null>(null);
 
   const messagesEndRef    = useRef<HTMLDivElement>(null);
@@ -581,6 +568,18 @@ function MensajesInner() {
 
   const selectedConv = conversations.find(c => c.id === selectedConvId) ?? null;
 
+  const esProveedor = currentUserRole === "proveedor";
+
+  /* Responder aquí consumiría cupo: el proveedor todavía no ha escrito en
+     esta conversación y ya no le quedan. Las abiertas nunca se bloquean.
+     Esto solo evita el viaje al servidor y explica el motivo; quien decide
+     de verdad es el trigger guard_conversation_limit. */
+  const bloqueadaPorCupo =
+    esProveedor && convsLeft !== null && convsLeft <= 0 &&
+    !!selectedConv &&
+    selectedConv.provider_id === currentUserId &&
+    selectedConv.provider_first_message_at === null;
+
   /* ── 1. Usuario y rol ──────────────────────────────────── */
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
@@ -588,6 +587,12 @@ function MensajesInner() {
       if (!user) { setLoadingConvs(false); return; }
       const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
       setCurrentUserRole(profile?.role ?? null);
+
+      /* Cupo de conversaciones nuevas del mes. Solo el proveedor lo tiene. */
+      if (profile?.role === "proveedor") {
+        const { data } = await supabase.rpc("provider_conversations_left", { p_provider_id: user.id });
+        setConvsLeft(data === null || data === undefined ? null : Number(data));
+      }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -760,6 +765,12 @@ function MensajesInner() {
     const now    = new Date().toISOString();
     const tempId = `temp-${now}-${Math.random()}`;
 
+    /* ¿Este mensaje abre una conversación nueva? Se mira ANTES de enviar,
+       porque el trigger sella provider_first_message_at al insertar. */
+    const consumeCupo = esProveedor
+      && selectedConv?.provider_id === currentUserId
+      && !selectedConv?.provider_first_message_at;
+
     setInput("");
     setSending(true);
     setMessages(prev => [
@@ -773,31 +784,41 @@ function MensajesInner() {
 
     if (error) {
       setMessages(prev => prev.filter(m => m.id !== tempId));
-      alert(`No se pudo enviar el mensaje:\n${error.message}`);
+      setInput(text);   // no se pierde lo que escribió
+
+      if (error.message.includes("conversaciones nuevas")) {
+        /* El candado del servidor ganó la carrera al de la interfaz: el
+           cupo se agotó en otra pestaña o en otro dispositivo. */
+        setConvsLeft(0);
+        alert("Alcanzaste tus conversaciones nuevas de este mes.\n\nActualiza a Pro para responder. Las conversaciones que ya tienes abiertas siguen funcionando normal.");
+      } else {
+        alert(`No se pudo enviar el mensaje:\n${error.message}`);
+      }
     } else if (saved) {
       setMessages(prev => prev.map(m => m.id === tempId ? (saved as MsgRow) : m));
       lastMsgTimeRef.current = (saved as MsgRow).created_at;
       setConversations(prev =>
-        prev.map(c => c.id === selectedConvId ? { ...c, last_message: text, last_message_at: now } : c)
+        prev.map(c => c.id === selectedConvId
+            ? { ...c, last_message: text, last_message_at: now,
+                provider_first_message_at: c.provider_first_message_at ?? (consumeCupo ? now : null) }
+            : c)
           .sort((a, b) => {
             const ta = a.last_message_at ? new Date(a.last_message_at).getTime() : 0;
             const tb = b.last_message_at ? new Date(b.last_message_at).getTime() : 0;
             return tb - ta;
           })
       );
+      if (consumeCupo) setConvsLeft(prev => prev === null ? null : Math.max(prev - 1, 0));
     }
 
     setSending(false);
   };
 
   /* ── Abrir el formulario de cotización ─────────────────── */
-  const openQuoteForm = async () => {
-    if (currentUserId) {
-      const { data } = await supabase.rpc("provider_quotes_left", { p_provider_id: currentUserId });
-      setQuotesLeft(data === null || data === undefined ? null : Number(data));
-    }
-    setShowQuoteForm(true);
-  };
+  /* Ya no se consulta cupo aquí: desde la 028 el plan Básico se mide en
+     conversaciones nuevas, y el cobro ocurre al responder. Dentro de una
+     conversación abierta las cotizaciones son ilimitadas. */
+  const openQuoteForm = () => setShowQuoteForm(true);
 
   /* ── Enviar cotización ─────────────────────────────────── */
   /* `period` lo pone el trigger enforce_quote_limit (hora de Lima),
@@ -1028,6 +1049,24 @@ function MensajesInner() {
               )}
             </div>
 
+            {bloqueadaPorCupo ? (
+              /* El mensaje del cliente queda visible y legible arriba: lo
+                 único que se bloquea es escribir. Ver el trigger
+                 guard_conversation_limit, que es quien realmente decide. */
+              <div className="flex-shrink-0 bg-amber-50 border-t-2 border-amber-300 px-5 py-4 text-center">
+                <p className="text-sm font-extrabold text-[#B42318]">
+                  Actualiza a Pro para responder
+                </p>
+                <p className="text-xs text-[#6B7280] mt-1 leading-relaxed max-w-sm mx-auto">
+                  Ya usaste tus conversaciones nuevas de este mes. Las que ya
+                  tienes abiertas siguen funcionando normal.
+                </p>
+                <Link href="/dashboard/plan"
+                  className="inline-block mt-3 px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors">
+                  Ver el plan Pro
+                </Link>
+              </div>
+            ) : (
             <div className="flex-shrink-0 bg-white border-t border-gray-200 px-4 py-3">
               <div className="flex items-end gap-3">
                 <textarea rows={1} value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
@@ -1039,8 +1078,13 @@ function MensajesInner() {
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </button>
               </div>
-              <p className="text-[10px] text-[#6B7280] mt-1.5 text-center">Mensajes en tiempo real · Apurape</p>
+              <p className="text-[10px] text-[#6B7280] mt-1.5 text-center">
+                {esProveedor && convsLeft !== null
+                  ? `Te quedan ${convsLeft} conversaciones nuevas este mes`
+                  : "Mensajes en tiempo real · Apurape"}
+              </p>
             </div>
+            )}
           </>
         )}
       </div>
@@ -1050,7 +1094,6 @@ function MensajesInner() {
           onClose={() => setShowQuoteForm(false)}
           onSubmit={handleSubmitQuote}
           submitting={submitting}
-          quotesLeft={quotesLeft}
         />
       )}
 

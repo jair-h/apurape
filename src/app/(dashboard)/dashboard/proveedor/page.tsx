@@ -30,6 +30,7 @@ export default function ProveedorHomePage() {
 
   const [loading, setLoading]   = useState(true);
   const [perfil, setPerfil]     = useState<Perfil | null>(null);
+  /* Conversaciones nuevas que le quedan este mes. null = ilimitadas. */
   const [quotesLeft, setLeft]   = useState<number | null>(null);
   const [servicios, setServicios] = useState(0);
   const [porHacer, setPorHacer]   = useState(0);
@@ -43,7 +44,7 @@ export default function ProveedorHomePage() {
         supabase.from("profiles")
           .select("name, business_name, account_type, plan, plan_status, trial_ends_at, plan_expires_at, rating, ratings_count, five_star_count, confirmed_jobs_count, district")
           .eq("id", user.id).maybeSingle(),
-        supabase.rpc("provider_quotes_left", { p_provider_id: user.id }),
+        supabase.rpc("provider_conversations_left", { p_provider_id: user.id }),
         supabase.from("provider_services").select("id", { count: "exact", head: true })
           .eq("provider_id", user.id).eq("status", "activo"),
         supabase.from("jobs").select("id", { count: "exact", head: true })
@@ -73,15 +74,15 @@ export default function ProveedorHomePage() {
 
   const beneficios = esPro
     ? [
-        "Cotizaciones ilimitadas",
+        "Conversaciones y cotizaciones ilimitadas",
         "Entras al concurso mensual de tu categoría",
         "Perfil destacado en los resultados",
         "0% de comisión sobre tus ventas",
       ]
     : [
         quotesLeft === null
-          ? "Cotizaciones ilimitadas durante tu mes de prueba"
-          : `${quotesLeft} cotizaciones disponibles este mes`,
+          ? "Conversaciones ilimitadas durante tu mes de prueba"
+          : `${quotesLeft} conversaciones nuevas disponibles este mes`,
         "Perfil público con tus servicios",
         "Chat directo con clientes",
         "0% de comisión sobre tus ventas",
@@ -120,11 +121,14 @@ export default function ProveedorHomePage() {
             </div>
           </div>
 
-          {!esPro && (
+          {/* También durante el mes de prueba: es Pro, pero todavía no paga,
+              y es cuando hay que darle a dónde suscribirse. */}
+          {(!esPro || enTrial) && (
             <Link href="/dashboard/plan"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D92D20] text-white text-xs font-bold hover:bg-[#B42318] transition-colors">
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+                enTrial ? "bg-white text-[#B42318] hover:bg-red-50" : "bg-[#D92D20] text-white hover:bg-[#B42318]"}`}>
               <Zap className="h-3.5 w-3.5" />
-              Pasar a Pro · {PRO_PRICE[perfil?.account_type ?? "persona"]}/año
+              {enTrial ? "Suscríbete" : "Pasar a Pro"} · {PRO_PRICE[perfil?.account_type ?? "persona"]}/año
             </Link>
           )}
         </div>
@@ -145,7 +149,7 @@ export default function ProveedorHomePage() {
           {!esPro && (
             <p className="text-[11px] text-[#6B7280] mt-4 leading-relaxed">
               El plan Básico no entra al concurso mensual. Con Pro tienes
-              cotizaciones ilimitadas y compites por los premios de tu categoría.
+              conversaciones ilimitadas y compites por los premios de tu categoría.
             </p>
           )}
 

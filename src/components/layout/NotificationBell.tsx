@@ -9,7 +9,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Bell, Loader2, Trophy, Star, ClipboardList, CheckCircle2, CreditCard, Info } from "lucide-react";
+import { Bell, Loader2, Trophy, Star, ClipboardList, CheckCircle2, CreditCard, Info, MessageSquare } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
 interface Aviso {
@@ -22,6 +22,7 @@ const ICONO: Record<string, React.ElementType> = {
   trabajo_por_confirmar: Star,
   cotizacion_recibida:   ClipboardList,
   cotizacion_aceptada:   CheckCircle2,
+  mensaje_nuevo:         MessageSquare,
   servicio_confirmado:   CheckCircle2,
   plan:                  CreditCard,
   sistema:               Info,

@@ -588,11 +588,11 @@
       "basico": {
         "name": "Basic",
         "period": "forever",
-        "description": "Publish your profile and start getting clients.",
+        "description": "Try Pro free for your first month. After that you stay free forever (3 new conversations per month).",
         "features": [
           "Public profile with your services",
           "Direct chat with clients",
-          "3 quotes per month, always",
+          "3 new conversations per month, always",
           "Ratings and reputation",
           "0% commission on your sales"
         ]
@@ -602,7 +602,7 @@
         "period": "per year",
         "description": "First month free + one extra month when you subscribe.",
         "features": [
-          "Unlimited quotes",
+          "Unlimited conversations and quotes",
           "Access to your category's monthly contest",
           "Featured profile in results",
           "Pro provider badge",
@@ -619,7 +619,7 @@
         "description": "For registered businesses. First month free + one extra month when you subscribe.",
         "daily": "That's about S/0.90 a day",
         "features": [
-          "Unlimited quotes",
+          "Unlimited conversations and quotes",
           "Monthly contest in the Business category",
           "Featured profile in results",
           "Pro business badge",

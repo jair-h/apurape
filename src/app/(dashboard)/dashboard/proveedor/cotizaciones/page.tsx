@@ -42,7 +42,7 @@ export default function ProveedorCotizacionesPage() {
           .select("id, conversation_id, amount, scope, estimated_days, valid_until, status, job_id, created_at, period, client:profiles!quotes_client_id_fkey(name, business_name)")
           .eq("provider_id", user.id)
           .order("created_at", { ascending: false }),
-        supabase.rpc("provider_quotes_left", { p_provider_id: user.id }),
+        supabase.rpc("provider_conversations_left", { p_provider_id: user.id }),
       ]);
 
       setQuotes((qs as unknown as QuoteRow[]) ?? []);
@@ -80,7 +80,7 @@ export default function ProveedorCotizacionesPage() {
             {left === null ? "Ilimitadas" : left}
           </p>
           <p className="text-[11px] text-[#6B7280] mt-0.5">
-            {left === null ? "Con tu plan actual" : "Te quedan este mes"}
+            {left === null ? "Con tu plan actual" : "Conversaciones nuevas este mes"}
           </p>
         </div>
       </div>
@@ -90,10 +90,14 @@ export default function ProveedorCotizacionesPage() {
           <Zap className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-sm font-bold text-amber-900">
-              {left === 0 ? "Te quedaste sin cotizaciones este mes" : `Te quedan ${left}`}
+              {left === 0
+                ? "Te quedaste sin conversaciones nuevas este mes"
+                : `Te quedan ${left} conversaciones nuevas`}
             </p>
             <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-              Con el plan Pro son ilimitadas y entras al concurso mensual de tu categoría.
+              Cotizar dentro de una conversación abierta no tiene límite. Con el plan
+              Pro tampoco lo tiene abrir conversaciones nuevas, y entras al concurso
+              mensual de tu categoría.
             </p>
             <Link href="/dashboard/plan"
               className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#D92D20] hover:underline">

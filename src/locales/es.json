@@ -588,11 +588,11 @@
       "basico": {
         "name": "Básico",
         "period": "para siempre",
-        "description": "Publica tu perfil y empieza a recibir clientes.",
+        "description": "Prueba Pro gratis tu primer mes. Después sigues gratis para siempre (3 conversaciones nuevas al mes).",
         "features": [
           "Perfil público con tus servicios",
           "Chat directo con clientes",
-          "3 cotizaciones al mes, siempre",
+          "3 conversaciones nuevas al mes, siempre",
           "Calificaciones y reputación",
           "0% de comisión sobre tus ventas"
         ]
@@ -602,7 +602,7 @@
         "period": "al año",
         "description": "Primer mes gratis + un mes adicional al suscribirte.",
         "features": [
-          "Cotizaciones ilimitadas",
+          "Conversaciones y cotizaciones ilimitadas",
           "Acceso al concurso mensual de tu categoría",
           "Perfil destacado en resultados",
           "Insignia de proveedor Pro",
@@ -619,7 +619,7 @@
         "description": "Para negocios registrados. Primer mes gratis + un mes adicional al suscribirte.",
         "daily": "Eso es aprox. S/0.90 al día",
         "features": [
-          "Cotizaciones ilimitadas",
+          "Conversaciones y cotizaciones ilimitadas",
           "Concurso mensual de la categoría Negocios",
           "Perfil destacado en resultados",
           "Insignia de negocio Pro",
