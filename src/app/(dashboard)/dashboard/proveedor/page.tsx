@@ -13,6 +13,7 @@ import {
   Clock, Zap, Trophy,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import ContestBanner from "@/components/dashboard/ContestBanner";
 
 interface Perfil {
   name: string | null; business_name: string | null;
@@ -34,11 +35,13 @@ export default function ProveedorHomePage() {
   const [quotesLeft, setLeft]   = useState<number | null>(null);
   const [servicios, setServicios] = useState(0);
   const [porHacer, setPorHacer]   = useState(0);
+  const [userId, setUserId]       = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoading(false); return; }
+      setUserId(user.id);
 
       const [{ data: p }, { data: left }, { count: svc }, { count: jobs }] = await Promise.all([
         supabase.from("profiles")
@@ -97,6 +100,16 @@ export default function ProveedorHomePage() {
         <p className="text-sm text-[#6B7280] mt-0.5">Tú me ayudas, yo te ayudo.</p>
       </div>
 
+      {/* ── Concurso: la razón de pasar a Pro ────────────────── */}
+      {/* Solo al Básico. El mes de prueba ya es Pro y ya compite. */}
+      {!esPro && userId && (
+        <ContestBanner
+          providerId={userId}
+          accountType={perfil?.account_type ?? "persona"}
+          precioPro={PRO_PRICE[perfil?.account_type ?? "persona"]}
+        />
+      )}
+
       {/* ── Resumen del plan ─────────────────────────────────── */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden max-w-3xl">
         <div className={`px-5 py-4 flex items-center justify-between gap-3 flex-wrap ${esPro ? "bg-[#B42318]" : "bg-gray-50 border-b border-gray-100"}`}>
@@ -146,10 +159,12 @@ export default function ProveedorHomePage() {
             ))}
           </ul>
 
+          {/* Lo del concurso ya lo dice el banner de arriba, con el ganador
+              real de su categoría. Repetirlo aquí era decirlo dos veces y
+              peor: sin datos. */}
           {!esPro && (
             <p className="text-[11px] text-[#6B7280] mt-4 leading-relaxed">
-              El plan Básico no entra al concurso mensual. Con Pro tienes
-              conversaciones ilimitadas y compites por los premios de tu categoría.
+              Con Pro tienes conversaciones nuevas ilimitadas.
             </p>
           )}
 
