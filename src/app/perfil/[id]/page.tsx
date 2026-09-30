@@ -10,6 +10,7 @@ import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import ProfileActions from "./ProfileActions";
 import BusinessHoursBadge from "@/components/BusinessHoursBadge";
 import WinnerBadge from "@/components/WinnerBadge";
+import VerifiedBadge from "@/components/VerifiedBadge";
 import type { BusinessHours } from "@/lib/businessHours";
 
 /* ─────────────────────────────────────────────────────────────
@@ -279,11 +280,8 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
                 </span>
 
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
-                  {profile.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#0E9384]">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
-                    </span>
-                  )}
+                  <VerifiedBadge verified={profile.verified} accountType={profile.account_type}
+                    variant="full" size="md" />
                   {isProveedor && profile.plan === "pro" && (
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#D92D20] text-white">
                       <Award className="h-3 w-3" /> PRO

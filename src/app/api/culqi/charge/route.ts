@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 import { getPlanInfo } from "@/lib/plans";
+import { isValidRuc } from "@/lib/ruc";
 import { sendBrevoTemplate, syncBrevoContact, splitFullName, formatDateLima, missingParams, LOGIN_URL } from "@/lib/brevo";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +76,26 @@ export async function POST(request: NextRequest) {
   const info = getPlanInfo(rol ?? "proveedor", plan ?? "pro", accountType);
   if (!info) {
     return NextResponse.json({ success: false, error: "Plan no válido." }, { status: 400 });
+  }
+
+  // El plan Negocio exige RUC, y se comprueba ANTES del cobro. activate_pro_plan
+  // lo comprueba otra vez, pero llegar hasta ahí significaría tarjeta cobrada y
+  // plan sin activar: el peor resultado posible. El dueño lee su propia fila de
+  // profile_private por RLS, así que basta la sesión.
+  if (user && accountType === "negocio") {
+    const { data: priv } = await supabase
+      .from("profile_private")
+      .select("doc_type, doc_number")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const rucOk = priv?.doc_type === "ruc" && isValidRuc(String(priv?.doc_number ?? ""));
+    if (!rucOk) {
+      return NextResponse.json(
+        { success: false, error: "El plan Negocio requiere un RUC válido. Agrégalo antes de pagar." },
+        { status: 400 },
+      );
+    }
   }
 
   // Single charge

@@ -4,7 +4,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Loader2, Heart, Star, MapPin, CheckCircle2, MessageCircle, Trash2 } from "lucide-react";
+import { Loader2, Heart, Star, MapPin, MessageCircle, Trash2 } from "lucide-react";
+import VerifiedBadge from "@/components/VerifiedBadge";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { findOrCreateConversation } from "@/lib/conversations";
@@ -16,6 +17,7 @@ interface FavRow {
     name: string | null; business_name: string | null;
     rating: number | null; ratings_count: number | null;
     verified: boolean | null; district: string | null; region: string | null;
+    account_type: string | null;
     avatar_url: string | null;
   } | null;
 }
@@ -37,7 +39,7 @@ export default function ClienteFavoritosPage() {
 
       const { data } = await supabase
         .from("favorites")
-        .select("provider_id, created_at, provider:profiles!favorites_provider_id_fkey(name, business_name, rating, ratings_count, verified, district, region, avatar_url)")
+        .select("provider_id, created_at, provider:profiles!favorites_provider_id_fkey(name, business_name, rating, ratings_count, verified, district, region, avatar_url, account_type)")
         .eq("client_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -117,7 +119,7 @@ export default function ClienteFavoritosPage() {
                       ) : (
                         <span className="text-[11px] text-gray-400">Sin reseñas</span>
                       )}
-                      {p?.verified && <CheckCircle2 className="h-3 w-3 text-[#0E9384]" />}
+                      <VerifiedBadge verified={p?.verified} accountType={p?.account_type} />
                     </div>
                   </div>
                 </div>

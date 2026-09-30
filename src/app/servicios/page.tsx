@@ -6,11 +6,12 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, MapPin, Star, Wrench, Loader2, CheckCircle2, Trophy } from "lucide-react";
+import { Search, MapPin, Star, Wrench, Loader2, Trophy, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import FavoriteButton from "@/components/FavoriteButton";
 import { WinnerTag } from "@/components/WinnerBadge";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 interface Category { id: string; slug: string; name: string; }
 
@@ -26,6 +27,7 @@ interface ServiceRow {
     rating: number | null; ratings_count: number | null;
     verified: boolean | null; district: string | null;
     last_award_period: string | null;
+    account_type: string | null;
   } | null;
 }
 
@@ -63,7 +65,7 @@ function ServiceCard({ s }: { s: ServiceRow }) {
 
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           <p className="text-xs font-semibold text-gray-700 truncate">{providerName}</p>
-          {provider?.verified && <CheckCircle2 className="h-3 w-3 text-[#0E9384] flex-shrink-0" />}
+          <VerifiedBadge verified={provider?.verified} accountType={provider?.account_type} />
           <WinnerTag period={provider?.last_award_period ?? null} />
         </div>
 
@@ -108,6 +110,7 @@ function ServiciosInner() {
   const [services, setServices]     = useState<ServiceRow[]>([]);
   const [loading, setLoading]       = useState(true);
   const [query, setQuery]           = useState("");
+  const [soloNegocios, setSoloNegocios] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -120,9 +123,13 @@ function ServiciosInner() {
     const supabase = createClient();
     setLoading(true);
 
+    /* profiles!inner y no profiles: sin el inner, un filtro sobre columnas
+       de la tabla embebida NO descarta filas — PostgREST devuelve todos los
+       servicios con el perfil en null. Y como provider_id es NOT NULL con
+       clave ajena a profiles, el inner no puede perder nada. */
     let q = supabase
       .from("provider_services")
-      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles(name, business_name, rating, ratings_count, verified, district, last_award_period)")
+      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles!inner(name, business_name, rating, ratings_count, verified, district, last_award_period, account_type)")
       .eq("status", "activo")
       .order("featured_until", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })
@@ -133,11 +140,15 @@ function ServiciosInner() {
       if (cat) q = q.eq("category_id", cat.id);
     }
 
+    if (soloNegocios) {
+      q = q.eq("profiles.account_type", "negocio").eq("profiles.verified", true);
+    }
+
     q.then(({ data }) => {
       setServices((data as unknown as ServiceRow[]) ?? []);
       setLoading(false);
     });
-  }, [catParam, categories]);
+  }, [catParam, categories, soloNegocios]);
 
   const filtered = services.filter(s => {
     if (!query.trim()) return true;
@@ -191,6 +202,24 @@ function ServiciosInner() {
               {c.name}
             </button>
           ))}
+        </div>
+
+        {/* Separado de las categorías porque no es una de ellas: se combina
+            con cualquiera. En teal, el color con que se marca lo verificado. */}
+        <div className="flex items-center gap-2 mb-6">
+          <button type="button" onClick={() => setSoloNegocios(v => !v)}
+            aria-pressed={soloNegocios}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+              soloNegocios
+                ? "bg-[#0E9384] text-white border-[#0E9384]"
+                : "bg-white text-[#6B7280] border-gray-200 hover:border-[#0E9384] hover:text-[#0E9384]"}`}>
+            <Store className="h-3 w-3" /> Negocios verificados
+          </button>
+          {soloNegocios && (
+            <span className="text-[11px] text-[#6B7280]">
+              Solo negocios con RUC revisado por Apurape
+            </span>
+          )}
         </div>
 
         {loading ? (

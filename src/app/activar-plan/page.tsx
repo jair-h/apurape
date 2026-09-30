@@ -7,6 +7,8 @@ import { useSearchParams } from "next/navigation";
 import { Loader2 as SpinnerFallback, Loader2, Lock, CheckCircle2, CreditCard, ArrowRight, AlertCircle } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { getPlanInfo, type PlanInfo } from "@/lib/plans";
+import { createClient } from "@/lib/supabase";
+import { isValidRuc, normalizeRuc, rucError } from "@/lib/ruc";
 
 /* ─── Culqi v4 globals ────────────────────────────────────── */
 declare global {
@@ -44,11 +46,63 @@ type Status = "idle" | "processing" | "done" | "error";
 function CheckoutInner() {
   const { t } = useTranslation();
   const params = useSearchParams();
-  const info = getPlanInfo(params.get("rol"), params.get("plan"));
+  const supabase = createClient();
+
+  /* El tipo de cuenta decide el PRECIO (S/120 persona, S/330 negocio), así
+     que hay que leerlo del perfil antes de abrir el modal. Resolver el plan
+     sin él caía a 'persona': el modal mostraba S/120 y el servidor cobraba
+     S/330, porque el servidor sí lee el perfil. */
+  const [accountType, setAccountType] = useState<string | null>(null);
+  const info = getPlanInfo(params.get("rol"), params.get("plan"), accountType);
 
   const [status, setStatus]       = useState<Status>("idle");
   const [chargeId, setChargeId]   = useState("");
   const [error, setError]         = useState("");
+
+  /* RUC: obligatorio para el plan Negocio, y ANTES de cobrar. */
+  const [ruc, setRuc]             = useState("");
+  const [rucGuardado, setRucGuardado] = useState(false);
+  const [guardandoRuc, setGuardandoRuc] = useState(false);
+  const [rucMsg, setRucMsg]       = useState<string | null>(null);
+
+  const esNegocio = accountType === "negocio";
+
+  useEffect(() => {
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { setAccountType("persona"); return; }
+
+      const [{ data: p }, { data: priv }] = await Promise.all([
+        supabase.from("profiles").select("account_type").eq("id", user.id).maybeSingle(),
+        supabase.from("profile_private").select("doc_type, doc_number").eq("id", user.id).maybeSingle(),
+      ]);
+
+      setAccountType((p?.account_type as string) ?? "persona");
+
+      if (priv?.doc_type === "ruc" && priv?.doc_number && isValidRuc(priv.doc_number as string)) {
+        setRuc(priv.doc_number as string);
+        setRucGuardado(true);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const guardarRuc = async () => {
+    const err = rucError(ruc);
+    if (err) { setRucMsg(err); return; }
+
+    setGuardandoRuc(true);
+    setRucMsg(null);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setRucMsg("Inicia sesión para continuar."); setGuardandoRuc(false); return; }
+
+    const { error: e } = await supabase.from("profile_private")
+      .upsert({ id: user.id, doc_type: "ruc", doc_number: normalizeRuc(ruc) });
+
+    if (e) setRucMsg("No se pudo guardar el RUC. Revisa el número e intenta de nuevo.");
+    else { setRucGuardado(true); setRucMsg(null); }
+    setGuardandoRuc(false);
+  };
 
   // Debug: confirm we're a client component and whether the public key reached the browser.
   useEffect(() => {
@@ -101,7 +155,18 @@ function CheckoutInner() {
       alert("Cargando sistema de pago, intenta de nuevo");
       return;
     }
+    /* Sin el tipo de cuenta el precio del modal sería el de persona. Antes
+       de saberlo no se abre nada. */
+    if (accountType === null) return;
     if (!info) return;
+
+    /* El plan Negocio no llega a la tarjeta sin RUC. El servidor lo
+       comprueba otra vez antes de cobrar, pero pararlo aquí evita el peor
+       resultado posible: cobrar y después no poder activar. */
+    if (esNegocio && !rucGuardado) {
+      setRucMsg("Guarda tu RUC antes de pagar.");
+      return;
+    }
 
     // Culqi Checkout v4: the public key is a PROPERTY of the Culqi object,
     // assigned before settings() and open() — never inside settings().
@@ -112,7 +177,7 @@ function CheckoutInner() {
 
     window.Culqi.settings({
       title: "Apurape",
-      currency: "USD",
+      currency: "PEN",          // Apurape cobra en soles; el servidor ya usaba PEN
       description: `Plan ${info.name}`,
       amount: info.amountCents,
     });
@@ -201,13 +266,54 @@ function CheckoutInner() {
               </div>
             )}
 
+            {/* RUC del plan Negocio. Va antes del botón a propósito: el
+                servidor vuelve a comprobarlo, pero exigirlo aquí evita
+                cobrar la tarjeta para después no poder activar el plan. */}
+            {esNegocio && (
+              <div className={`rounded-xl border p-4 ${rucGuardado ? "border-teal-200 bg-teal-50" : "border-amber-300 bg-amber-50"}`}>
+                <p className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">
+                  RUC de tu negocio *
+                </p>
+
+                {rucGuardado ? (
+                  <p className="flex items-center gap-2 text-sm font-bold text-[#0E9384]">
+                    <CheckCircle2 className="h-4 w-4" /> {ruc}
+                    <button type="button" onClick={() => setRucGuardado(false)}
+                      className="ml-auto text-[11px] font-bold text-[#6B7280] underline hover:no-underline">
+                      Cambiar
+                    </button>
+                  </p>
+                ) : (
+                  <>
+                    <div className="flex gap-2">
+                      <input type="text" inputMode="numeric" value={ruc} maxLength={14}
+                        onChange={e => { setRuc(e.target.value); setRucMsg(null); }}
+                        placeholder="20131312955"
+                        className="flex-1 px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent" />
+                      <button type="button" onClick={guardarRuc} disabled={guardandoRuc}
+                        className="px-4 py-2 rounded-lg bg-[#0E9384] text-white text-xs font-bold hover:bg-[#0B7A6E] disabled:opacity-50 transition-colors">
+                        {guardandoRuc ? <Loader2 className="h-4 w-4 animate-spin" /> : "Guardar"}
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-amber-900 mt-2 leading-relaxed">
+                      El plan Negocio requiere RUC. Son 11 dígitos y empiezan por 10 o 20.
+                    </p>
+                  </>
+                )}
+
+                {rucMsg && <p className="text-[11px] font-bold text-[#B42318] mt-2">{rucMsg}</p>}
+              </div>
+            )}
+
             <button
               type="button"
               onClick={openCheckout}
-              disabled={status === "processing"}
-              className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3.5 rounded-xl text-sm font-bold hover:bg-[#912018] disabled:opacity-70 transition-colors"
+              disabled={status === "processing" || accountType === null || (esNegocio && !rucGuardado)}
+              className="w-full flex items-center justify-center gap-2 bg-[#D92D20] text-white py-3.5 rounded-xl text-sm font-bold hover:bg-[#912018] disabled:opacity-70 disabled:cursor-not-allowed transition-colors"
             >
-              {status === "processing" ? (
+              {accountType === null ? (
+                <><Loader2 className="h-4 w-4 animate-spin" /> Cargando tu plan…</>
+              ) : status === "processing" ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> {t("checkout.processing")}</>
               ) : status === "error" ? (
                 <><Lock className="h-4 w-4" /> {t("checkout.retry")}</>
