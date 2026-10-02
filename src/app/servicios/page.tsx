@@ -28,6 +28,7 @@ interface ServiceRow {
     verified: boolean | null; district: string | null;
     last_award_period: string | null;
     account_type: string | null;
+    logo_url: string | null;
   } | null;
 }
 
@@ -129,7 +130,7 @@ function ServiciosInner() {
        clave ajena a profiles, el inner no puede perder nada. */
     let q = supabase
       .from("provider_services")
-      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles!inner(name, business_name, rating, ratings_count, verified, district, last_award_period, account_type)")
+      .select("id, title, description, price_from, price_unit, photos, works_remote, featured_until, coverage_districts, provider_id, service_categories(name, slug), profiles!inner(name, business_name, rating, ratings_count, verified, district, last_award_period, account_type, logo_url)")
       .eq("status", "activo")
       .order("featured_until", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false })

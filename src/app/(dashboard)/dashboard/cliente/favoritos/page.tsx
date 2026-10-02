@@ -19,6 +19,7 @@ interface FavRow {
     verified: boolean | null; district: string | null; region: string | null;
     account_type: string | null;
     avatar_url: string | null;
+    logo_url: string | null;
   } | null;
 }
 
@@ -39,7 +40,7 @@ export default function ClienteFavoritosPage() {
 
       const { data } = await supabase
         .from("favorites")
-        .select("provider_id, created_at, provider:profiles!favorites_provider_id_fkey(name, business_name, rating, ratings_count, verified, district, region, avatar_url, account_type)")
+        .select("provider_id, created_at, provider:profiles!favorites_provider_id_fkey(name, business_name, rating, ratings_count, verified, district, region, avatar_url, account_type, logo_url)")
         .eq("client_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -101,8 +102,10 @@ export default function ClienteFavoritosPage() {
               <div key={f.provider_id} className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm flex flex-col">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    {p?.avatar_url
-                      ? <img src={p.avatar_url} alt={nombre} className="w-full h-full object-cover" />
+                    {/* El Negocio se reconoce por su logo, no por una foto. */}
+                    {(p?.logo_url || p?.avatar_url)
+                      ? <img src={p.logo_url || p.avatar_url!} alt={nombre}
+                          className={`w-full h-full ${p.logo_url ? "object-contain p-1 bg-white" : "object-cover"}`} />
                       : <span className="text-lg font-extrabold text-[#D92D20]">{nombre.charAt(0).toUpperCase()}</span>}
                   </div>
                   <div className="min-w-0 flex-1">

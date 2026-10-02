@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, MapPin, Star, Wrench, Search as SearchIcon,
-  ChevronRight, CheckCircle2, Award, Trophy, Quote as QuoteIcon,
+  ChevronRight, Award, Trophy, Quote as QuoteIcon, Users,
 } from "lucide-react";
 import { createServerSupabase } from "@/lib/supabase-server";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
@@ -52,6 +52,13 @@ interface Profile {
   business_hours: BusinessHours | null;
   last_award_period: string | null;
   service_categories: { name: string } | null;   // categoría del premio
+  logo_url: string | null;
+  promo_banner_url: string | null;
+  promo_text: string | null;
+}
+
+interface Miembro {
+  id: string; name: string; role: string | null; photo_url: string | null;
 }
 
 interface ServiceRow {
@@ -71,6 +78,7 @@ interface ProfileBundle {
   profile: Profile;
   services: ServiceRow[];
   ratings: RatingRow[];
+  team: Miembro[];
 }
 
 /* ─── Data ────────────────────────────────────────────────── */
@@ -80,7 +88,7 @@ async function getProfileData(id: string): Promise<ProfileBundle | null> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, name, business_name, role, account_type, bio, avatar_url, region, province, district, country, rating, ratings_count, five_star_count, confirmed_jobs_count, verified, plan, level, points, created_at, business_hours, last_award_period, service_categories!profiles_last_award_category_id_fkey(name)")
+    .select("id, name, business_name, role, account_type, bio, avatar_url, region, province, district, country, rating, ratings_count, five_star_count, confirmed_jobs_count, verified, plan, level, points, created_at, business_hours, last_award_period, logo_url, promo_banner_url, promo_text, service_categories!profiles_last_award_category_id_fkey(name)")
     .eq("id", id)
     .maybeSingle();
 
@@ -91,7 +99,7 @@ async function getProfileData(id: string): Promise<ProfileBundle | null> {
 
   // Solo el Proveedor tiene catálogo. Las calificaciones que se
   // muestran son las que dejó un Cliente: son las que cuentan.
-  const [servicesRes, ratingsRes] = await Promise.all([
+  const [servicesRes, ratingsRes, teamRes] = await Promise.all([
     p.role === "proveedor"
       ? supabase
           .from("provider_services")
@@ -108,6 +116,15 @@ async function getProfileData(id: string): Promise<ProfileBundle | null> {
       .eq("direction", p.role === "proveedor" ? "cliente_a_proveedor" : "proveedor_a_cliente")
       .order("created_at", { ascending: false })
       .limit(12),
+    /* El equipo es cosa de Negocio. Para una Persona no se consulta: no
+       tendría filas y sería un viaje de ida y vuelta para nada. */
+    p.role === "proveedor" && p.account_type === "negocio"
+      ? supabase
+          .from("team_members")
+          .select("id, name, role, photo_url")
+          .eq("provider_id", id)
+          .order("order_num")
+      : Promise.resolve({ data: null }),
   ]);
 
   const rawRatings = (ratingsRes.data as Omit<RatingRow, "rater_name">[] | null) ?? [];
@@ -128,6 +145,7 @@ async function getProfileData(id: string): Promise<ProfileBundle | null> {
     profile: p,
     services: (servicesRes.data as unknown as ServiceRow[] | null) ?? [],
     ratings: rawRatings.map(r => ({ ...r, rater_name: raterNames[r.rater_id] ?? "Usuario" })),
+    team: (teamRes.data as Miembro[] | null) ?? [],
   };
 }
 
@@ -231,11 +249,17 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
   const data = await getProfileData(id);
   if (!data) notFound();
 
-  const { profile, services, ratings } = data;
+  const { profile, services, ratings, team } = data;
   const cfg = ROLE_CONFIG[profile.role] ?? ROLE_CONFIG.cliente;
   const { Icon } = cfg;
   const displayName = nameOf(profile);
   const isProveedor = profile.role === "proveedor";
+  const esNegocio = profile.account_type === "negocio";
+
+  /* El Negocio se presenta con su marca; la Persona con su cara. El trigger
+     clear_negocio_fields garantiza que logo_url está en null si no es
+     Negocio, así que no hace falta comprobarlo otra vez. */
+  const imagen = profile.logo_url || profile.avatar_url;
   const location = [profile.district, profile.province, profile.region, profile.country].filter(Boolean).join(", ");
   const memberSince = new Date(profile.created_at).toLocaleDateString("es-PE", { month: "long", year: "numeric" });
 
@@ -260,14 +284,33 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
           <span className="text-gray-900 font-semibold truncate">{displayName}</span>
         </nav>
 
+        {/* Promoción del Negocio. Vive SOLO aquí: en el buscador todos los
+            proveedores se muestran igual, para que pagar no dé ventaja
+            visual donde la gente compara. */}
+        {isProveedor && esNegocio && (profile.promo_banner_url || profile.promo_text) && (
+          <div className="mb-6 rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm">
+            {profile.promo_banner_url && (
+              <img src={profile.promo_banner_url}
+                alt={profile.promo_text ?? `Promoción de ${displayName}`}
+                className="w-full max-h-56 object-cover" />
+            )}
+            {profile.promo_text && (
+              <p className="px-5 py-3 text-sm font-bold text-[#0E9384] bg-teal-50">
+                {profile.promo_text}
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Columna izquierda */}
           <div className="space-y-4">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex flex-col items-center text-center mb-5">
                 <div className={`w-20 h-20 rounded-2xl ${cfg.bg} flex items-center justify-center mb-3 shadow-sm overflow-hidden`}>
-                  {profile.avatar_url
-                    ? <img src={profile.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                  {imagen
+                    ? <img src={imagen} alt={displayName}
+                        className={`w-full h-full ${profile.logo_url ? "object-contain p-1.5 bg-white" : "object-cover"}`} />
                     : <span className={`text-3xl font-extrabold ${cfg.color}`}>{displayName.charAt(0).toUpperCase()}</span>}
                 </div>
                 <h1 className="text-lg font-extrabold text-gray-900 mb-1">{displayName}</h1>
@@ -359,6 +402,28 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
 
           {/* Columna derecha */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Nuestro equipo: fotos y nombres, sin cuentas propias. Solo si
+                de verdad cargó integrantes, para no dejar una sección vacía. */}
+            {isProveedor && esNegocio && team.length > 0 && (
+              <Section title={`Nuestro equipo (${team.length})`} icon={Users}>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                  {team.map(m => (
+                    <div key={m.id} className="text-center">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gray-100 border border-gray-200 overflow-hidden mb-1.5">
+                        {m.photo_url
+                          ? <img src={m.photo_url} alt={m.name} className="w-full h-full object-cover" />
+                          : <div className="w-full h-full flex items-center justify-center text-sm font-extrabold text-gray-400">
+                              {m.name.charAt(0).toUpperCase()}
+                            </div>}
+                      </div>
+                      <p className="text-[11px] font-bold text-gray-900 leading-tight">{m.name}</p>
+                      {m.role && <p className="text-[10px] text-[#6B7280] leading-tight mt-0.5">{m.role}</p>}
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            )}
+
             {isProveedor && (
               <Section title={`Servicios que ofrece (${services.length})`} icon={Wrench}>
                 {services.length === 0 ? (

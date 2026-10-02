@@ -4,10 +4,12 @@
  * Reemplaza a /dashboard/productor/catalogo y /dashboard/exportador/productos. */
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import PhotoEditor from "@/components/dashboard/PhotoEditor";
 import { Plus, Loader2, Wrench, X, Pencil, Trash2, Eye, EyeOff, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 
-interface Category { id: string; slug: string; name: string; }
+interface Category { id: string; slug: string; name: string; group_key: string; }
 interface Subcategory { id: string; category_id: string; name: string; }
 
 interface ServiceRow {
@@ -18,18 +20,20 @@ interface ServiceRow {
   years_experience: number | null;
   status: string; featured_until: string | null;
   views_count: number; quotes_count: number;
+  photos: string[];
 }
 
 interface FormState {
   title: string; description: string; category_id: string; subcategory_id: string;
   price_from: string; price_unit: string; coverage_districts: string;
   works_remote: boolean; years_experience: string;
+  photos: string[];
 }
 
 const EMPTY: FormState = {
   title: "", description: "", category_id: "", subcategory_id: "",
   price_from: "", price_unit: "servicio", coverage_districts: "",
-  works_remote: false, years_experience: "",
+  works_remote: false, years_experience: "", photos: [],
 };
 
 const PRICE_UNITS = [
@@ -54,6 +58,8 @@ export default function ProveedorServiciosPage() {
   const [form, setForm]               = useState<FormState>(EMPTY);
   const [saving, setSaving]           = useState(false);
   const [error, setError]             = useState("");
+  /* Decide el tope de fotos y el del catálogo. */
+  const [accountType, setAccountType] = useState("persona");
 
   useEffect(() => {
     (async () => {
@@ -61,15 +67,17 @@ export default function ProveedorServiciosPage() {
       if (!user) { setLoading(false); return; }
       setUserId(user.id);
 
-      const [{ data: svc }, { data: cats }, { data: subs }] = await Promise.all([
+      const [{ data: svc }, { data: cats }, { data: subs }, { data: prof }] = await Promise.all([
         supabase.from("provider_services").select("*").eq("provider_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("service_categories").select("id, slug, name").eq("active", true).order("order_num"),
+        supabase.from("service_categories").select("id, slug, name, group_key").eq("active", true).order("order_num"),
         supabase.from("service_subcategories").select("id, category_id, name").eq("active", true).order("order_num"),
+        supabase.from("profiles").select("account_type").eq("id", user.id).maybeSingle(),
       ]);
 
       setServices((svc as ServiceRow[]) ?? []);
       setCategories((cats as Category[]) ?? []);
       setSubcats((subs as Subcategory[]) ?? []);
+      setAccountType((prof?.account_type as string) ?? "persona");
       setLoading(false);
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -93,6 +101,7 @@ export default function ProveedorServiciosPage() {
       coverage_districts: (s.coverage_districts ?? []).join(", "),
       works_remote: s.works_remote,
       years_experience: s.years_experience != null ? String(s.years_experience) : "",
+      photos: s.photos ?? [],
     });
     setError("");
     setShowForm(true);
@@ -113,6 +122,7 @@ export default function ProveedorServiciosPage() {
       coverage_districts: form.coverage_districts.split(",").map(d => d.trim()).filter(Boolean),
       works_remote:       form.works_remote,
       years_experience:   form.years_experience ? parseInt(form.years_experience) : null,
+      photos:             form.photos,
     };
 
     const { data, error: err } = editing
@@ -153,6 +163,25 @@ export default function ProveedorServiciosPage() {
     return <div className="flex flex-1 items-center justify-center bg-gray-50"><Loader2 className="h-8 w-8 text-[#D92D20] animate-spin" /></div>;
   }
 
+  /* Cupo por grupo. El máximo sale de los mismos valores por defecto que
+     usa catalog_max() en la base; si se cambian en config, allí manda la
+     base y aquí solo se vería un número desactualizado, nunca un límite
+     distinto al que se aplica. */
+  const MAX: Record<string, Record<string, number>> = {
+    productos: { persona: 15, negocio: 40 },
+    servicios: { persona: 5,  negocio: 20 },
+  };
+
+  const cupos = (["servicios", "productos"] as const)
+    .map(grupo => {
+      const ids = new Set(categories.filter(c => c.group_key === grupo).map(c => c.id));
+      const usados = services.filter(s => s.status === "activo" && ids.has(s.category_id)).length;
+      return { grupo, usados, max: MAX[grupo][accountType === "negocio" ? "negocio" : "persona"] };
+    })
+    /* Si no publicó nada de un grupo, no se le menciona: un contador en cero
+       de algo que no hace es ruido. */
+    .filter(c => c.usados > 0);
+
   return (
     <div className="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6">
       <div className="flex items-start justify-between gap-4 mb-6">
@@ -167,6 +196,27 @@ export default function ProveedorServiciosPage() {
           <Plus className="h-4 w-4" /> <span className="hidden sm:inline">Nuevo servicio</span>
         </button>
       </div>
+
+      {/* Cuánto le queda de catálogo, por grupo. Solo cuenta los activos:
+          un servicio en pausa no lo ve nadie, así que no gasta cuota. */}
+      {cupos.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-5">
+          {cupos.map(c => (
+            <span key={c.grupo}
+              className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full border ${
+                c.usados >= c.max
+                  ? "bg-amber-50 text-amber-900 border-amber-300"
+                  : "bg-white text-[#6B7280] border-gray-200"}`}>
+              {c.grupo === "productos" ? "Productos" : "Servicios"}: {c.usados} de {c.max}
+              {c.usados >= c.max && accountType !== "negocio" && (
+                <Link href="/dashboard/plan" className="text-[#0E9384] underline hover:no-underline">
+                  ampliar
+                </Link>
+              )}
+            </span>
+          ))}
+        </div>
+      )}
 
       {services.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 py-16 text-center">
@@ -312,6 +362,11 @@ export default function ProveedorServiciosPage() {
                   placeholder="Miraflores, Surco, San Isidro" className={inputClass} />
                 <p className="text-[10px] text-gray-400 mt-1">Sepáralos con comas.</p>
               </div>
+
+              {/* El tope real lo pone guard_catalog_limits en la base; aquí se
+                  evita llegar hasta allí. */}
+              <PhotoEditor value={form.photos} accountType={accountType}
+                onChange={fotos => setForm(f => ({ ...f, photos: fotos }))} />
 
               <div className="grid grid-cols-2 gap-3 items-end">
                 <div>

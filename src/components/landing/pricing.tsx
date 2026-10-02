@@ -27,6 +27,10 @@ type Plan = {
   isFree?: boolean;
   /** Equivalente diario bajo el precio grande. Solo en los planes Pro. */
   dailyNoteKey?: string;
+  /** Pinta la tarjeta en teal en vez del rojo de la marca. Lo usa Pro
+   *  Negocio: al estar las tres juntas, el color es lo que separa de un
+   *  vistazo el plan de empresa del de independiente. */
+  teal?: boolean;
 };
 
 type Tab = {
@@ -72,6 +76,7 @@ const TABS: Tab[] = [
         descKey: "plans.proveedor.proNegocio.description",
         dailyNoteKey: "plans.proveedor.proNegocio.daily",
         featured: false,
+        teal: true,
         href: "/register?rol=proveedor&plan=pro&tipo=negocio",
         featuresKey: "plans.proveedor.proNegocio.features",
         ctaKey: "plans.cta.startNow",
@@ -107,11 +112,18 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
 
   const features = ta(plan.featuresKey);
 
+  /* Pro Negocio va en teal. Las tres tarjetas de proveedor son del mismo
+     plan Pro con dos precios, y en rojo las tres se leían como una sola
+     escalera: el color es lo que separa el plan de empresa a simple vista. */
+  const teal = !!plan.teal;
+
   return (
     <div
       className={`relative flex flex-col rounded-2xl p-8 h-full ${
         plan.featured
           ? "bg-[#B42318] text-white shadow-2xl ring-2 ring-[#D92D20]"
+          : teal
+          ? "bg-white border-2 border-[#0E9384] shadow-sm"
           : "bg-white border border-gray-200 shadow-sm"
       }`}
     >
@@ -122,10 +134,14 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
       )}
 
       <div className="mb-5">
-        <div className={`inline-flex items-center justify-center h-11 w-11 rounded-xl mb-3 ${plan.featured ? "bg-white/15 text-[#FDA29B]" : "bg-[#FEF3F2] text-[#D92D20]"}`}>
+        <div className={`inline-flex items-center justify-center h-11 w-11 rounded-xl mb-3 ${
+          plan.featured ? "bg-white/15 text-[#FDA29B]"
+          : teal ? "bg-teal-50 text-[#0E9384]"
+          : "bg-[#FEF3F2] text-[#D92D20]"}`}>
           <Icon className="h-5 w-5" />
         </div>
-        <h3 className={`text-xl font-bold mb-1 ${plan.featured ? "text-white" : "text-[#B42318]"}`}>
+        <h3 className={`text-xl font-bold mb-1 ${
+          plan.featured ? "text-white" : teal ? "text-[#0E9384]" : "text-[#B42318]"}`}>
           {t(plan.nameKey)}
         </h3>
         <p className={`text-sm leading-relaxed ${plan.featured ? "text-red-100" : "text-gray-500"}`}>
@@ -134,14 +150,16 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
       </div>
 
       <div className="mb-7">
-        <span className={`text-4xl font-extrabold ${plan.featured ? "text-white" : "text-[#B42318]"}`}>
+        <span className={`text-4xl font-extrabold ${
+          plan.featured ? "text-white" : teal ? "text-[#0E9384]" : "text-[#B42318]"}`}>
           {plan.price}
         </span>
         <span className={`text-sm ml-1 ${plan.featured ? "text-red-200" : "text-gray-400"}`}>
           {t(plan.periodKey)}
         </span>
         {plan.dailyNoteKey && (
-          <p className={`mt-1 text-xs font-semibold ${plan.featured ? "text-white" : "text-[#D92D20]"}`}>
+          <p className={`mt-1 text-xs font-semibold ${
+            plan.featured ? "text-white" : teal ? "text-[#0E9384]" : "text-[#D92D20]"}`}>
             {t(plan.dailyNoteKey)}
           </p>
         )}
@@ -162,7 +180,7 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
           <li key={f} className="flex items-start gap-2 text-sm">
             <Check
               className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                plan.featured ? "text-[#FDA29B]" : "text-[#D92D20]"
+                plan.featured ? "text-[#FDA29B]" : teal ? "text-[#0E9384]" : "text-[#D92D20]"
               }`}
             />
             <span className={plan.featured ? "text-red-50" : "text-gray-700"}>{f}</span>
@@ -176,6 +194,8 @@ function PlanCard({ plan, icon: Icon, onComingSoon }: { plan: Plan; icon: React.
           className={`block text-center py-3 px-6 rounded-xl font-semibold text-sm transition-colors ${
             plan.featured
               ? "bg-[#D92D20] text-white hover:bg-[#912018]"
+              : teal
+              ? "bg-[#0E9384] text-white hover:bg-[#0B7A6E]"
               : "bg-[#FEF3F2] text-[#B42318] hover:bg-[#D92D20] hover:text-white"
           }`}
         >

@@ -13,6 +13,8 @@ import { useState, useEffect } from "react";
 import { Loader2, Save, Check, Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import BusinessHoursEditor from "@/components/dashboard/BusinessHoursEditor";
+import TeamEditor from "@/components/dashboard/TeamEditor";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { BusinessHours } from "@/lib/businessHours";
 
 interface Props { accent: string; accentHover: string; }
@@ -20,6 +22,9 @@ interface Props { accent: string; accentHover: string; }
 interface PublicFields {
   name: string; business_name: string; bio: string;
   account_type: string; region: string; province: string; district: string;
+  /* Solo Negocio. El trigger clear_negocio_fields los pone en null si la
+     cuenta deja de serlo, así que no hay que limpiarlos a mano. */
+  logo_url: string; promo_banner_url: string; promo_text: string;
 }
 interface PrivateFields {
   phone: string; whatsapp: string; doc_type: string; doc_number: string;
@@ -45,7 +50,9 @@ export default function ProfileForm({ accent, accentHover }: Props) {
   const [pub, setPub] = useState<PublicFields>({
     name: "", business_name: "", bio: "", account_type: "persona",
     region: "", province: "", district: "",
+    logo_url: "", promo_banner_url: "", promo_text: "",
   });
+  const [userId, setUserId] = useState<string | null>(null);
   const [priv, setPriv] = useState<PrivateFields>({
     phone: "", whatsapp: "", doc_type: "", doc_number: "",
   });
@@ -55,10 +62,11 @@ export default function ProfileForm({ accent, accentHover }: Props) {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoading(false); return; }
+      setUserId(user.id);
 
       const [{ data: p }, { data: pp }] = await Promise.all([
         supabase.from("profiles")
-          .select("name, business_name, bio, account_type, region, province, district, role, business_hours")
+          .select("name, business_name, bio, account_type, region, province, district, role, business_hours, logo_url, promo_banner_url, promo_text")
           .eq("id", user.id).maybeSingle(),
         supabase.from("profile_private")
           .select("phone, whatsapp, doc_type, doc_number")
@@ -71,6 +79,8 @@ export default function ProfileForm({ accent, accentHover }: Props) {
           name: p.name ?? "", business_name: p.business_name ?? "", bio: p.bio ?? "",
           account_type: p.account_type ?? "persona",
           region: p.region ?? "", province: p.province ?? "", district: p.district ?? "",
+          logo_url: p.logo_url ?? "", promo_banner_url: p.promo_banner_url ?? "",
+          promo_text: p.promo_text ?? "",
         });
         setHours((p.business_hours ?? {}) as BusinessHours);
       }
@@ -100,6 +110,16 @@ export default function ProfileForm({ accent, accentHover }: Props) {
       // Solo el Proveedor tiene horario de atención; el Cliente no lo edita
       // y no se manda para no pisar el valor por accidente.
       ...(role === "proveedor" ? { business_hours: hours } : {}),
+      // Logo y promoción son del Negocio. Se mandan solo en ese caso: para
+      // una Persona el trigger los pondría en null de todos modos, pero no
+      // vale la pena enviar algo que se va a descartar.
+      ...(role === "proveedor" && pub.account_type === "negocio"
+        ? {
+            logo_url:         pub.logo_url.trim() || null,
+            promo_banner_url: pub.promo_banner_url.trim() || null,
+            promo_text:       pub.promo_text.trim() || null,
+          }
+        : {}),
     }).eq("id", user.id);
 
     // upsert: la fila puede no existir si el usuario es anterior al trigger.
@@ -185,6 +205,19 @@ export default function ProfileForm({ accent, accentHover }: Props) {
               className={`${inputClass} resize-none`} />
           </div>
 
+          {/* Logo: solo Negocio. Una persona se presenta con su foto, un
+              negocio con su marca. */}
+          {role === "proveedor" && pub.account_type === "negocio" && (
+            <div>
+              <label className={labelClass}>Logo del negocio</label>
+              <ImageUpload value={pub.logo_url} folder="logo" inputClassName={inputClass}
+                onChange={url => setPub(p => ({ ...p, logo_url: url }))} />
+              <p className="text-[10px] text-gray-400 mt-1">
+                Reemplaza tu foto de perfil en el buscador y en tu página.
+              </p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className={labelClass}>Región</label>
@@ -212,6 +245,43 @@ export default function ProfileForm({ accent, accentHover }: Props) {
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4">
             <BusinessHoursEditor value={hours} onChange={setHours} accent={accent} />
           </div>
+        )}
+
+        {/* Equipo y promoción — solo Negocio */}
+        {role === "proveedor" && pub.account_type === "negocio" && (
+          <>
+            {userId && (
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4">
+                {/* Guarda al momento, no con el botón de abajo: la lista es
+                    aparte y un "guardar" compartido se presta a perder datos. */}
+                <TeamEditor providerId={userId} />
+              </div>
+            )}
+
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4 space-y-4">
+              <div>
+                <p className="text-xs font-bold text-gray-900">Promoción destacada</p>
+                <p className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">
+                  Un banner arriba de tu perfil público. No aparece en el
+                  buscador: ahí todos se muestran igual.
+                </p>
+              </div>
+
+              <div>
+                <label className={labelClass}>Imagen del banner</label>
+                <ImageUpload value={pub.promo_banner_url} folder="promo" inputClassName={inputClass}
+                  onChange={url => setPub(p => ({ ...p, promo_banner_url: url }))} />
+              </div>
+
+              <div>
+                <label className={labelClass}>Texto de la promoción</label>
+                <input type="text" value={pub.promo_text} maxLength={120}
+                  onChange={e => setPub(p => ({ ...p, promo_text: e.target.value }))}
+                  placeholder="Ej. 20% de descuento en tu primer servicio este mes"
+                  className={inputClass} />
+              </div>
+            </div>
+          </>
         )}
 
         {/* Privado */}

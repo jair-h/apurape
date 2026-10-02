@@ -22,6 +22,7 @@ import {
   Image,
   AlertCircle,
   Settings,
+  BarChart3,
   Home,
   Heart,
 } from "lucide-react";
@@ -50,6 +51,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
     { icon: ClipboardList,   labelKey: "sidebar.myQuotes",          href: "/dashboard/proveedor/cotizaciones" },
     { icon: TrendingUp,      labelKey: "sidebar.myJobs",            href: "/dashboard/proveedor/trabajos" },
     { icon: MessageCircle,   labelKey: "sidebar.messages",          href: "/dashboard/mensajes" },
+    { icon: BarChart3,       labelKey: "sidebar.stats",             href: "/dashboard/proveedor/estadisticas" },
     { icon: Star,            labelKey: "sidebar.raffle",            href: "/dashboard/sorteo" },
     { icon: CreditCard,      labelKey: "sidebar.myPlan",            href: "/dashboard/plan" },
   ],
