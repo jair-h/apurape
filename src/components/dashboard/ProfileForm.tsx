@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase";
 import BusinessHoursEditor from "@/components/dashboard/BusinessHoursEditor";
 import TeamEditor from "@/components/dashboard/TeamEditor";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { prizeOptions } from "@/lib/prizes";
 import type { BusinessHours } from "@/lib/businessHours";
 
 interface Props { accent: string; accentHover: string; }
@@ -22,9 +23,11 @@ interface Props { accent: string; accentHover: string; }
 interface PublicFields {
   name: string; business_name: string; bio: string;
   account_type: string; region: string; province: string; district: string;
-  /* Solo Negocio. El trigger clear_negocio_fields los pone en null si la
+  /* Solo Negocio. El trigger sync_account_type_fields los pone en null si la
      cuenta deja de serlo, así que no hay que limpiarlos a mano. */
   logo_url: string; promo_banner_url: string; promo_text: string;
+  /* Aspiracional. El mismo trigger la limpia si no corresponde al tipo. */
+  prize_preference: string;
 }
 interface PrivateFields {
   phone: string; whatsapp: string; doc_type: string; doc_number: string;
@@ -50,7 +53,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
   const [pub, setPub] = useState<PublicFields>({
     name: "", business_name: "", bio: "", account_type: "persona",
     region: "", province: "", district: "",
-    logo_url: "", promo_banner_url: "", promo_text: "",
+    logo_url: "", promo_banner_url: "", promo_text: "", prize_preference: "",
   });
   const [userId, setUserId] = useState<string | null>(null);
   const [priv, setPriv] = useState<PrivateFields>({
@@ -66,7 +69,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
 
       const [{ data: p }, { data: pp }] = await Promise.all([
         supabase.from("profiles")
-          .select("name, business_name, bio, account_type, region, province, district, role, business_hours, logo_url, promo_banner_url, promo_text")
+          .select("name, business_name, bio, account_type, region, province, district, role, business_hours, logo_url, promo_banner_url, promo_text, prize_preference")
           .eq("id", user.id).maybeSingle(),
         supabase.from("profile_private")
           .select("phone, whatsapp, doc_type, doc_number")
@@ -81,6 +84,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
           region: p.region ?? "", province: p.province ?? "", district: p.district ?? "",
           logo_url: p.logo_url ?? "", promo_banner_url: p.promo_banner_url ?? "",
           promo_text: p.promo_text ?? "",
+          prize_preference: p.prize_preference ?? "",
         });
         setHours((p.business_hours ?? {}) as BusinessHours);
       }
@@ -120,6 +124,7 @@ export default function ProfileForm({ accent, accentHover }: Props) {
             promo_text:       pub.promo_text.trim() || null,
           }
         : {}),
+      ...(role === "proveedor" ? { prize_preference: pub.prize_preference || null } : {}),
     }).eq("id", user.id);
 
     // upsert: la fila puede no existir si el usuario es anterior al trigger.
@@ -244,6 +249,37 @@ export default function ProfileForm({ accent, accentHover }: Props) {
         {role === "proveedor" && (
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4">
             <BusinessHoursEditor value={hours} onChange={setHours} accent={accent} />
+          </div>
+        )}
+
+        {/* Preferencia de premio — Proveedor, los dos tipos */}
+        {role === "proveedor" && (
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-4">
+            <p className="text-xs font-bold text-gray-900">Qué te gustaría ganar</p>
+            <p className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">
+              Nos ayuda a elegir qué premios conseguir.{" "}
+              <strong>No reserva ni garantiza ningún premio</strong>: se otorgan
+              según las bases del concurso.
+            </p>
+
+            <div className="space-y-2 mt-3">
+              {prizeOptions(pub.account_type).map(o => {
+                const elegida = pub.prize_preference === o.value;
+                return (
+                  <button key={o.value} type="button"
+                    onClick={() => setPub(p => ({
+                      ...p, prize_preference: elegida ? "" : o.value,
+                    }))}
+                    className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${
+                      elegida ? "border-[#0E9384] bg-teal-50" : "border-gray-200 bg-white hover:border-[#0E9384]"}`}>
+                    <span className={`block text-xs font-bold ${elegida ? "text-[#0E9384]" : "text-gray-700"}`}>
+                      {o.label}
+                    </span>
+                    <span className="block text-[10px] text-gray-500 mt-0.5">{o.hint}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 

@@ -15,6 +15,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import { prizeOptions } from "@/lib/prizes";
 import { CountryCombobox } from "@/components/CountryCombobox";
 import { useTranslation } from "@/lib/i18n";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
@@ -71,6 +72,12 @@ type FormData = {
   companyName: string;
   country: string;
   phone: string;
+  /* Decide el precio del plan Pro y qué premios se ofrecen. Antes no se
+     guardaba: toda cuenta nacía como 'persona' aunque llegara desde la
+     tarjeta de Negocio con ?tipo=negocio en la URL. */
+  accountType: string;
+  /* Aspiracional y opcional. No reserva ningún premio. */
+  prizePreference: string;
 };
 
 function RegisterForm({
@@ -78,17 +85,23 @@ function RegisterForm({
   roleConfig,
   onSubmit,
   loading,
+  initialAccountType,
 }: {
   roleId: RoleId;
   roleConfig: typeof ROLE_CONFIG[number];
   onSubmit: (data: FormData) => void;
   loading: boolean;
+  initialAccountType: string;
 }) {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState<FormData>({
     email: "", password: "", fullName: "", companyName: "", country: "", phone: "",
+    accountType: initialAccountType, prizePreference: "",
   });
+
+  const esProveedor = roleId === "proveedor";
+  const opciones = prizeOptions(form.accountType);
 
   const set = (key: keyof FormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -114,6 +127,41 @@ function RegisterForm({
           <p className="text-sm font-semibold text-gray-800">{t(`auth.register.roles.${roleId}.label`)}</p>
         </div>
       </div>
+
+      {/* Tipo de cuenta — solo Proveedor, porque solo él tiene plan. Si
+          llegó desde una tarjeta de precios, viene ya elegido en la URL. */}
+      {esProveedor && (
+        <div>
+          <label className={labelClass}>¿Trabajas por tu cuenta o tienes un negocio? *</label>
+          <div className="flex gap-2">
+            {[
+              { v: "persona", t: "Por mi cuenta", s: "S/ 120 al año el plan Pro" },
+              { v: "negocio", t: "Tengo un negocio", s: "S/ 330 al año el plan Pro" },
+            ].map(o => (
+              <button key={o.v} type="button"
+                onClick={() => setForm(p => ({
+                  ...p,
+                  accountType: o.v,
+                  /* Las listas de premio son distintas; una elección de la
+                     otra lista no aplica y la base la limpiaría igual. */
+                  prizePreference: "",
+                }))}
+                className={`flex-1 px-3 py-2.5 rounded-lg border text-left transition-colors ${
+                  form.accountType === o.v
+                    ? "border-[#D92D20] bg-red-50"
+                    : "border-gray-300 bg-white hover:border-gray-400"}`}>
+                <span className={`block text-sm font-bold ${form.accountType === o.v ? "text-[#B42318]" : "text-gray-700"}`}>
+                  {o.t}
+                </span>
+                <span className="block text-[11px] text-gray-500 mt-0.5">{o.s}</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-[11px] text-gray-500 mt-1">
+            El plan Básico es gratis en los dos casos. Puedes cambiarlo después.
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -200,6 +248,45 @@ function RegisterForm({
         </div>
       </div>
 
+      {/* Elección de premio. Opcional y al final a propósito: el objetivo de
+          esta pantalla es crear la cuenta, no hacer una encuesta. */}
+      {esProveedor && (
+        <div className="rounded-xl border-2 border-[#0E9384] bg-teal-50 p-4">
+          <p className="text-sm font-extrabold text-[#0E9384]">
+            ¿Qué te gustaría ganar? <span className="font-normal text-teal-800">(opcional)</span>
+          </p>
+          <p className="text-[11px] text-teal-900 mt-1 leading-relaxed">
+            Nos ayuda a elegir qué premios conseguir.{" "}
+            <strong>No reserva ni garantiza ningún premio</strong>: se otorgan
+            según las{" "}
+            <Link href="/concurso" className="underline hover:no-underline">bases del concurso</Link>.
+          </p>
+
+          <div className="space-y-2 mt-3">
+            {opciones.map(o => {
+              const elegida = form.prizePreference === o.value;
+              return (
+                <button key={o.value} type="button"
+                  onClick={() => setForm(p => ({
+                    /* Se puede desmarcar: nadie debería quedar atrapado en una
+                       elección hecha sin querer. */
+                    ...p, prizePreference: elegida ? "" : o.value,
+                  }))}
+                  className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${
+                    elegida
+                      ? "border-[#0E9384] bg-white"
+                      : "border-teal-200 bg-white/60 hover:border-[#0E9384]"}`}>
+                  <span className={`block text-xs font-bold ${elegida ? "text-[#0E9384]" : "text-gray-700"}`}>
+                    {o.label}
+                  </span>
+                  <span className="block text-[10px] text-gray-500 mt-0.5">{o.hint}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <p className="text-xs text-gray-500">
         {t("auth.register.termsPrefix")}{" "}
         <Link href="/terminos" className="text-[#D92D20] hover:underline">{t("auth.register.terms")}</Link>{" "}
@@ -228,6 +315,10 @@ function RegisterPageInner() {
   const searchParams = useSearchParams();
   const initialRol = searchParams.get("rol") ?? "";
   const initialPlan = searchParams.get("plan") ?? "";
+  /* Las tarjetas de precios enlazan con ?tipo=negocio. Antes se perdía aquí
+     y toda cuenta nacía como 'persona', incluido quien venía de la tarjeta
+     de Negocio — y account_type es lo que fija el precio del plan Pro. */
+  const initialTipo = searchParams.get("tipo") === "negocio" ? "negocio" : "persona";
 
   const [step, setStep]           = useState<1 | 2>(initialRol ? 2 : 1);
   const [selectedRol, setSelectedRol] = useState(initialRol);
@@ -256,6 +347,10 @@ function RegisterPageInner() {
           country: data.country,
           phone: data.phone,
           role: selectedRol,
+          // handle_new_user() sanea los dos: un valor inesperado violaría el
+          // CHECK y haría fallar el alta entera, no solo ese campo.
+          account_type: selectedRol === "proveedor" ? data.accountType : "persona",
+          prize_preference: data.prizePreference || null,
         },
       },
     });
@@ -372,6 +467,7 @@ function RegisterPageInner() {
                     roleConfig={selectedRoleConfig}
                     onSubmit={handleSubmit}
                     loading={loading}
+                    initialAccountType={initialTipo}
                   />
                 </>
               )}

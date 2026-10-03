@@ -7,6 +7,7 @@
 import { useState, useEffect } from "react";
 import { Loader2, Trophy, RefreshCw, Lock, Play } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import { ALL_PRIZES, prizeLabel } from "@/lib/prizes";
 
 interface RaffleRow {
   id: string; period: string; audience: string; category_id: string | null;
@@ -37,12 +38,27 @@ export default function AdminSorteosPage() {
   const [expanded, setExpanded]   = useState<string | null>(null);
   const [entries, setEntries]     = useState<EntryRow[]>([]);
   const [working, setWorking]     = useState<string | null>(null);
+  /* Qué premios quiere la gente. Es el único lugar donde este dato se
+     mira: sirve para saber qué comprar antes de comprarlo. */
+  const [prefs, setPrefs]         = useState<{ value: string; n: number }[]>([]);
 
   const load = async () => {
-    const [{ data: rf }, { data: cs }] = await Promise.all([
+    const [{ data: rf }, { data: cs }, { data: pr }] = await Promise.all([
       supabase.from("raffles").select("*").order("period", { ascending: false }).order("audience"),
       supabase.from("service_categories").select("id, name"),
+      supabase.from("profiles").select("prize_preference")
+        .eq("role", "proveedor").not("prize_preference", "is", null),
     ]);
+
+    const cuenta = new Map<string, number>();
+    for (const row of (pr ?? []) as { prize_preference: string }[]) {
+      cuenta.set(row.prize_preference, (cuenta.get(row.prize_preference) ?? 0) + 1);
+    }
+    setPrefs(ALL_PRIZES
+      .map(o => ({ value: o.value, n: cuenta.get(o.value) ?? 0 }))
+      .filter(p => p.n > 0)
+      .sort((a, b) => b.n - a.n));
+
     setRaffles((rf as RaffleRow[]) ?? []);
     setCats(Object.fromEntries((cs ?? []).map((c: { id: string; name: string }) => [c.id, c.name])));
 
@@ -106,6 +122,26 @@ export default function AdminSorteosPage() {
           las calificaciones, y marca los pares recíprocos antes de rankear.
         </p>
       </div>
+
+      {/* Qué quieren ganar los proveedores. No influye en quién gana: es
+          para decidir qué premios conseguir. */}
+      {prefs.length > 0 && (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-5 max-w-2xl">
+          <p className="text-sm font-extrabold text-gray-900">Qué premios quieren</p>
+          <p className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">
+            Lo que eligieron los proveedores al registrarse. Es una preferencia
+            aspiracional: no reserva premios ni afecta el ranking.
+          </p>
+          <ul className="mt-3 space-y-1.5">
+            {prefs.map(p => (
+              <li key={p.value} className="flex items-center justify-between gap-3 text-xs">
+                <span className="text-gray-700">{prizeLabel(p.value) ?? p.value}</span>
+                <span className="font-bold text-[#0E9384] flex-shrink-0">{p.n}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {raffles.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 py-16 text-center">
