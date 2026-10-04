@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SiteFooter from "@/components/landing/SiteFooter";
 
 type Section = { title: string; body: string; bullets?: string[]; after?: string };
 
@@ -150,6 +151,7 @@ export default function TerminosPage() {
           </div>
         </footer>
       </main>
+      <SiteFooter />
     </>
   );
 }

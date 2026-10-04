@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SiteFooter from "@/components/landing/SiteFooter";
 
 type Section = { title: string; body: string; bullets?: string[] };
 
@@ -62,17 +63,7 @@ export default function CookiesPage() {
         </div>
       </main>
 
-      <footer className="bg-gray-900 py-8">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
-            <span className="font-bold text-sm text-white">Apurape</span>
-          </div>
-          <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Apurape. Todos los derechos reservados.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   );
 }

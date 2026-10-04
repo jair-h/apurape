@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Pricing from "@/components/landing/pricing";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SiteFooter from "@/components/landing/SiteFooter";
 import { useTranslation } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase";
 
@@ -434,61 +435,9 @@ function ExportSection({ config }: { config?: SectionConfig }) {
 }
 
 /* ─── Footer ──────────────────────────────────────────────── */
-function Footer() {
-  const { t } = useTranslation();
-  const year = new Date().getFullYear();
-  return (
-    <footer className="bg-gray-900 text-gray-400 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <img src="/images/apurape-mark.svg" alt="Apurape" className="h-8 w-auto object-contain" />
-              <span className="font-bold text-white text-sm">Apurape</span>
-            </div>
-            <p className="text-sm text-gray-500 leading-relaxed">{t("landing.footer.tagline")}</p>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.platform")}</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/servicios"     className="hover:text-[#D92D20] transition-colors">{t("nav.services")}</Link></li>
-              <li><Link href="/#como-funciona" className="hover:text-[#D92D20] transition-colors">{t("nav.howItWorks")}</Link></li>
-              <li><Link href="/#planes"       className="hover:text-[#D92D20] transition-colors">{t("nav.plans")}</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.company")}</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/sobre-nosotros" className="hover:text-[#D92D20] transition-colors">{t("landing.footer.aboutUs")}</Link></li>
-              <li><Link href="/blog"           className="hover:text-[#D92D20] transition-colors">Blog</Link></li>
-              <li><Link href="/contacto"       className="hover:text-[#D92D20] transition-colors">{t("landing.footer.contact")}</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t("landing.footer.legal")}</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/terminos"   className="hover:text-[#D92D20] transition-colors">{t("landing.footer.terms")}</Link></li>
-              <li><Link href="/privacidad" className="hover:text-[#D92D20] transition-colors">{t("landing.footer.privacy")}</Link></li>
-              <li><Link href="/cookies"    className="hover:text-[#D92D20] transition-colors">{t("landing.footer.cookiesPolicy")}</Link></li>
-              <li><Link href="/concurso"   className="hover:text-[#D92D20] transition-colors">{t("landing.footer.contestRules")}</Link></li>
-              <li>
-                <Link href="/reclamos" className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#D92D20] transition-colors">
-                  <span aria-hidden>📋</span> {t("reclamos.footerLink")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-600">{t("landing.footer.allRights", { year })}</p>
-          <div className="flex items-center gap-2 text-xs text-gray-600">
-            <Handshake className="h-3 w-3 text-[#D92D20]" />{t("landing.footer.madeIn")}
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+/* El markup se extrajo a components/landing/SiteFooter para poder
+   montarlo tambien en las paginas publicas: el aviso del Libro de
+   Reclamaciones tiene que ser visible en todo el sitio. */
 
 /* ─── Page export ─────────────────────────────────────────── */
 export default function HomePage() {
@@ -520,7 +469,7 @@ export default function HomePage() {
         <ExportSection     config={landingSections?.export} />
         <Pricing />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

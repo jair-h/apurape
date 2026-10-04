@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Check, ArrowRight, HelpCircle, X, Star, Leaf } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SiteFooter from "@/components/landing/SiteFooter";
 import Pricing from "@/components/landing/pricing";
 import { useTranslation } from "@/lib/i18n";
 
@@ -136,6 +137,7 @@ export default function PlanesPage() {
           </div>
         </footer>
       </main>
+      <SiteFooter />
     </>
   );
 }

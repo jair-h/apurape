@@ -78,6 +78,78 @@ export interface SendBrevoResult {
 }
 
 /**
+ * Envío de un correo con HTML propio, sin plantilla de Brevo.
+ *
+ * Existe para el Libro de Reclamaciones: la constancia al consumidor es una
+ * obligación legal, y hacerla depender de que alguien cree una plantilla en
+ * el panel de Brevo significaría que el día del lanzamiento no se envía.
+ * Para lo demás se sigue usando sendBrevoTemplate.
+ */
+export async function sendBrevoHtml({
+  to, toName, subject, html, replyTo,
+}: {
+  to: string;
+  toName?: string;
+  subject: string;
+  html: string;
+  replyTo?: string;
+}): Promise<SendBrevoResult> {
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
+    console.error("[brevo] Sin API key");
+    return { ok: false, brevoStatus: 0, messageId: null, error: "Falta BREVO_API_KEY" };
+  }
+
+  const senderEmail = process.env.BREVO_SENDER_EMAIL;
+  if (!senderEmail) {
+    console.error("[brevo] Falta BREVO_SENDER_EMAIL: no se puede enviar HTML sin remitente");
+    return { ok: false, brevoStatus: 0, messageId: null, error: "Falta BREVO_SENDER_EMAIL" };
+  }
+  const senderName = process.env.BREVO_SENDER_NAME || "Apurape";
+
+  try {
+    const res = await fetch(BREVO_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "api-key": apiKey,
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: { email: senderEmail, name: senderName },
+        to: [{ email: to, name: toName || to }],
+        subject,
+        htmlContent: html,
+        ...(replyTo ? { replyTo: { email: replyTo } } : {}),
+      }),
+    });
+
+    const text = await res.text();
+    let messageId: string | null = null;
+    try { messageId = (JSON.parse(text) as { messageId?: string })?.messageId ?? null; } catch { /* no-JSON */ }
+
+    if (!res.ok) {
+      console.error("[brevo] error html:", res.status, text);
+      return { ok: false, brevoStatus: res.status, messageId, error: text };
+    }
+    return { ok: true, brevoStatus: res.status, messageId, error: null };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[brevo] excepción html:", msg);
+    return { ok: false, brevoStatus: 0, messageId: null, error: msg };
+  }
+}
+
+/** Fecha y hora completas en Lima, para la constancia del reclamo. */
+export function formatDateTimeLima(d: Date): string {
+  return new Intl.DateTimeFormat("es-PE", {
+    timeZone: "America/Lima",
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).format(d);
+}
+
+/**
  * Envío genérico de una plantilla de Brevo.
  * - Lee BREVO_API_KEY del entorno (nunca se expone ni se loguea).
  * - Manda templateId + params en application/json.

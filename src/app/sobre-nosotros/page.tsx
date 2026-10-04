@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Leaf, Globe, Users, Lightbulb, Target, History, ArrowRight, Sprout } from "lucide-react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SiteFooter from "@/components/landing/SiteFooter";
 import { useTranslation } from "@/lib/i18n";
 
 /* ─── Section wrapper ─────────────────────────────────────── */
@@ -174,6 +175,7 @@ export default function SobreNosotrosPage() {
         </footer>
 
       </main>
+      <SiteFooter />
     </>
   );
 }
