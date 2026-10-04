@@ -16,7 +16,7 @@ type Section = { title: string; body: string; bullets?: string[]; after?: string
 const SECTIONS: Section[] = [
   {
     title: "1. Naturaleza del concurso",
-    body: "Apurape organiza un Concurso Mensual dirigido a Proveedores y Clientes registrados. El ganador se determina exclusivamente por mérito: cantidad de servicios confirmados por el Cliente y calificación obtenida (mínimo 3 calificaciones de 5 estrellas en el periodo). No interviene el azar en la selección del ganador, por lo que este mecanismo constituye un concurso de habilidad y desempeño, no un sorteo ni juego de azar.",
+    body: "Apurape organiza un Concurso Mensual dirigido a Proveedores y Clientes registrados. El ganador se determina exclusivamente por mérito, mediante el Índice de Excelencia, que combina la calificación promedio obtenida, la cantidad de servicios confirmados por el Cliente y la rapidez de la primera respuesta. Para participar, el Proveedor debe cerrar el periodo con un mínimo de 3 servicios confirmados y un promedio de calificación de 3.0 estrellas o más. No interviene el azar en la selección del ganador, por lo que este mecanismo constituye un concurso de habilidad y desempeño, no un sorteo ni juego de azar.",
   },
   {
     title: "2. Participantes",
@@ -72,13 +72,13 @@ export default function ConcursoPage() {
               Bases del Concurso Mensual
             </h1>
           </div>
-          <p className="text-sm text-gray-400 mb-8">Última actualización: 28 de agosto de 2026</p>
+          <p className="text-sm text-gray-400 mb-8">Última actualización: 4 de octubre de 2026</p>
 
           <div className="flex items-start gap-3 bg-white border border-gray-200 rounded-2xl p-5 mb-12">
             <ShieldCheck className="h-5 w-5 text-[#0E9384] flex-shrink-0 mt-0.5" />
             <p className="text-sm text-gray-600 leading-relaxed">
               El ganador sale de un <strong className="text-gray-900">ranking automático</strong> por
-              servicios confirmados y calificaciones recibidas. No hay azar, ni votación,
+              calidad, volumen y rapidez de respuesta. No hay azar, ni votación,
               ni criterio discrecional de Apurape.
             </p>
           </div>

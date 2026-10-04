@@ -55,7 +55,41 @@ const SECTIONS: Section[] = [
     title: "9. Política de reembolsos",
     body: "Los planes anuales de Apurape no son reembolsables una vez activados y el acceso a la plataforma haya comenzado. Si experimentas un problema técnico grave imputable a Apurape en los primeros 7 días desde la activación de tu plan, puedes contactarnos a través de la página de Contacto para evaluar tu caso. Los reembolsos, si aplicaran, se procesarán en un plazo de 10 días hábiles. Las pruebas gratuitas no dan derecho a reembolso.",
   },
+  /* Las dos cláusulas siguientes dejan la puerta abierta a futuro. HOY la
+     comisión es 0% y no existe ninguna lógica de cobro por venta: ver
+     config.commission_pct = 0. No construir nada de eso a partir de este
+     texto; el texto permite, no implementa. */
+  {
+    title: "10. Comisiones",
+    body: "Apurape opera actualmente sin cobrar comisión sobre las transacciones entre Proveedores y Clientes. Apurape se reserva el derecho de introducir en el futuro comisiones sobre las transacciones o servicios de la plataforma, notificando dichos cambios con la debida anticipación. El uso continuado tras la notificación implicará su aceptación.",
+  },
+  {
+    title: "11. Publicidad y contenido promocionado",
+    body: "Apurape podrá mostrar contenido publicitario o espacios promocionados de terceros dentro de la plataforma, claramente identificados como publicidad cuando corresponda, como parte de su modelo de negocio.",
+  },
 ];
+
+/* ─────────────────────────────────────────────────────────────
+ * Versión en inglés de las secciones 10 y 11.
+ *
+ * Esta página es solo español: el texto está fijo aquí y no pasa por
+ * useTranslation, así que hoy no hay dónde renderizar inglés. Queda
+ * guardado junto al original para quien haga la página bilingüe, y porque
+ * traducir cláusulas de responsabilidad sin revisión legal es peor que no
+ * traducirlas.
+ *
+ * 10. Commissions
+ * Apurape currently operates without charging any commission on
+ * transactions between Providers and Clients. Apurape reserves the right to
+ * introduce commissions on platform transactions or services in the future,
+ * giving due advance notice of such changes. Continued use after the notice
+ * shall constitute acceptance thereof.
+ *
+ * 11. Advertising and sponsored content
+ * Apurape may display advertising or third-party sponsored placements within
+ * the platform, clearly identified as advertising where applicable, as part
+ * of its business model.
+ * ───────────────────────────────────────────────────────────── */
 
 export default function TerminosPage() {
   return (
@@ -74,7 +108,7 @@ export default function TerminosPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
             Términos y Condiciones de Uso
           </h1>
-          <p className="text-sm text-gray-400 mb-12">Última actualización: 28 de agosto de 2026</p>
+          <p className="text-sm text-gray-400 mb-12">Última actualización: 3 de octubre de 2026</p>
 
           <div className="space-y-10">
             {SECTIONS.map((s, i) => (
