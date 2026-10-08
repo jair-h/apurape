@@ -6,6 +6,7 @@ import {
   ChevronRight, Award, Trophy, Quote as QuoteIcon, Users,
 } from "lucide-react";
 import { createServerSupabase } from "@/lib/supabase-server";
+import SiteFooter from "@/components/landing/SiteFooter";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import ProfileActions from "./ProfileActions";
 import BusinessHoursBadge from "@/components/BusinessHoursBadge";
@@ -264,6 +265,7 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
   const memberSince = new Date(profile.created_at).toLocaleDateString("es-PE", { month: "long", year: "numeric" });
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
@@ -472,5 +474,7 @@ export default async function PerfilPublicoPage({ params }: { params: Promise<{ 
         </div>
       </div>
     </div>
+    <SiteFooter />
+    </>
   );
 }

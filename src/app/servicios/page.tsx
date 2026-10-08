@@ -8,6 +8,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, MapPin, Star, Wrench, Loader2, Trophy, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import SiteFooter from "@/components/landing/SiteFooter";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import FavoriteButton from "@/components/FavoriteButton";
 import { WinnerTag } from "@/components/WinnerBadge";
@@ -258,6 +259,7 @@ export default function ServiciosPage() {
       </div>
     }>
       <ServiciosInner />
+      <SiteFooter />
     </Suspense>
   );
 }
