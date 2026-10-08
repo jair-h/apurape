@@ -90,7 +90,7 @@ Hay un sistema progresivo de niveles (Inicio → Impulso → Crece → Destaca �
 
 ## Estado actual (oct 2026)
 
-**Construido, probado y subido** — migraciones 001 a 033 aplicadas:
+**Construido, probado y subido** — migraciones 001 a 034 aplicadas:
 
 - Base de datos completa y flujo Proveedor↔Cliente (chat, cotizaciones, trabajos, calificaciones).
 - Concurso mensual con Índice de Excelencia, cierre automático en `pg_cron` (día 3, 05:00 UTC), insignia y aviso al ganador. Primera corrida real: 3 de octubre de 2026, correcta.
@@ -101,11 +101,13 @@ Hay un sistema progresivo de niveles (Inicio → Impulso → Crece → Destaca �
 - Elección de premio al registrarse, y `account_type` guardado desde el registro.
 - Requisito del concurso (3 trabajos + ≥3.0) con los umbrales en `config`.
 - Dos cláusulas legales nuevas en Términos: comisión futura y publicidad.
+- **Libro de Reclamaciones (INDECOPI, DS 011-2011-PCM)** — migración 034. Página pública `/libro-de-reclamaciones` con el formulario completo (tipo de documento, menor de edad con apoderado, bien contratado, reclamo vs queja, pedido). El alta pasa por `/api/reclamaciones` (service role) porque la tabla permite INSERT a cualquiera pero no SELECT: así el consumidor recibe su correlativo `APU-00000N` real. Dos correos por Brevo (constancia al consumidor + aviso al admin) con `sendBrevoHtml`, sin depender de plantillas. Panel admin en `/dashboard/admin/reclamaciones` con respuesta y semáforo del plazo de 15 días hábiles. Footer extraído a `components/landing/SiteFooter` y montado en las 8 páginas públicas, con el aviso oficial. `/reclamos` es ahora redirect permanente a `/libro-de-reclamaciones`.
 
 **Pendiente del usuario (no código)**:
 
 - Crear los 2 planes en Culqi (`plan-pro-persona-apurape`, `plan-pro-negocio-apurape`) y probar un pago completo. Es lo único de los ocho bloques sin verificar.
 - Variables de entorno en Vercel, en especial `SUPABASE_SERVICE_ROLE_KEY`: sin ella Culqi cobra y el plan no se activa.
+- **Para el Libro de Reclamaciones**: `BREVO_SENDER_EMAIL` (remitente verificado en Brevo; sin ella no sale ningún correo) y `ADMIN_EMAIL` (a dónde llega el aviso; si falta cae a `BREVO_SENDER_EMAIL`). Tras agregarlas, un redeploy. Prueba de punta a punta: presentar un reclamo real y verificar correlativo, los dos correos y que aparece en el panel.
 - Plantilla Brevo del correo al ganador + `BREVO_WINNER_TEMPLATE_ID`. Sin la variable, el endpoint no marca nada como enviado y recoge los pendientes cuando exista.
 - Comprar dominio (apurape.com / .pe) y crear el correo dedicado para la sección 6 de Privacidad, que sigue como `[PENDIENTE]`.
 - Revisión de abogado de Términos, Bases y Acta de Entrega antes del primer premio en efectivo.
