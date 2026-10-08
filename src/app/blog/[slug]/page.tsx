@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = post.meta_title || post.title;
   const description = post.meta_description || post.summary || post.title;
   const url = `${SITE_URL}/blog/${post.slug}`;
-  const images = post.image_url ? [post.image_url] : [];
+  const images = post.image_url ? [post.image_url] : ["/images/apurape-og.png"];
 
   return {
     metadataBase: new URL(SITE_URL),

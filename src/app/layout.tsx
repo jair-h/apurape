@@ -33,13 +33,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: SITE_URL,
-    images: [{ url: "/images/apurape-mark.svg", width: 500, height: 500, alt: "Apurape" }],
+    // PNG 1200x630: WhatsApp, Facebook y X no renderizan SVG como og:image.
+    images: [{ url: "/images/apurape-og.png", width: 1200, height: 630, alt: "Apurape" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/images/apurape-mark.svg"],
+    images: ["/images/apurape-og.png"],
   },
 };
 
