@@ -10,15 +10,36 @@ import { useTranslation } from "@/lib/i18n";
 export default function ContactoPage() {
   const { t } = useTranslation();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSent(true);
+    if (sending) return;
+    setSending(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) {
+        setError(data?.error || "No se pudo enviar tu mensaje. Intenta de nuevo.");
+        return;
+      }
+      setSent(true);
+    } catch {
+      setError("No se pudo enviar tu mensaje. Revisa tu conexión e intenta de nuevo.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -99,11 +120,15 @@ export default function ContactoPage() {
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D92D20] focus:border-transparent transition resize-none"
                     />
                   </div>
+                  {error && (
+                    <p className="text-sm text-[#D92D20] font-medium -mt-2">{error}</p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full bg-[#D92D20] hover:bg-[#912018] text-white font-bold py-3.5 rounded-xl transition-colors"
+                    disabled={sending}
+                    className="w-full bg-[#D92D20] hover:bg-[#912018] text-white font-bold py-3.5 rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {t("contact.form.send")}
+                    {sending ? "Enviando…" : t("contact.form.send")}
                   </button>
                 </form>
               )}
