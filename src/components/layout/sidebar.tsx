@@ -25,6 +25,7 @@ import {
   BarChart3,
   Home,
   Heart,
+  Megaphone,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useTranslation, SUPPORTED_LANGS } from "@/lib/i18n";
@@ -53,6 +54,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
     { icon: MessageCircle,   labelKey: "sidebar.messages",          href: "/dashboard/mensajes" },
     { icon: BarChart3,       labelKey: "sidebar.stats",             href: "/dashboard/proveedor/estadisticas" },
     { icon: Star,            labelKey: "sidebar.raffle",            href: "/dashboard/sorteo" },
+    { icon: Megaphone,       labelKey: "sidebar.ads",               href: "/dashboard/proveedor/publicidad" },
     { icon: CreditCard,      labelKey: "sidebar.myPlan",            href: "/dashboard/plan" },
   ],
   cliente: [
@@ -76,6 +78,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
     { icon: Settings,        labelKey: "sidebar.settings",     href: "/dashboard/admin/configuracion" },
     { icon: Shield,          labelKey: "sidebar.verification", href: "/dashboard/admin/verificacion" },
     { icon: DollarSign,      labelKey: "sidebar.billing",      href: "/dashboard/admin/cobros" },
+    { icon: Megaphone,       labelKey: "sidebar.ads",          href: "/dashboard/admin/publicidad" },
     { icon: Home,            labelKey: "sidebar.backToHome",   href: "/" },
   ],
 };

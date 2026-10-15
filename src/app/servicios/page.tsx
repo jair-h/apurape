@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Search, MapPin, Star, Wrench, Loader2, Trophy, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import SiteFooter from "@/components/landing/SiteFooter";
+import PromotedStrip from "@/components/PromotedStrip";
 import PublicNavAuthSection from "@/components/PublicNavAuthSection";
 import FavoriteButton from "@/components/FavoriteButton";
 import { WinnerTag } from "@/components/WinnerBadge";
@@ -223,6 +224,10 @@ function ServiciosInner() {
             </span>
           )}
         </div>
+
+        {/* Franja de Publicidad: solo al filtrar por una categoría (búsqueda con
+            intención), separada del orden por mérito de abajo. */}
+        <PromotedStrip categoryId={categories.find(c => c.slug === catParam)?.id ?? null} placement="busqueda" />
 
         {loading ? (
           <div className="flex justify-center py-20"><Loader2 className="h-7 w-7 text-[#D92D20] animate-spin" /></div>

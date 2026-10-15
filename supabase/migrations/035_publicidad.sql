@@ -24,7 +24,7 @@
 insert into public.config (key, value) values
   ('ads_enabled',                 to_jsonb(true)),   -- kill switch global
   ('ad_payment_required',         to_jsonb(false)),  -- cobro Culqi: apagado al inicio
-  ('ad_currency',                 to_jsonb('PEN')),
+  ('ad_currency',                 to_jsonb('PEN'::text)),
   ('ad_min_budget',               to_jsonb(20)),     -- soles, sin máximo
   ('ad_budget_step',              to_jsonb(10)),     -- incrementos
   ('ad_min_days',                 to_jsonb(3)),      -- sugeridas 7/15/30
