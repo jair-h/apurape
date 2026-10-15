@@ -5,7 +5,7 @@
  * y muestra el ranking resultante. */
 
 import { useState, useEffect } from "react";
-import { Loader2, Trophy, RefreshCw, Lock, Play } from "lucide-react";
+import { Loader2, Trophy, RefreshCw, Lock, Play, ShieldAlert, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { ALL_PRIZES, prizeLabel } from "@/lib/prizes";
 
@@ -19,6 +19,13 @@ interface RaffleRow {
 interface EntryRow {
   raffle_id: string; profile_id: string; entries: number;
   confirmed_jobs: number; five_star_count: number; score: number; rank: number | null;
+}
+
+interface ReviewRow {
+  raffle_id: string; period: string; category_id: string | null; participant_type: string;
+  winner_profile_id: string; confirmed_jobs: number; distinct_clients: number;
+  top_client_jobs: number; top_client_share: number; busiest_day_jobs: number;
+  flagged_jobs: number; needs_review: boolean;
 }
 
 const STATUS: Record<string, { label: string; cls: string }> = {
@@ -41,14 +48,19 @@ export default function AdminSorteosPage() {
   /* Qué premios quiere la gente. Es el único lugar donde este dato se
      mira: sirve para saber qué comprar antes de comprarlo. */
   const [prefs, setPrefs]         = useState<{ value: string; n: number }[]>([]);
+  /* Señales de fraude por concurso premiado, para mirar antes de entregar.
+     No excluye a nadie: el ranking lo decide el Índice de Excelencia. */
+  const [review, setReview]       = useState<ReviewRow[]>([]);
 
   const load = async () => {
-    const [{ data: rf }, { data: cs }, { data: pr }] = await Promise.all([
+    const [{ data: rf }, { data: cs }, { data: pr }, { data: rv }] = await Promise.all([
       supabase.from("raffles").select("*").order("period", { ascending: false }).order("audience"),
       supabase.from("service_categories").select("id, name"),
       supabase.from("profiles").select("prize_preference")
         .eq("role", "proveedor").not("prize_preference", "is", null),
+      supabase.rpc("contest_winner_review"),
     ]);
+    setReview((rv as ReviewRow[]) ?? []);
 
     const cuenta = new Map<string, number>();
     for (const row of (pr ?? []) as { prize_preference: string }[]) {
@@ -140,6 +152,63 @@ export default function AdminSorteosPage() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Revisión de ganadores: señales de fraude antes de entregar un premio.
+          No excluye a nadie; el ranking lo decide el Índice de Excelencia. */}
+      {review.length > 0 && (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 mb-5">
+          <div className="flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4 text-[#B42318]" />
+            <p className="text-sm font-extrabold text-gray-900">Revisión de ganadores</p>
+          </div>
+          <p className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">
+            Señales para mirar antes de entregar un premio. No cambian el ranking ni
+            excluyen a nadie: solo marcan los casos que conviene revisar a mano.
+          </p>
+          <div className="mt-3 space-y-2">
+            {review.map(rv => (
+              <div key={rv.raffle_id}
+                className={`rounded-xl border p-3 ${rv.needs_review
+                  ? "border-[#FDA29B] bg-[#FFFBFA]" : "border-gray-200 bg-gray-50"}`}>
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-gray-900 truncate">
+                      {names[rv.winner_profile_id] ?? "Ganador"}
+                      <span className="font-normal text-[#6B7280]">
+                        {" · "}{new Date(rv.period).toLocaleDateString("es-PE", { month: "long", year: "numeric" })}
+                        {" · "}{rv.category_id ? (cats[rv.category_id] ?? "Categoría") : "General"}
+                        {" · "}<span className="capitalize">{rv.participant_type}</span>
+                      </span>
+                    </p>
+                  </div>
+                  {rv.needs_review ? (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#B42318] bg-[#FEF3F2] border border-[#FDA29B] px-2 py-0.5 rounded-full flex-shrink-0">
+                      <ShieldAlert className="h-3 w-3" /> Revisar
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#067647] bg-green-50 border border-green-200 px-2 py-0.5 rounded-full flex-shrink-0">
+                      <ShieldCheck className="h-3 w-3" /> Sin señales
+                    </span>
+                  )}
+                </div>
+                <div className="mt-2 flex items-center gap-x-4 gap-y-1 flex-wrap text-[11px] text-[#475467]">
+                  <span>{rv.confirmed_jobs} ventas</span>
+                  <span className={rv.distinct_clients <= 2 ? "text-[#B42318] font-semibold" : ""}>
+                    {rv.distinct_clients} {rv.distinct_clients === 1 ? "cliente" : "clientes"} distintos
+                  </span>
+                  <span className={rv.top_client_share >= 0.6 ? "text-[#B42318] font-semibold" : ""}>
+                    {Math.round(rv.top_client_share * 100)}% de un solo cliente
+                  </span>
+                  <span>{rv.busiest_day_jobs} en su día más cargado</span>
+                  {rv.flagged_jobs > 0 && (
+                    <span className="text-[#B42318] font-semibold">{rv.flagged_jobs} marcados</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

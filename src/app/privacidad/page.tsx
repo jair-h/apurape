@@ -23,13 +23,14 @@ const SECTIONS: Section[] = [
       "Datos de registro: nombre, correo electrónico, teléfono, tipo de cuenta (persona/negocio).",
       "Datos de perfil: región, distrito, servicios ofrecidos, fotos, precios.",
       "Datos de uso: mensajes dentro del chat, cotizaciones, historial de servicios confirmados, calificaciones.",
+      "Datos de verificación y prevención de fraude en el Concurso: estado de verificación del correo y señales de actividad (patrones de confirmaciones, concentración de ventas en una sola contraparte, pares recíprocos), usados solo para comprobar que las ventas que compiten por un premio son reales.",
       "Datos de pago: procesados directamente por Culqi; Apurape no almacena datos completos de tarjetas.",
       "Para entrega de premios del Concurso Mensual: nombre completo, DNI o Carné de Extranjería, firma (Acta de Entrega), únicamente a quienes resulten ganadores.",
     ],
   },
   {
     title: "3. Finalidad del tratamiento",
-    body: "Los datos se usan para: operar la Plataforma (registro, contacto, cotización, pagos), calcular el ranking del Concurso Mensual, comunicar novedades y confirmaciones por correo, y cumplir obligaciones legales (incluyendo sustento ante SUNAT de premios entregados).",
+    body: "Los datos se usan para: operar la Plataforma (registro, contacto, cotización, pagos), calcular el ranking del Concurso Mensual, prevenir el fraude en el Concurso (verificar que las ventas confirmadas sean reales antes de entregar un premio), comunicar novedades y confirmaciones por correo, y cumplir obligaciones legales (incluyendo sustento ante SUNAT de premios entregados).",
   },
   {
     title: "4. Consentimiento",
