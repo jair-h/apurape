@@ -101,6 +101,11 @@ function RegisterForm({
   });
 
   const esProveedor = roleId === "proveedor";
+  const esNegocio = form.accountType === "negocio";
+  // El campo de nombre de negocio solo aplica a un Proveedor Negocio. Una
+  // Persona (o "Por mi cuenta") se promociona con su nombre: no debe pedirse
+  // nombre de negocio. Al Cliente se le deja el campo de empresa opcional.
+  const mostrarNegocio = (esProveedor && esNegocio) || !esProveedor;
   const opciones = prizeOptions(form.accountType);
 
   const set = (key: keyof FormData) =>
@@ -164,7 +169,7 @@ function RegisterForm({
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
+        <div className={mostrarNegocio ? "" : "sm:col-span-2"}>
           <label className={labelClass}>{t("auth.register.fullName")} *</label>
           <input
             type="text"
@@ -175,20 +180,22 @@ function RegisterForm({
             className={inputClass}
           />
         </div>
-        <div>
-          <label className={labelClass}>
-            {roleId === "proveedor" ? "Nombre de tu negocio" : "Empresa (opcional)"}
-            {roleId === "proveedor" ? " *" : ""}
-          </label>
-          <input
-            type="text"
-            required={roleId === "proveedor"}
-            placeholder={roleId === "proveedor" ? "Gasfitería Ramírez" : "Tu empresa"}
-            value={form.companyName}
-            onChange={set("companyName")}
-            className={inputClass}
-          />
-        </div>
+        {mostrarNegocio && (
+          <div>
+            <label className={labelClass}>
+              {esProveedor ? "Nombre de tu negocio" : "Empresa (opcional)"}
+              {esProveedor ? " *" : ""}
+            </label>
+            <input
+              type="text"
+              required={esProveedor}
+              placeholder={esProveedor ? "Gasfitería Ramírez" : "Tu empresa"}
+              value={form.companyName}
+              onChange={set("companyName")}
+              className={inputClass}
+            />
+          </div>
+        )}
       </div>
 
       <div>
