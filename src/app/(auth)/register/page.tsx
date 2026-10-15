@@ -78,6 +78,8 @@ type FormData = {
   accountType: string;
   /* Aspiracional y opcional. No reserva ningún premio. */
   prizePreference: string;
+  /* Texto libre cuando prizePreference === 'otro'. */
+  prizePreferenceOther: string;
 };
 
 function RegisterForm({
@@ -97,7 +99,7 @@ function RegisterForm({
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState<FormData>({
     email: "", password: "", fullName: "", companyName: "", country: "", phone: "",
-    accountType: initialAccountType, prizePreference: "",
+    accountType: initialAccountType, prizePreference: "", prizePreferenceOther: "",
   });
 
   const esProveedor = roleId === "proveedor";
@@ -291,6 +293,17 @@ function RegisterForm({
               );
             })}
           </div>
+
+          {form.prizePreference === "otro" && (
+            <input
+              type="text"
+              maxLength={120}
+              value={form.prizePreferenceOther}
+              onChange={set("prizePreferenceOther")}
+              placeholder="Cuéntanos qué te gustaría ganar"
+              className="mt-2 w-full px-3 py-2.5 rounded-lg border border-[#0E9384] text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0E9384] bg-white"
+            />
+          )}
         </div>
       )}
 
@@ -358,6 +371,7 @@ function RegisterPageInner() {
           // CHECK y haría fallar el alta entera, no solo ese campo.
           account_type: selectedRol === "proveedor" ? data.accountType : "persona",
           prize_preference: data.prizePreference || null,
+          prize_preference_other: data.prizePreference === "otro" ? (data.prizePreferenceOther || null) : null,
         },
       },
     });

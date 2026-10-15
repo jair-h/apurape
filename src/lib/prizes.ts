@@ -30,14 +30,21 @@ const NEGOCIO: PrizeOption[] = [
   { value: "capacitacion", label: "Capacitación para tu equipo",  hint: "Para que todos atiendan igual de bien" },
 ];
 
+/* Opción abierta, válida para los dos tipos: el usuario escribe su meta. */
+const OTRO: PrizeOption = {
+  value: "otro",
+  label: "Otra cosa (cuéntanos)",
+  hint: "Escribe qué te gustaría ganar",
+};
+
 export function prizeOptions(accountType: string | null | undefined): PrizeOption[] {
-  return accountType === "negocio" ? NEGOCIO : PERSONA;
+  return [...(accountType === "negocio" ? NEGOCIO : PERSONA), OTRO];
 }
 
 /** Etiqueta de una clave, sin importar la lista a la que pertenezca. */
 export function prizeLabel(value: string | null | undefined): string | null {
   if (!value) return null;
-  return [...PERSONA, ...NEGOCIO].find(o => o.value === value)?.label ?? null;
+  return [...PERSONA, ...NEGOCIO, OTRO].find(o => o.value === value)?.label ?? null;
 }
 
-export const ALL_PRIZES = [...PERSONA, ...NEGOCIO];
+export const ALL_PRIZES = [...PERSONA, ...NEGOCIO, OTRO];
