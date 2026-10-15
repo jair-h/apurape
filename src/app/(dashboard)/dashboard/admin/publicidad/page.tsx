@@ -71,11 +71,12 @@ export default function PublicidadAdminPage() {
     (c.profiles?.account_type === "negocio" ? c.profiles?.business_name : c.profiles?.name) || "Anunciante";
 
   if (loading) {
-    return <div className="min-h-[60vh] flex items-center justify-center"><Loader2 className="h-7 w-7 text-[#D92D20] animate-spin" /></div>;
+    return <div className="flex flex-1 items-center justify-center bg-gray-50"><Loader2 className="h-7 w-7 text-[#D92D20] animate-spin" /></div>;
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6">
+    <div className="max-w-5xl mx-auto">
       <div className="flex items-center gap-2 mb-1">
         <Megaphone className="h-6 w-6 text-[#D92D20]" />
         <h1 className="text-2xl font-extrabold text-[#1E293B]">Publicidad</h1>
@@ -136,6 +137,7 @@ export default function PublicidadAdminPage() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }
